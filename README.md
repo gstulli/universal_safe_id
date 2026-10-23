@@ -1,413 +1,427 @@
 # Universal Safe ID (USI)
 
-**Uma identidade pessoal universal, única, privada e recuperável, construída como bem público, sobre código aberto e um registro público verificável.**
+🌐 **English** · [Português (Brasil)](README.pt-BR.md)
 
-> **Status:** concepção. Este documento descreve a visão, os princípios e os caminhos técnicos que o projeto pretende investigar. Nada aqui é definitivo: as propostas são hipóteses a serem testadas, medidas e ajustadas à medida que o projeto amadurece. O próximo passo é a elaboração do whitepaper (ver [Como começar](#13-como-começar)).
+**A universal personal identity that is unique, private and recoverable, built as a public good on open source code and a verifiable public registry.**
 
----
+> **Status:** conception phase, with the **first version of the [whitepaper](docs/whitepaper.md) published (v0.1)**. The whitepaper details the threat model, the architecture, the alternatives still in dispute and a plan of 12 experiments to decide among them. **It is an open draft, open to collaboration**: criticism, corrections and contributions are welcome (see [How to contribute](#15-how-to-contribute)). Nothing here is final: the proposals are hypotheses to be tested, measured and adjusted as the project matures.
 
-## Sumário
+**Documents:**
 
-1. [O problema](#1-o-problema)
-2. [A proposta](#2-a-proposta)
-3. [Princípios](#3-princípios)
-4. [Diferenciais do USI](#4-diferenciais-do-usi)
-5. [Arquitetura proposta](#5-arquitetura-proposta)
-6. [Uma pessoa, um USI: o modelo de unicidade](#6-uma-pessoa-um-usi-o-modelo-de-unicidade)
-7. [Recuperação de acesso](#7-recuperação-de-acesso)
-8. [Privacidade e segurança](#8-privacidade-e-segurança)
-9. [Sustentabilidade sem dono e sem lucro](#9-sustentabilidade-sem-dono-e-sem-lucro)
-10. [Governança](#10-governança)
-11. [Stakeholders](#11-stakeholders)
-12. [Casos de uso iniciais](#12-casos-de-uso-iniciais)
-13. [Como começar](#13-como-começar)
-14. [Questões em aberto](#14-questões-em-aberto)
-15. [Como contribuir](#15-como-contribuir)
-16. [Glossário](#16-glossário)
-
----
-
-## 1. O problema
-
-A identificação de pessoas, hoje, depende de dois modelos, e ambos têm falhas sérias.
-
-**Identidade emitida por governos e entidades centralizadas**
-- Bilhões de pessoas não têm documento reconhecido: refugiados, apátridas, populações vulneráveis.
-- Cada país, órgão e empresa mantém sua própria base, gerando duplicidades, fraudes e vazamentos em massa.
-- O cidadão não controla seus dados: não sabe quem os consulta, não escolhe o que revelar e não consegue revogar acessos.
-- A identidade não atravessa fronteiras com facilidade e pode ser negada ou cancelada por decisão de uma única autoridade.
-
-**Identidade digital emitida por plataformas privadas** (login com contas de grandes empresas)
-- A conta pertence à empresa, não à pessoa, e pode ser bloqueada sem recurso.
-- Serve de base para rastreamento e perfilamento comercial.
-- Não garante que existe um ser humano real e único por trás da conta.
-
-**Um problema novo e urgente:** com a popularização de agentes de inteligência artificial capazes de imitar pessoas, distinguir um humano real de um robô, e uma pessoa de mil contas falsas, tornou-se essencial para votações, redes sociais, distribuição de benefícios e qualquer espaço que dependa do princípio "uma pessoa, uma voz".
-
-## 2. A proposta
-
-O USI propõe uma infraestrutura aberta e sem dono que permita a qualquer pessoa:
-
-1. **Obter gratuitamente um identificador único e permanente** (o USI), vinculado a ela e a mais ninguém.
-2. **Provar que é um ser humano único** sem precisar revelar quem é.
-3. **Guardar seus dados pessoais sob seu próprio controle**, compartilhando apenas o necessário, com quem quiser, pelo tempo que quiser.
-4. **Nunca perder sua identidade** por esquecer uma senha ou perder um celular.
-5. **Ser reconhecida** por serviços, instituições e outras pessoas por meio de padrões abertos e interoperáveis.
-
-O USI não pretende substituir documentos oficiais. Ele pode conviver com eles, aproveitá-los como evidência quando existirem e oferecer uma alternativa a quem não os possui.
-
-## 3. Princípios
-
-| # | Princípio | O que significa na prática |
+| Document | English | Português |
 |---|---|---|
-| 1 | **Bem público, sem dono** | Nenhuma pessoa, empresa ou governo controla o sistema. O fundador se retira da governança assim que critérios objetivos de descentralização forem atingidos. |
-| 2 | **Gratuito para o cidadão** | Criar, manter e recuperar um USI nunca terá custo para a pessoa. |
-| 3 | **Sem lucro, sem token** | Não há lucro para fundadores, investidores ou mantenedores. Não haverá criptomoeda própria. Os recursos necessários à operação são transparentes e destinados apenas à infraestrutura. |
-| 4 | **Uma pessoa, um USI** | Cada ser humano tem um único identificador. Duplicidades podem ser contestadas e corrigidas. |
-| 5 | **Identificador permanente, chaves substituíveis** | O USI não muda; as chaves que o controlam podem ser trocadas, revogadas e recuperadas. |
-| 6 | **Nenhum dado pessoal no registro público** | Nem em texto aberto, nem criptografado. O registro guarda apenas chaves públicas, compromissos criptográficos e provas. |
-| 7 | **Divulgação mínima** | Revela-se apenas o necessário. Exemplo: provar "sou maior de idade" sem revelar a data de nascimento. |
-| 8 | **Robustez por combinação** | Nenhum mecanismo isolado é confiável o suficiente. Unicidade, segurança e recuperação são garantidas por várias camadas independentes operando em conjunto. |
-| 9 | **Padrões abertos** | Compatibilidade com padrões reconhecidos (W3C DID, Verifiable Credentials, FIDO2/passkeys), evitando formatos proprietários. |
-| 10 | **Inclusão** | O sistema deve funcionar para quem não tem documento, tem pouca familiaridade com tecnologia ou acesso limitado à internet. |
-| 11 | **Transparência e auditabilidade** | Código aberto, decisões públicas, contas públicas, registro verificável por qualquer pessoa. |
-| 12 | **Evolução baseada em evidências** | Cada mecanismo é tratado como hipótese, testado em ambiente controlado e ajustado com base em dados reais. |
+| Project overview | [README.md](README.md) | [README.pt-BR.md](README.pt-BR.md) |
+| Whitepaper v0.1 | [docs/whitepaper.md](docs/whitepaper.md) | [docs/whitepaper.pt-BR.md](docs/whitepaper.pt-BR.md) |
 
-## 4. Diferenciais do USI
+---
 
-O USI não parte do zero: combina técnicas já testadas em identidade descentralizada, criptografia e infraestrutura pública, buscando evitar os pontos de falha observados em iniciativas anteriores. Seus diferenciais estão na combinação:
+## Contents
 
-1. **Unicidade por múltiplas evidências, não por um único método.** Nem só biometria, nem só documentos oficiais, nem só validação social. Cada pessoa acumula evidências independentes, e a confiança cresce com a diversidade delas (ver [seção 6](#6-uma-pessoa-um-usi-o-modelo-de-unicidade)).
+1. [The problem](#1-the-problem)
+2. [The proposal](#2-the-proposal)
+3. [Principles](#3-principles)
+4. [What sets USI apart](#4-what-sets-usi-apart)
+5. [Proposed architecture](#5-proposed-architecture)
+6. [One person, one USI: the uniqueness model](#6-one-person-one-usi-the-uniqueness-model)
+7. [Access recovery](#7-access-recovery)
+8. [Privacy and security](#8-privacy-and-security)
+9. [Sustainability without owners or profit](#9-sustainability-without-owners-or-profit)
+10. [Governance](#10-governance)
+11. [Stakeholders](#11-stakeholders)
+12. [Initial use cases](#12-initial-use-cases)
+13. [Getting started](#13-getting-started)
+14. [Open questions](#14-open-questions)
+15. [How to contribute](#15-how-to-contribute)
+16. [Glossary](#16-glossary)
 
-2. **Níveis de garantia escolhidos por quem verifica.** Um fórum online pode aceitar um nível básico; uma distribuição de benefícios pode exigir o nível mais alto. O mesmo USI atende a ambos.
+---
 
-3. **Recuperação em camadas paralelas.** Várias rotas de recuperação operam simultaneamente, com prazos de espera proporcionais à força da evidência e direito de veto pelo titular (ver [seção 7](#7-recuperação-de-acesso)).
+## 1. The problem
 
-4. **Universal, mas não rastreável.** O USI é universal *para o titular*, não para os serviços. Cada serviço enxerga um pseudônimo diferente, derivado do USI, e recebe apenas a prova de que se trata de um humano único. Serviços distintos não conseguem cruzar dados entre si para rastrear a pessoa.
+Identifying people today depends on two models, and both have serious flaws.
 
-5. **Zero dado pessoal no registro público.** Elimina o conflito entre imutabilidade e o direito à eliminação de dados (LGPD, GDPR) e protege contra a quebra futura da criptografia atual.
+**Identity issued by governments and centralized certifying bodies**
+- Billions of people have no recognized document: refugees, stateless people, vulnerable populations.
+- Each country, agency and company keeps its own database, producing duplicates, fraud and mass leaks.
+- Citizens do not control their data: they do not know who queries it, cannot choose what to reveal and cannot revoke access.
+- The identity does not cross borders easily and can be denied or cancelled by a single authority's decision.
 
-6. **Gratuito para o cidadão, sustentado por quem se beneficia.** Sem token especulativo e sem cobrança do titular. A infraestrutura é mantida por instituições interessadas e por quem consome as verificações (ver [seção 9](#9-sustentabilidade-sem-dono-e-sem-lucro)).
+**Digital identity issued by private platforms** (logging in with accounts from large companies)
+- The account belongs to the company, not the person, and can be blocked with no recourse.
+- It serves as a basis for tracking and commercial profiling.
+- It does not guarantee that a real, unique human is behind the account.
 
-7. **Validadores responsáveis.** Quem atesta a identidade de outra pessoa coloca a própria reputação em jogo. Atestar uma conta falsa tem consequência.
+**A new and urgent problem:** with the spread of AI agents able to imitate people, telling a real human from a bot — and one person from a thousand fake accounts — has become essential for voting, social networks, benefit distribution and any space that relies on the principle of "one person, one voice".
 
-8. **Descentralização progressiva e planejada.** Em vez de um sistema "sem dono" desde o primeiro dia, o que tende a gerar vácuo de governança, o USI define fases e critérios objetivos para a transferência de controle à comunidade.
+## 2. The proposal
 
-## 5. Arquitetura proposta
+USI proposes open, ownerless infrastructure that lets anyone:
 
-O sistema é organizado em três camadas independentes. Cada uma pode evoluir sem quebrar as demais.
+1. **Obtain, free of charge, a unique and permanent identifier** (the USI), tied to them and nobody else.
+2. **Prove they are a unique human being** without having to reveal who they are.
+3. **Keep their personal data under their own control**, sharing only what is needed, with whom they choose, for as long as they choose.
+4. **Never lose their identity** by forgetting a password or losing a phone.
+5. **Be recognized** by services, institutions and other people through open, interoperable standards.
+
+USI does not aim to replace official documents. It can coexist with them, use them as evidence where they exist, and offer an alternative to those who do not have them.
+
+## 3. Principles
+
+| # | Principle | In practice |
+|---|---|---|
+| 1 | **Public good, no owner** | No person, company or government controls the system. The founder steps away from governance once objective decentralization criteria are met. |
+| 2 | **Free for the citizen** | Creating, maintaining and recovering a USI will never cost the person anything. |
+| 3 | **No profit, no token** | No profit for founders, investors or maintainers. There will be no cryptocurrency of its own. Resources needed for operation are transparent and used only for infrastructure. |
+| 4 | **One person, one USI** | Each human being has a single identifier. Duplicates can be challenged and corrected. |
+| 5 | **Permanent identifier, replaceable keys** | The USI does not change; the keys that control it can be swapped, revoked and recovered. |
+| 6 | **No personal data in the public registry** | Not in clear text, not even encrypted. The registry keeps only public keys, cryptographic commitments and proofs. |
+| 7 | **Minimal disclosure** | Reveal only what is necessary. Example: prove "I am an adult" without revealing the date of birth. |
+| 8 | **Robustness through combination** | No single mechanism is reliable enough. Uniqueness, security and recovery are ensured by several independent layers working together. |
+| 9 | **Open standards** | Compatibility with recognized standards (W3C DID, Verifiable Credentials, FIDO2/passkeys), avoiding proprietary formats. |
+| 10 | **Inclusion** | The system must work for people without documents, with little technical familiarity or limited internet access. |
+| 11 | **Transparency and auditability** | Open source, public decisions, public accounts, a registry anyone can verify. |
+| 12 | **Evidence-based evolution** | Each mechanism is treated as a hypothesis, tested in a controlled setting and adjusted from real data. |
+
+## 4. What sets USI apart
+
+USI does not start from scratch: it combines techniques already proven in decentralized identity, cryptography and public infrastructure, seeking to avoid the failure points seen in earlier initiatives. Its distinguishing features lie in the combination:
+
+1. **Uniqueness from multiple pieces of evidence, not a single method.** Not only biometrics, not only official documents, not only social vouching. Each person accumulates independent evidence, and confidence grows with its diversity (see [section 6](#6-one-person-one-usi-the-uniqueness-model)).
+
+2. **Assurance levels chosen by the verifier.** An online forum may accept a basic level; a benefit distribution may require the highest. The same USI serves both.
+
+3. **Recovery through parallel layers.** Several recovery routes operate at once, with waiting periods proportional to the strength of the evidence and a right of veto for the holder (see [section 7](#7-access-recovery)).
+
+4. **Universal, but not traceable.** The USI is universal *for the holder*, not for services. Each service sees a different pseudonym derived from the USI and receives only proof that it is a unique human. Different services cannot cross-reference data to track the person.
+
+5. **Zero personal data in the public registry.** Removes the conflict between immutability and the right to data erasure (LGPD, GDPR) and protects against future breaking of today's cryptography.
+
+6. **Free for the citizen, funded by those who benefit.** No speculative token and no charge to the holder. Infrastructure is maintained by interested institutions and by those who consume verifications (see [section 9](#9-sustainability-without-owners-or-profit)).
+
+7. **Accountable vouchers.** Anyone who attests to another person's identity puts their own reputation at stake. Vouching for a fake account has consequences.
+
+8. **Progressive, planned decentralization.** Instead of an "ownerless" system from day one, which tends to create a governance vacuum, USI defines phases and objective criteria for handing control to the community.
+
+## 5. Proposed architecture
+
+The system is organized into three independent layers. Each can evolve without breaking the others.
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│  CAMADA 3 – Dados e credenciais (fora do registro público)       │
-│  Carteira do titular · credenciais verificáveis · provas ZK      │
+│  LAYER 3 – Data and credentials (off the public registry)        │
+│  Holder's wallet · verifiable credentials · ZK proofs            │
 ├──────────────────────────────────────────────────────────────────┤
-│  CAMADA 2 – Unicidade e reputação                                │
-│  Evidências · atestações · níveis de garantia · contestações     │
+│  LAYER 2 – Uniqueness and reputation                             │
+│  Evidence · attestations · assurance levels · challenges         │
 ├──────────────────────────────────────────────────────────────────┤
-│  CAMADA 1 – Registro público (âncora)                            │
-│  USI · chaves públicas · rotações · revogações · nullifiers       │
+│  LAYER 1 – Public registry (anchor)                              │
+│  USI · public keys · rotations · revocations · nullifiers        │
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-### 5.1 Identificador e chaves
+### 5.1 Identifier and keys
 
-- O USI segue o padrão **W3C DID** (Decentralized Identifier), com um método próprio proposto como `did:usi`.
-- O identificador é permanente. As chaves que o controlam são substituíveis.
-- **Pré-rotação de chaves** (inspirada no protocolo KERI): ao registrar a chave atual, o titular registra também o *hash* da próxima chave, que fica guardada offline. Mesmo que a chave atual seja roubada, o atacante não consegue tomar o controle definitivo da identidade.
-- Suporte a **múltiplos dispositivos** e a **passkeys** (FIDO2), protegidas pelo chip seguro do celular ou por chaves físicas.
-- **Criptografia pós-quântica** (como os algoritmos padronizados pelo NIST, a exemplo do ML-DSA) deve ser considerada desde o desenho, com mecanismo de migração de algoritmos previsto.
+- The USI follows the **W3C DID** (Decentralized Identifier) standard, with a proposed dedicated method, `did:usi`.
+- The identifier is permanent. The keys that control it are replaceable.
+- **Key pre-rotation** (inspired by the KERI protocol): when registering the current key, the holder also registers the *hash* of the next key, kept offline. Even if the current key is stolen, the attacker cannot take definitive control of the identity.
+- Support for **multiple devices** and **passkeys** (FIDO2), protected by the phone's secure chip or by physical keys.
+- **Post-quantum cryptography** (such as the NIST-standardized algorithms, e.g. ML-DSA) must be considered from the design stage, with a mechanism to migrate algorithms.
 
-### 5.2 Registro público
+### 5.2 Public registry
 
-O registro público funciona como **âncora de confiança**: guarda apenas o mínimo necessário para que qualquer pessoa verifique, de forma independente, o estado de um USI.
+The public registry works as a **trust anchor**: it stores only the minimum needed for anyone to independently verify the state of a USI.
 
-**O que vai para o registro:** o identificador, as chaves públicas vigentes, o compromisso das próximas chaves, eventos de rotação e revogação, *nullifiers* de unicidade e resumos criptográficos (*hashes*) de atestações.
+**What goes into the registry:** the identifier, current public keys, commitments to next keys, rotation and revocation events, uniqueness *nullifiers* and cryptographic digests (*hashes*) of attestations.
 
-**O que nunca vai:** nome, documentos, fotos, biometria, endereço, data de nascimento, ou qualquer outro dado pessoal, nem mesmo criptografado.
+**What never goes in:** name, documents, photos, biometrics, address, date of birth or any other personal data, not even encrypted.
 
-**Tamanho estimado:** com algumas centenas de bytes por pessoa, um registro com toda a população mundial ficaria na ordem de poucos terabytes. Além disso, os usuários comuns não precisam armazená-lo: usam **clientes leves** que verificam provas compactas. Apenas os nós completos guardam o registro inteiro.
+**Estimated size:** with a few hundred bytes per person, a registry covering the entire world population would be on the order of a few terabytes. Moreover, ordinary users do not need to store it: they use **light clients** that verify compact proofs. Only full nodes keep the entire registry.
 
-**Opções a serem avaliadas** (a decisão deve vir de provas de conceito):
+**Options to evaluate** (the decision should come from proofs of concept):
 
-| Opção | Descrição | A favor | Contra |
+| Option | Description | Pros | Cons |
 |---|---|---|---|
-| A. Âncoras em blockchain pública existente | Registrar apenas os eventos em uma rede consolidada (por exemplo, uma camada 2 do Ethereum) | Segurança herdada; sem rede própria para manter | Custo por transação; dependência de terceiros |
-| B. Rede federada própria | Dezenas a centenas de operadores institucionais independentes, com consenso tolerante a falhas bizantinas (BFT) e logs auditáveis por qualquer pessoa, no modelo do *Certificate Transparency* | Custo baixo; controle sobre desempenho e regras | Exige atrair e diversificar operadores |
-| C. Híbrida | Rede federada para a operação diária, com âncoras periódicas em blockchain pública como garantia adicional de integridade | Combina vantagens de A e B | Maior complexidade |
+| A. Anchors on an existing public blockchain | Record only the events on an established network (for example, an Ethereum layer 2) | Inherited security; no own network to maintain | Per-transaction cost; third-party dependence |
+| B. Own federated network | Tens to hundreds of independent institutional operators, with Byzantine-fault-tolerant (BFT) consensus and auditable logs anyone can check, in the style of *Certificate Transparency* | Low cost; control over performance and rules | Requires attracting and diversifying operators |
+| C. Hybrid | Federated network for daily operation, with periodic anchors on a public blockchain as an extra integrity guarantee | Combines the advantages of A and B | Greater complexity |
 
-**Critérios de escolha:** independência, custo para o cidadão (que deve ser zero), durabilidade em décadas, resistência a censura, capacidade de auditoria pública e desempenho.
+**Selection criteria:** independence, cost to the citizen (which must be zero), durability over decades, censorship resistance, public auditability and performance.
 
-### 5.3 Dados pessoais e credenciais
+### 5.3 Personal data and credentials
 
-- Os dados pessoais ficam na **carteira do titular** (aplicativo no celular), com backup cifrado em local escolhido por ele.
-- Informações sobre a pessoa são representadas como **credenciais verificáveis** (W3C Verifiable Credentials) emitidas por quem tem autoridade sobre elas: uma universidade emite o diploma, um órgão emite o documento, um conselho profissional emite o registro.
-- **Divulgação seletiva** (SD-JWT, assinaturas BBS+) permite revelar apenas alguns campos de uma credencial.
-- **Provas de conhecimento zero** (*zero-knowledge proofs*) permitem provar afirmações sem revelar o dado: "tenho mais de 18 anos", "moro neste município", "sou um humano único neste serviço".
-- **Compartilhamento por tempo limitado:** o titular concede acesso a dados com prazo e pode revogá-lo a qualquer momento. Limitação importante, que deve ficar clara ao usuário: só é possível limitar o *acesso contínuo*. Uma informação que já foi vista ou copiada não pode ser "desvista".
-- **Registro de consentimentos:** o titular mantém o histórico de quem acessou o quê e quando, visível apenas para ele.
+- Personal data lives in the **holder's wallet** (a phone app), with an encrypted backup in a place the holder chooses.
+- Information about a person is represented as **verifiable credentials** (W3C Verifiable Credentials) issued by whoever has authority over it: a university issues the diploma, an agency issues the document, a professional council issues the registration.
+- **Selective disclosure** (SD-JWT, BBS+ signatures) lets the holder reveal only some fields of a credential.
+- **Zero-knowledge proofs** let the holder prove statements without revealing the data: "I am over 18", "I live in this municipality", "I am a unique human on this service".
+- **Time-limited sharing:** the holder grants access to data with a deadline and can revoke it at any time. An important limitation that must be made clear to users: only *continued access* can be limited. Information that has already been seen or copied cannot be "unseen".
+- **Consent log:** the holder keeps the history of who accessed what and when, visible only to them.
 
-## 6. Uma pessoa, um USI: o modelo de unicidade
+## 6. One person, one USI: the uniqueness model
 
-Garantir que cada pessoa tenha um único registro, com 100% de certeza, é impossível para qualquer sistema, inclusive os governamentais. O objetivo do USI é tornar a fraude **difícil, cara, detectável e reversível**.
+Guaranteeing that each person has a single record with 100% certainty is impossible for any system, including government ones. USI's goal is to make fraud **hard, costly, detectable and reversible**.
 
-### 6.1 Camadas de evidência
+### 6.1 Evidence layers
 
-Cada USI acumula evidências de categorias diferentes. Nenhuma é obrigatória isoladamente; a força está na combinação.
+Each USI accumulates evidence from different categories. None is mandatory on its own; strength lies in the combination.
 
-| Camada | Como funciona | Observações |
+| Layer | How it works | Notes |
 |---|---|---|
-| **Vínculo social** | Pessoas que já têm USI atestam que conhecem o titular. A confiança não é medida pelo *número* de atestações, mas pela **análise do grafo**: grupos de contas falsas tendem a ter muitas conexões entre si e poucas com a rede honesta. | Atestadores são responsáveis: se atestarem uma conta falsa, perdem reputação. |
-| **Prova documental com conhecimento zero** | Para quem tem documento com chip ou assinatura digital (como passaportes com NFC), o titular prova a validade do documento **sem revelá-lo**. O sistema guarda apenas um *nullifier*, valor derivado do documento que impede um segundo cadastro com o mesmo documento, sem permitir descobrir qual é. | Aproveita a unicidade que já existe nos documentos oficiais sem depender operacionalmente dos governos. |
-| **Presença física** | Cerimônias de verificação presenciais e simultâneas, organizadas por validadores comunitários ou instituições parceiras (bibliotecas, escolas, ONGs). Uma pessoa não pode estar em dois lugares ao mesmo tempo. | Especialmente importante para quem não tem documentos. |
-| **Biometria (opcional, a investigar)** | Comparação biométrica para detectar duplicidade, **somente** se for possível fazê-la sem base centralizada, com técnicas como computação multipartidária ou criptografia homomórfica. | Uso sempre opcional. Só será adotada se resolver os riscos de privacidade de forma comprovada. |
-| **Histórico e continuidade** | Tempo de existência do USI, uso consistente, credenciais emitidas por terceiros. | Contas recém-criadas têm naturalmente menos peso. |
+| **Social vouching** | People who already hold a USI attest that they know the holder. Trust is not measured by the *number* of attestations but by **graph analysis**: clusters of fake accounts tend to have many connections among themselves and few with the honest network. | Attesters are accountable: if they vouch for a fake account, they lose reputation. |
+| **Zero-knowledge document proof** | For those with a document with a chip or digital signature (such as NFC passports), the holder proves the document is valid **without revealing it**. The system stores only a *nullifier*, a value derived from the document that prevents a second registration with the same document without revealing which document it is. | Leverages the uniqueness that official documents already offer without depending operationally on governments. |
+| **Physical presence** | Simultaneous in-person verification ceremonies, organized by community validators or partner institutions (libraries, schools, NGOs). A person cannot be in two places at once. | Especially important for people without documents. |
+| **Biometrics (optional, to be investigated)** | Biometric comparison to detect duplicates, **only** if it can be done without a centralized database, using techniques such as multi-party computation or homomorphic encryption. | Always optional. Adopted only if it demonstrably solves the privacy risks. |
+| **History and continuity** | Age of the USI, consistent use, credentials issued by third parties. | Newly created accounts naturally carry less weight. |
 
-### 6.2 Níveis de garantia
+### 6.2 Assurance levels
 
-As evidências se convertem em **níveis de garantia** públicos e padronizados. Quem verifica escolhe o nível exigido. Exemplo inicial, a ser calibrado:
+Evidence is converted into public, standardized **assurance levels**. Verifiers choose the level they require. Initial example, to be calibrated:
 
-| Nível | Requisito indicativo | Uso típico |
+| Level | Indicative requirement | Typical use |
 |---|---|---|
-| 1 – Básico | Vínculo social mínimo | Fóruns, comentários, filtros anti-robô |
-| 2 – Intermediário | Vínculo social sólido **ou** prova documental | Enquetes, comunidades online, cadastros simples |
-| 3 – Alto | Duas camadas de categorias diferentes | Votações comunitárias, doações |
-| 4 – Máximo | Três ou mais camadas, incluindo presença física ou prova documental | Distribuição de benefícios, aplicações sensíveis |
+| 1 – Basic | Minimal social vouching | Forums, comments, anti-bot filters |
+| 2 – Intermediate | Solid social vouching **or** document proof | Polls, online communities, simple sign-ups |
+| 3 – High | Two layers from different categories | Community voting, donations |
+| 4 – Maximum | Three or more layers, including physical presence or document proof | Benefit distribution, sensitive applications |
 
-### 6.3 Contestação e correção
+### 6.3 Challenge and correction
 
-- **Qualquer pessoa pode contestar** um USI suspeito, apresentando evidências.
-- As contestações são julgadas por **júris sorteados** entre titulares de nível alto, com regras públicas e direito de defesa.
-- Uma duplicidade confirmada resulta no cancelamento do registro excedente e em perda de reputação para quem o atestou.
-- Isso substitui o conceito de "irrevogável" por **permanente, mas corrigível**: o USI legítimo nunca é perdido; o fraudulento pode ser desfeito.
+- **Anyone may challenge** a suspicious USI, presenting evidence.
+- Challenges are judged by **randomly drawn juries** from high-level holders, under public rules and with a right of defence.
+- A confirmed duplicate results in cancelling the surplus record and a reputation loss for those who vouched for it.
+- This replaces the concept of "irrevocable" with **permanent, but correctable**: the legitimate USI is never lost; the fraudulent one can be undone.
 
-### 6.4 Ciclo de vida
+### 6.4 Lifecycle
 
-**Criação** → **Acúmulo de evidências** → **Uso** → **Rotação de chaves** → **Recuperação** (se necessário) → **Contestação** (se houver) → **Inatividade ou óbito**
+**Creation** → **Evidence accumulation** → **Use** → **Key rotation** → **Recovery** (if needed) → **Challenge** (if any) → **Inactivity or death**
 
-O tratamento de óbito e de inatividade prolongada deve ser definido de modo a impedir o uso indevido de identidades de pessoas falecidas sem expor dados de ninguém.
+Handling death and long-term inactivity must be defined so as to prevent misuse of deceased people's identities without exposing anyone's data.
 
-## 7. Recuperação de acesso
+## 7. Access recovery
 
-Perder o acesso à própria identidade não pode ser definitivo. Ao mesmo tempo, o processo de recuperação é a porta preferida dos atacantes para sequestrar contas. O modelo do USI resolve esse conflito com **várias rotas operando em paralelo**, cada uma com exigências e prazos proporcionais à força da evidência apresentada.
+Losing access to one's own identity cannot be permanent. At the same time, the recovery process is attackers' preferred door for hijacking accounts. USI resolves this conflict with **several routes operating in parallel**, each with requirements and waiting periods proportional to the strength of the evidence presented.
 
-### 7.1 Rotas de recuperação
+### 7.1 Recovery routes
 
-| Rota | Mecanismo | Prazo de espera indicativo |
+| Route | Mechanism | Indicative waiting period |
 |---|---|---|
-| **A – Outro dispositivo** | Uma passkey ou chave já registrada em outro aparelho autoriza a nova chave | Imediato |
-| **B – Chave pré-rotacionada** | A próxima chave, guardada offline (papel, cofre, chave física), assume o controle | Curto (ex.: 24 a 72 horas) |
-| **C – Recuperação social** | Um quórum de **guardiões** escolhidos pelo titular (ex.: 3 de 5 entre família, amigos e instituições) autoriza a nova chave. Pode usar compartilhamento de segredo de Shamir. | Médio (ex.: 7 dias) |
-| **D – Revalidação de identidade** | O titular prova novamente que é a mesma pessoa, por meio das camadas de evidência da seção 6 (prova documental, presença física, validadores) | Longo (ex.: 30 dias), **e** exige combinação com outra rota ou com evidência de nível alto |
+| **A – Another device** | A passkey or key already registered on another device authorizes the new key | Immediate |
+| **B – Pre-rotated key** | The next key, kept offline (paper, safe, physical key), takes over | Short (e.g. 24 to 72 hours) |
+| **C – Social recovery** | A quorum of **guardians** chosen by the holder (e.g. 3 of 5 among family, friends and institutions) authorizes the new key. May use Shamir secret sharing. | Medium (e.g. 7 days) |
+| **D – Identity re-validation** | The holder proves again that they are the same person, through the evidence layers of section 6 (document proof, physical presence, validators) | Long (e.g. 30 days), **and** requires combination with another route or high-level evidence |
 
-Os prazos são hipóteses iniciais a serem calibradas em testes.
+The waiting periods are initial hypotheses to be calibrated in tests.
 
-### 7.2 Regras que valem para todas as rotas
+### 7.2 Rules that apply to every route
 
-1. **Notificação imediata** de qualquer pedido de recuperação a todos os dispositivos, guardiões e canais registrados.
-2. **Direito de veto:** durante o prazo de espera, qualquer chave legítima ainda ativa pode cancelar o pedido. Isso protege contra quem tenta sequestrar a conta.
-3. **Rotas mais fortes encurtam o prazo:** combinar rotas (por exemplo, guardiões + revalidação) reduz a espera; usar só uma rota fraca a aumenta.
-4. **Congelamento de emergência:** em caso de roubo do celular ou suspeita de invasão, o titular ou um quórum de guardiões pode congelar o USI imediatamente, até a recuperação.
-5. **Rotação obrigatória após recuperação:** todas as chaves antigas são revogadas e uma nova chave pré-rotacionada é gerada.
-6. **Revisão periódica de guardiões:** o aplicativo lembra o titular de confirmar se seus guardiões continuam disponíveis e confiáveis.
+1. **Immediate notification** of any recovery request to all devices, guardians and registered channels.
+2. **Right of veto:** during the waiting period, any legitimate key that is still active can cancel the request. This protects against anyone trying to hijack the account.
+3. **Stronger routes shorten the wait:** combining routes (for example, guardians + re-validation) reduces the wait; using a single weak route increases it.
+4. **Emergency freeze:** in case of phone theft or suspected intrusion, the holder or a guardian quorum can freeze the USI immediately, until recovery.
+5. **Mandatory rotation after recovery:** all old keys are revoked and a new pre-rotated key is generated.
+6. **Periodic guardian review:** the app reminds the holder to confirm that guardians are still available and trustworthy.
 
-### 7.3 Exemplos
+### 7.3 Examples
 
-- *Perdi o celular, mas tenho o tablet:* rota A, imediata.
-- *Perdi todos os aparelhos, mas guardei o papel de recuperação:* rota B, com espera curta.
-- *Perdi tudo:* rota C, com meus guardiões, em cerca de uma semana.
-- *Perdi tudo e meus guardiões não estão disponíveis:* rota D, combinada com evidência de nível alto, em cerca de um mês.
-- *Alguém roubou meu celular e pediu recuperação:* recebo a notificação em outro canal e veto o pedido; congelo o USI e inicio a recuperação legítima.
+- *I lost my phone but I have my tablet:* route A, immediate.
+- *I lost every device but kept the recovery paper:* route B, short wait.
+- *I lost everything:* route C, with my guardians, in about a week.
+- *I lost everything and my guardians are unavailable:* route D, combined with high-level evidence, in about a month.
+- *Someone stole my phone and requested recovery:* I get the notification on another channel and veto the request; I freeze the USI and start the legitimate recovery.
 
-## 8. Privacidade e segurança
+## 8. Privacy and security
 
-### 8.1 Proteções de privacidade
+### 8.1 Privacy protections
 
-- Nenhum dado pessoal no registro público.
-- **Pseudônimos por serviço:** cada serviço recebe um identificador diferente, derivado do USI, impossibilitando o cruzamento de dados entre serviços.
-- **Nullifiers** permitem provar "sou um humano único neste serviço" sem revelar qual é o USI.
-- Divulgação mínima e provas de conhecimento zero como padrão, não como exceção.
-- Conformidade com a **LGPD** e legislações equivalentes desde a concepção (*privacy by design*).
+- No personal data in the public registry.
+- **Per-service pseudonyms:** each service receives a different identifier derived from the USI, making cross-service data matching impossible.
+- **Nullifiers** let a holder prove "I am a unique human on this service" without revealing which USI it is.
+- Minimal disclosure and zero-knowledge proofs as the default, not the exception.
+- Compliance with the **LGPD** and equivalent laws from the design stage (*privacy by design*).
 
-### 8.2 Ameaças consideradas
+### 8.2 Threats considered
 
-| Ameaça | Mitigações previstas |
+| Threat | Planned mitigations |
 |---|---|
-| Contas falsas em massa (ataque Sybil) | Múltiplas camadas de evidência, análise de grafo, responsabilização de atestadores, contestação |
-| Sequestro de conta via recuperação | Prazos de espera, notificação, veto, combinação de rotas |
-| Conluio de guardiões | Guardiões de círculos diferentes, prazo de espera, veto do titular |
-| Coação (pessoa forçada a revelar dados ou ceder o acesso) | Divulgação mínima, possibilidade de modo de emergência a ser estudado |
-| Vigilância e rastreamento | Pseudônimos por serviço, nenhum dado no registro, provas de conhecimento zero |
-| Captura da governança | Descentralização progressiva, diversidade geográfica e institucional dos operadores, regras públicas |
-| Comprometimento de operadores do registro | Consenso tolerante a falhas, auditoria pública, âncoras externas |
-| Avanço da computação quântica | Algoritmos pós-quânticos e mecanismo de migração |
-| Exclusão digital | Presença física, guardiões, carteiras simplificadas, operação assistida por instituições |
+| Mass fake accounts (Sybil attack) | Multiple evidence layers, graph analysis, attester accountability, challenge |
+| Account hijack through recovery | Waiting periods, notification, veto, route combination |
+| Guardian collusion | Guardians from different circles, waiting period, holder veto |
+| Coercion (person forced to reveal data or give up access) | Minimal disclosure, an emergency mode to be studied |
+| Surveillance and tracking | Per-service pseudonyms, no data in the registry, zero-knowledge proofs |
+| Governance capture | Progressive decentralization, geographic and institutional diversity of operators, public rules |
+| Compromise of registry operators | Fault-tolerant consensus, public audit, external anchors |
+| Advances in quantum computing | Post-quantum algorithms and a migration mechanism |
+| Digital exclusion | Physical presence, guardians, simplified wallets, institution-assisted operation |
 
-### 8.3 Auditorias
+### 8.3 Audits
 
-Componentes criptográficos e de segurança devem passar por **auditorias independentes** antes de qualquer uso real, com resultados publicados.
+Cryptographic and security components must undergo **independent audits** before any real use, with published results.
 
-## 9. Sustentabilidade sem dono e sem lucro
+## 9. Sustainability without owners or profit
 
-### 9.1 Por que o USI não precisa do modelo do Bitcoin
+### 9.1 Why USI does not need Bitcoin's model
 
-O Bitcoin paga mineradores porque precisa de consenso entre desconhecidos sobre dinheiro, onde a fraude gera lucro imediato. O USI tem necessidades muito menores: um registro enxuto, que não precisa ser armazenado por cada usuário e pode ser mantido por **algumas centenas de operadores independentes e confiáveis**, em vez de milhões de voluntários. Infraestruturas públicas essenciais da internet, como os servidores raiz de DNS e os logs de *Certificate Transparency*, já funcionam assim, mantidas por instituições que se beneficiam de sua existência.
+Bitcoin pays miners because it needs consensus among strangers about money, where fraud yields immediate profit. USI's needs are far smaller: a lean registry that need not be stored by each user and can be maintained by **a few hundred independent, trustworthy operators**, instead of millions of volunteers. Essential public Internet infrastructure, such as DNS root servers and *Certificate Transparency* logs, already works this way, maintained by institutions that benefit from its existence.
 
-### 9.2 Custos reais
+### 9.2 Real costs
 
-Mesmo sem lucro, há custos: operação dos nós, desenvolvimento, auditorias de segurança, eventos de verificação presencial, suporte e assessoria jurídica.
+Even without profit there are costs: running nodes, development, security audits, in-person verification events, support and legal advice.
 
-### 9.3 Fontes de sustentação a serem testadas
+### 9.3 Funding sources to test
 
-1. **Operadores institucionais que se beneficiam:** empresas que gastam com verificação de identidade e prevenção de fraude, universidades, ONGs, bibliotecas, órgãos públicos. Operar um nó é mais barato do que manter suas próprias bases.
-2. **Taxa de verificação paga por quem consome:** serviços que verificam USIs em larga escala podem pagar um valor mínimo por verificação, revertido aos operadores e à manutenção. **O cidadão nunca paga.**
-3. **Bolsas, editais e doações** de fundações e programas de apoio a infraestrutura aberta e direitos digitais.
-4. **Voluntariado em desenvolvimento,** motivado por propósito, reputação e aprendizado, como em outros grandes projetos de código aberto.
+1. **Institutional operators who benefit:** companies that spend on identity verification and fraud prevention, universities, NGOs, libraries, public bodies. Running a node is cheaper than maintaining their own databases.
+2. **Verification fee paid by those who consume it:** services that verify USIs at scale can pay a minimal amount, earmarked for operators and maintenance. **The citizen never pays.**
+3. **Grants, calls for proposals and donations** from foundations and programmes supporting open infrastructure and digital rights.
+4. **Volunteer development,** motivated by purpose, reputation and learning, as in other large open source projects.
 
-### 9.4 Por que não haverá token
+### 9.4 Why there will be no token
 
-Uma criptomoeda própria criaria incentivo financeiro para fraudar cadastros, atrairia especulação e desviaria o foco do projeto. A experiência de outras iniciativas mostra que tokens associados a identidade tendem a gerar compra e venda de cadastros e desconfiança pública.
+A token of its own would create a financial incentive to defraud registration, attract speculation and divert focus from the project. The experience of other initiatives shows that tokens tied to identity tend to generate buying and selling of registrations and public distrust.
 
-### 9.5 Transparência financeira
+### 9.5 Financial transparency
 
-Todos os recursos recebidos e gastos devem ser públicos, administrados por uma **fundação sem fins lucrativos**, com prestação de contas periódica.
+All resources received and spent must be public, managed by a **non-profit foundation**, with periodic accountability.
 
-## 10. Governança
+## 10. Governance
 
-### 10.1 Fases de descentralização
+### 10.1 Decentralization phases
 
-| Fase | Quem decide | Critério para avançar |
+| Phase | Who decides | Criterion to advance |
 |---|---|---|
-| **0 – Concepção** | Fundador e núcleo inicial de colaboradores | Whitepaper publicado e revisado por especialistas |
-| **1 – Fundação** | Fundação sem fins lucrativos com conselho representando stakeholders (cidadãos, operadores, desenvolvedores, sociedade civil) | Rede em produção com operadores independentes em vários países |
-| **2 – Comunidade** | Comunidade de titulares e contribuidores, por processo aberto de propostas | Nenhuma entidade isolada consegue alterar o sistema; o fundador se retira |
+| **0 – Conception** | Founder and initial core of collaborators | Whitepaper published and reviewed by specialists |
+| **1 – Foundation** | Non-profit foundation with a board representing stakeholders (citizens, operators, developers, civil society) | Network in production with independent operators in several countries |
+| **2 – Community** | Community of holders and contributors, through an open proposal process | No single entity can change the system; the founder steps away |
 
-### 10.2 Mecanismos
+### 10.2 Mechanisms
 
-- **Propostas de melhoria (USIPs):** qualquer pessoa pode propor mudanças, em processo público inspirado nos BIPs do Bitcoin e nas RFCs da IETF.
-- **Consenso técnico aproximado** para decisões técnicas, com revisão por pares.
-- **Voto "uma pessoa, um voto"** usando o próprio USI para decisões que afetem a comunidade, quando a rede estiver madura.
-- **Separação de papéis:** quem desenvolve não opera sozinho, quem opera não decide sozinho, quem financia não controla.
+- **Improvement proposals (USIPs):** anyone may propose changes, in a public process inspired by Bitcoin's BIPs and the IETF's RFCs.
+- **Rough technical consensus** for technical decisions, with peer review.
+- **"One person, one vote"** using the USI itself for decisions that affect the community, once the network is mature.
+- **Separation of roles:** those who develop do not operate alone, those who operate do not decide alone, those who fund do not control.
 
 ## 11. Stakeholders
 
-| Stakeholder | Papel | Interesse |
+| Stakeholder | Role | Interest |
 |---|---|---|
-| **Cidadãos (titulares)** | Criam e controlam seu USI | Identidade gratuita, privada e recuperável |
-| **Pessoas sem documentação** (refugiados, apátridas, populações vulneráveis) | Titulares com necessidades específicas | Acesso a serviços e reconhecimento |
-| **Atestadores e guardiões** | Validam pessoas que conhecem; ajudam na recuperação | Fortalecer a própria rede e comunidade |
-| **Validadores comunitários e instituições parceiras** | Realizam verificações presenciais | Inclusão e serviço à comunidade |
-| **Operadores de nós** | Mantêm o registro público | Infraestrutura confiável da qual dependem |
-| **Verificadores** (plataformas, bancos, comércio, ONGs, órgãos públicos) | Aceitam e verificam USIs | Reduzir fraude, custos de verificação e contas falsas |
-| **Emissores de credenciais** (universidades, conselhos, órgãos públicos, empregadores) | Emitem credenciais vinculadas ao USI | Credenciais à prova de falsificação |
-| **Desenvolvedores e pesquisadores** | Constroem, auditam e evoluem o sistema | Propósito, reputação, pesquisa |
-| **Reguladores e autoridades de proteção de dados** (como a ANPD) | Fiscalizam a conformidade | Proteção dos cidadãos |
-| **Financiadores** (fundações, programas de fomento, doadores) | Sustentam a fase inicial | Impacto social e infraestrutura aberta |
-| **Sociedade civil e defensores de direitos digitais** | Fiscalizam e propõem melhorias | Privacidade, inclusão, transparência |
+| **Citizens (holders)** | Create and control their USI | Free, private, recoverable identity |
+| **People without documentation** (refugees, stateless, vulnerable populations) | Holders with specific needs | Access to services and recognition |
+| **Attesters and guardians** | Vouch for people they know; help with recovery | Strengthen their own network and community |
+| **Community validators and partner institutions** | Run in-person verifications | Inclusion and community service |
+| **Node operators** | Maintain the public registry | Reliable infrastructure they depend on |
+| **Verifiers** (platforms, banks, retail, NGOs, public bodies) | Accept and verify USIs | Reduce fraud, verification costs and fake accounts |
+| **Credential issuers** (universities, councils, public bodies, employers) | Issue credentials linked to the USI | Forgery-proof credentials |
+| **Developers and researchers** | Build, audit and evolve the system | Purpose, reputation, research |
+| **Regulators and data protection authorities** (such as Brazil's ANPD) | Oversee compliance | Citizen protection |
+| **Funders** (foundations, grant programmes, donors) | Sustain the initial phase | Social impact and open infrastructure |
+| **Civil society and digital rights advocates** | Oversee and propose improvements | Privacy, inclusion, transparency |
 
-## 12. Casos de uso iniciais
+## 12. Initial use cases
 
-Uma identidade só tem valor se for aceita, e só é aceita se as pessoas a tiverem. Para romper esse ciclo, o USI deve começar por nichos onde resolve uma dor real e imediata:
+An identity is only valuable if accepted, and only accepted if people hold it. To break this cycle, USI should start with niches where it solves a real and immediate pain:
 
-1. **Prova de humanidade:** distinguir pessoas de robôs e agentes de IA em redes sociais, fóruns, avaliações de produtos e formulários.
-2. **Votações comunitárias e cooperativas:** garantir "uma pessoa, um voto" sem revelar quem votou.
-3. **Distribuição de doações e benefícios:** evitar que a mesma pessoa receba várias vezes, com privacidade.
-4. **Pessoas sem documentos:** em parceria com organizações humanitárias.
-5. **Verificação de idade:** provar maioridade sem expor dados pessoais.
-6. **Login sem senha:** acesso a serviços com o USI, sem depender de grandes plataformas.
-7. **Credenciais acadêmicas e profissionais:** diplomas e registros verificáveis e infalsificáveis.
+1. **Proof of humanity:** telling people from bots and AI agents in social networks, forums, product reviews and forms.
+2. **Community and cooperative voting:** ensuring "one person, one vote" without revealing who voted.
+3. **Donation and benefit distribution:** preventing the same person from receiving several times, with privacy.
+4. **People without documents:** in partnership with humanitarian organizations.
+5. **Age verification:** proving adulthood without exposing personal data.
+6. **Passwordless login:** access to services with the USI, without depending on large platforms.
+7. **Academic and professional credentials:** verifiable, forgery-proof diplomas and registrations.
 
-## 13. Como começar
+## 13. Getting started
 
-Ações propostas para tirar o projeto do papel, em ordem aproximada:
+Proposed actions to get the project off the ground, in approximate order:
 
-### Etapa 1 – Whitepaper
-- [ ] Redigir o whitepaper, detalhando: modelo de ameaças, arquitetura das três camadas, modelo de unicidade e níveis de garantia, protocolo de recuperação, opções de registro público, modelo de sustentabilidade e plano de governança.
-- [ ] Levantar a literatura e as experiências anteriores em identidade descentralizada e prova de pessoa única, registrando o que funcionou e o que falhou.
-- [ ] Publicar o rascunho neste repositório para comentários abertos.
+### Stage 1 – Whitepaper
+- [x] Write the first version of the whitepaper ([v0.1](docs/whitepaper.md)), detailing: threat model, three-layer architecture, uniqueness model and assurance levels, recovery protocol, public registry options, sustainability model, governance plan and experiment plan.
+- [x] Publish the draft in this repository for open comments.
+- [ ] Deepen the survey of literature and prior experience in decentralized identity and proof of personhood, with primary sources (section 5 of the whitepaper is an initial summary and needs verification).
+- [ ] Incorporate the contributions received and publish version 0.2.
 
-### Etapa 2 – Revisão e primeiros colaboradores
-- [ ] Submeter o whitepaper à revisão de especialistas em criptografia, identidade digital, segurança e direito digital (LGPD).
-- [ ] Apresentar a proposta em comunidades de identidade descentralizada (como o W3C Credentials Community Group e a Decentralized Identity Foundation), em universidades e em grupos de pesquisa em segurança.
-- [ ] Formar um núcleo inicial de colaboradores com perfis complementares: criptografia, desenvolvimento, direito, design de experiência, gestão de comunidade.
+### Stage 2 – Review and first collaborators
+- [ ] Submit the whitepaper for review by specialists in cryptography, digital identity, security and digital law (LGPD).
+- [ ] Present the proposal in decentralized identity communities (such as the W3C Credentials Community Group and the Decentralized Identity Foundation), universities and security research groups.
+- [ ] Form an initial core of collaborators with complementary profiles: cryptography, development, law, experience design, community management.
 
-### Etapa 3 – Organização do repositório
-- [ ] Definir licenças (sugestão: Apache-2.0 para código e CC BY 4.0 para documentação).
-- [ ] Criar `CONTRIBUTING.md`, código de conduta e o processo de propostas (USIPs).
-- [ ] Abrir uma *issue* para cada questão em aberto (ver [seção 14](#14-questões-em-aberto)) e habilitar *Discussions* para debates.
-- [ ] Criar a pasta `docs/` para o whitepaper, decisões de arquitetura e atas.
+### Stage 3 – Repository organization
+- [ ] Define licences (suggestion: Apache-2.0 for code and CC BY 4.0 for documentation).
+- [ ] Create `CONTRIBUTING.md`, a code of conduct and the proposal process (USIPs).
+- [ ] Open an *issue* for each open question (see [section 14](#14-open-questions)) and enable *Discussions* for debate.
+- [ ] Keep the `docs/` folder for the whitepaper, architecture decisions and minutes.
 
-### Etapa 4 – Provas de conceito
-- [ ] Especificar e prototipar o método `did:usi`, com rotação e pré-rotação de chaves.
-- [ ] Prototipar uma carteira mínima com credenciais verificáveis e divulgação seletiva.
-- [ ] Implementar o protocolo de recuperação em camadas paralelas (rotas A a D, prazos, veto).
-- [ ] Testar a prova documental com conhecimento zero e *nullifiers*.
-- [ ] Simular ataques Sybil sobre o modelo de vínculo social para calibrar a análise de grafo.
-- [ ] Comparar experimentalmente as opções de registro público (A, B e C).
+### Stage 4 – Proofs of concept
+- [ ] Specify and prototype the `did:usi` method, with rotation and pre-rotation of keys.
+- [ ] Prototype a minimal wallet with verifiable credentials and selective disclosure.
+- [ ] Implement the layered parallel recovery protocol (routes A to D, waiting periods, veto).
+- [ ] Test the zero-knowledge document proof and *nullifiers*.
+- [ ] Simulate Sybil attacks on the social vouching model to calibrate graph analysis.
+- [ ] Experimentally compare the public registry options (A, B and C).
 
-### Etapa 5 – Análise jurídica e institucional
-- [ ] Analisar conformidade com a LGPD e outras legislações relevantes.
-- [ ] Estudar a forma jurídica da futura fundação e a viabilidade de reconhecimento do USI por instituições.
+### Stage 5 – Legal and institutional analysis
+- [ ] Analyse compliance with the LGPD and other relevant legislation.
+- [ ] Study the legal form of the future foundation and the feasibility of institutional recognition of the USI.
 
-### Etapa 6 – Financiamento e divulgação
-- [ ] Mapear e submeter propostas a editais e programas de fomento a infraestrutura aberta e direitos digitais.
-- [ ] Criar materiais de divulgação acessíveis (site, apresentação, vídeo curto) para atrair voluntários.
-- [ ] Identificar instituições parceiras para o piloto e para operar os primeiros nós.
+### Stage 6 – Funding and outreach
+- [ ] Map and submit proposals to calls and programmes supporting open infrastructure and digital rights.
+- [ ] Create accessible outreach material (website, presentation, short video) to attract volunteers.
+- [ ] Identify partner institutions for the pilot and to run the first nodes.
 
-### Etapa 7 – Piloto
-- [ ] Escolher um caso de uso inicial (ver [seção 12](#12-casos-de-uso-iniciais)) e uma comunidade parceira.
-- [ ] Executar um piloto controlado, com métricas de adesão, fraude detectada, sucesso de recuperação e satisfação.
-- [ ] Publicar os resultados e ajustar o modelo.
+### Stage 7 – Pilot
+- [ ] Choose an initial use case (see [section 12](#12-initial-use-cases)) and a partner community.
+- [ ] Run a controlled pilot, with metrics for sign-ups, fraud detected, recovery success and satisfaction.
+- [ ] Publish the results and adjust the model.
 
-### Etapa 8 – Institucionalização
-- [ ] Constituir a fundação sem fins lucrativos.
-- [ ] Iniciar a transição de governança para a fase 1.
+### Stage 8 – Institutionalization
+- [ ] Incorporate the non-profit foundation.
+- [ ] Begin the transition to governance phase 1.
 
-## 14. Questões em aberto
+## 14. Open questions
 
-Hipóteses e decisões que dependem de pesquisa e de testes:
+Hypotheses and decisions that depend on research and testing:
 
-- Qual opção de registro público (A, B ou C) oferece o melhor equilíbrio entre independência, custo e durabilidade?
-- Como calibrar os pesos das camadas de evidência e os requisitos de cada nível de garantia?
-- Qual a resistência real da análise de grafo social contra ataques Sybil organizados?
-- É possível detectar duplicidade biométrica sem base centralizada, com custo e desempenho aceitáveis? Vale a pena?
-- Quais prazos de espera equilibram segurança e conveniência na recuperação?
-- Como organizar júris de contestação justos, resistentes a conluio e escaláveis?
-- Como tratar óbito, inatividade e herança digital?
-- Como proteger pessoas sob coação?
-- Como tornar o sistema acessível a quem não tem smartphone ou internet estável?
-- A taxa de verificação paga por serviços é viável e compatível com o princípio de não haver lucro?
-- Quais critérios objetivos marcam cada transição de fase da governança?
+- Which public registry option (A, B or C) offers the best balance of independence, cost and durability?
+- How should the weights of the evidence layers and the requirements of each assurance level be calibrated?
+- How resistant is graph analysis to organized Sybil attacks in practice?
+- Can biometric duplicates be detected without a central database, at acceptable cost and performance? Is it worth it?
+- Which waiting periods balance security and convenience in recovery?
+- How can fair challenge juries be organized that resist collusion and scale?
+- How should death, inactivity and digital inheritance be handled?
+- How can people under coercion be protected?
+- How can the system be made accessible to people without a smartphone or stable internet?
+- Is the verification fee paid by services viable and compatible with the no-profit principle?
+- Which objective criteria mark each governance phase transition?
 
-## 15. Como contribuir
+## 15. How to contribute
 
-O projeto está no início e toda contribuição é bem-vinda, especialmente de pessoas com experiência em:
+The project is at an early stage and every contribution is welcome, **starting with a critical reading of the [whitepaper v0.1](docs/whitepaper.md)**. Especially from people with experience in:
 
-- criptografia e protocolos de segurança;
-- identidade digital e padrões W3C;
-- sistemas distribuídos e consenso;
-- direito digital e proteção de dados;
-- design de experiência para públicos diversos;
-- organização de comunidades e captação de recursos.
+- cryptography and security protocols;
+- digital identity and W3C standards;
+- distributed systems and consensus;
+- digital law and data protection;
+- experience design for diverse audiences;
+- community organizing and fundraising.
 
-Para participar, abra uma *issue* com sua sugestão, dúvida ou crítica. Críticas fundamentadas são tão valiosas quanto ideias novas.
+To take part, open an *issue* with your suggestion, question or criticism. Well-founded criticism is as valuable as new ideas.
 
-## 16. Glossário
+### Language policy
 
-- **USI:** Universal Safe ID, o identificador pessoal único proposto por este projeto.
-- **DID (Decentralized Identifier):** padrão W3C para identificadores que não dependem de uma autoridade central.
-- **Credencial verificável:** documento digital assinado por um emissor, que o titular guarda e apresenta, e que qualquer pessoa pode verificar.
-- **Prova de conhecimento zero (ZKP):** técnica criptográfica que permite provar que uma afirmação é verdadeira sem revelar a informação que a sustenta.
-- **Nullifier:** valor derivado de um dado secreto que permite detectar uso repetido sem revelar o dado.
-- **Ataque Sybil:** criação de muitas identidades falsas por uma mesma pessoa ou grupo.
-- **Pré-rotação de chaves:** compromisso antecipado com a próxima chave, guardada offline, para recuperar o controle caso a chave atual seja comprometida.
-- **Guardião:** pessoa ou instituição escolhida pelo titular para ajudar a recuperar seu acesso.
-- **Compartilhamento de segredo de Shamir:** técnica que divide um segredo em partes, exigindo um número mínimo delas para reconstruí-lo.
-- **Passkey:** credencial de acesso sem senha, baseada no padrão FIDO2, protegida pelo dispositivo do usuário.
-- **Consenso BFT:** mecanismo de acordo entre nós de uma rede que tolera que parte deles falhe ou aja de má-fé.
-- **Cliente leve:** software que verifica o registro sem precisar armazená-lo por completo.
-- **Nível de garantia:** grau de confiança de que um USI corresponde a uma pessoa real e única.
+The repository is **bilingual**: every document exists in English (`name.md`) and Brazilian Portuguese (`name.pt-BR.md`), with a link between the versions at the top. Changes should be made to both versions in the same commit whenever possible; if they temporarily diverge, the **English version is the reference** until both are synchronized. Contributions in other languages are welcome as additional translations (`name.<code>.md`).
+
+## 16. Glossary
+
+- **USI:** Universal Safe ID, the unique personal identifier proposed by this project.
+- **DID (Decentralized Identifier):** a W3C standard for identifiers that do not depend on a central authority.
+- **Verifiable credential:** a digital document signed by an issuer, held by the holder and presented by them, which anyone can verify.
+- **Zero-knowledge proof (ZKP):** a cryptographic technique that proves a statement is true without revealing the information behind it.
+- **Nullifier:** a value derived from a secret that allows detecting repeated use without revealing the secret.
+- **Sybil attack:** creation of many fake identities by one person or group.
+- **Key pre-rotation:** advance commitment to the next key, kept offline, to regain control if the current key is compromised.
+- **Guardian:** a person or institution chosen by the holder to help recover their access.
+- **Shamir secret sharing:** a technique that splits a secret into parts, requiring a minimum number of them to reconstruct it.
+- **Passkey:** a passwordless credential based on the FIDO2 standard, protected by the user's device.
+- **BFT consensus:** an agreement mechanism among network nodes that tolerates some of them failing or acting maliciously.
+- **Light client:** software that verifies the registry without storing it in full.
+- **Assurance level:** degree of confidence that a USI corresponds to a real and unique person.
 
 ---
 
-*Este documento é vivo e será atualizado à medida que o projeto evoluir. Sugestões são bem-vindas por meio de issues.*
+*This document is alive and will be updated as the project evolves. Suggestions are welcome through issues.*
