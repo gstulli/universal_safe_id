@@ -2,7 +2,7 @@
 
 🌐 **English** · [Português (Brasil)](whitepaper.pt-BR.md)
 
-**Version 0.1 — open draft, open to collaboration** · October 2026
+**Version 0.1.1 — open draft, open to collaboration** · October 2026
 Companion to the [README](../README.md).
 
 > **How to read this document.** USI is in the conception phase. This whitepaper gathers what is known, proposes paths and states what is still unknown. Each section is tagged with its maturity:
@@ -99,6 +99,13 @@ A third path: an identity that **does not depend on a single authority**, **does
 - **It is not a surveillance mechanism**, nor compulsory identification.
 - **It does not solve authorization by itself** (what a person may do), only authentication and proof of uniqueness.
 
+### 3.3 Geographic premise: pilot in Brazil, design without borders 🟢
+
+- **Pilot in Brazil.** The first real deployment will be in Brazil: it is where the project is born, where knowledge of documents and legislation (LGPD) is available and where the first network of partners will be formed.
+- **Design without borders.** The protocol, the registry and the uniqueness model **must not presuppose any one country**. Everything country-specific lives in pluggable modules, the **country profiles** (section 9.2.2). Shortcuts that only work in Brazil (for example, hard-wiring a specific national number into the protocol) are technical debt and must be avoided.
+- **Gradual expansion by adhesion.** New countries join as local stakeholders (node operators, validators, credential issuers, lawyers, translators and interested governments) sign on and provide support for infrastructure and operation. Joining is voluntary and non-exclusive; no country gets governance priority for having been first.
+- **Government support without control.** Governments may support the project, including by qualifying verification of their own documents, but gain no control over it (section 14.5).
+
 ## 4. Threat model
 
 ### 4.1 Adversaries considered
@@ -174,6 +181,7 @@ The layers are independent and should evolve separately: replacing the public re
 | **Wallet** | The holder's app. Stores keys, identity secrets, credentials and consents. Generates proofs. |
 | **Public registry** | Stores and orders events (creation, rotation, revocation, freeze, nullifiers, attestation digests). |
 | **Uniqueness service** | Rules and processes that convert evidence into an assurance level. Partly *on-chain* (hashes, nullifiers), partly *off-chain* (graph, juries). |
+| **Country profiles** | Public, versioned modules holding what is country-specific: accepted documents and how to verify them, stable identifier, evidence weight, validators and legal aspects (section 9.2.2). |
 | **Attesters** | Existing holders who vouch for another holder. |
 | **Guardians** | People or institutions chosen by the holder to assist recovery. |
 | **In-person validators** | Partners who run physical verification ceremonies. |
@@ -294,9 +302,26 @@ Each USI accumulates evidence from distinct categories. None is mandatory on its
 - **Mechanism:** for those holding a document with a chip and verifiable digital signature (such as e-passports), the holder proves, inside a zero-knowledge proof, that (a) the document is authentic, (b) it is valid and (c) a deterministic ***nullifier*** derives from it. The registry stores only the *nullifier*; a second registration with the same document yields the same *nullifier* and is refused.
 - **Advantage:** leverages the uniqueness states already establish, without creating a document database and without revealing data.
 - **Limitations that must be acknowledged:**
-  - Uniqueness is **per document**, not **per person**. People with several documents (dual nationality, a renewed passport with a new number) could in principle produce several *nullifiers*. Mitigations to investigate: deriving the *nullifier* from stable personal fields (not the document number), which requires careful privacy analysis; and cross-checking with other layers.
+  - Uniqueness is **per document**, not **per person**. People with several documents (dual nationality, a renewed passport with a new number) could in principle produce several *nullifiers*. Mitigations to investigate: deriving the *nullifier* from stable personal fields (not the document number), which requires careful privacy analysis; and cross-checking with other layers. See **country profiles**, below.
   - It depends on **trust in issuing authorities** (each country's certificate chains). Malicious states could in theory issue fake documents en masse. Mitigation: the document layer's weight is adjusted per country and can be reduced by a governance decision if abuse is evidenced.
   - It covers only those who **have** the document. For everyone else, the other layers apply.
+
+**Country profiles: qualifying documents 🟡**
+
+Each country that joins the project has a public, versioned and reviewable **country profile** containing:
+
+1. the **accepted documents** (e-passport, national identity document, driving licence, etc.) and **how to verify them cryptographically**: formats, public keys and certificate chains, revocation lists;
+2. the **stable identifier of the person** in that country, where one exists (for example, a unique national number), and how to derive the *nullifier* from it, so that **all documents from the same country (passport, ID card, licence, reissues and renewals) yield the same *nullifier***;
+3. the **weight** of the country's document evidence, set by public criteria;
+4. local in-person validators and partners, local legal analysis and languages.
+
+*Who writes the profile.* The community, from public specifications. When the country's government supports the project, it can **qualify** the profile (confirm formats, publish keys and revocation lists, clarify which fields are stable), but the profile is public and adopted through an open process (USIP), not by government decision (section 14.5). Revocation lists published by the issuer (lost, stolen, or deceased holders' documents) also help the USI lifecycle (section 9.5).
+
+*Effect on duplicates.*
+- **Within a country:** a well-qualified profile solves the case of people with several documents from the same country (renewed passport, ID card and licence): all lead to the same *nullifier*.
+- **Across countries (dual nationality):** still not fully solved. Two countries produce two *nullifiers*. Linking documents from different countries would require cooperation between states and would reveal the dual citizenship to them, which is a privacy risk and must not be assumed. Mitigations: levels 3 and 4 require **non-document** evidence (physical presence, social vouching) that a second passport does not duplicate; challenge and jury; and conscious acceptance of a residue, since dual nationals are a minority and the gain from a second identity is limited at the higher levels. 🔴 *Open.*
+
+*Minimal structure.* In the pilot, Brazil will have the first country profile (section 15.5). It serves as a template for the following ones and lets us test from the start that nothing in the protocol depends on it.
 
 #### 9.2.3 Physical presence 🟡
 
@@ -552,7 +577,32 @@ The founder's departure is **objective** and **metric-conditional** (for example
 
 ### 14.4 Tension between "ownerless" and accountability 🔴
 
-An ownerless system still needs some legal entity to sign contracts, receive donations, answer to authorities and commission audits. The foundation fills that role but must be designed **not** to become a control point. Legal form and jurisdiction are open questions.
+An ownerless system still needs some legal entity to sign contracts, receive donations, answer to authorities and commission audits. The foundation fills that role but must be designed **not** to become a control point. Legal form and jurisdiction are open questions, including whether the foundation should sit in the pilot's jurisdiction (Brazil) or a neutral one, to avoid the perception of national control.
+
+### 14.5 Role of governments: support without control 🟡
+
+Governments can be valuable allies and are also the actors with the greatest capacity for capture. USI adopts the stance **support yes, control no**, on equal terms for any government.
+
+**What a government may do (optional):**
+- qualify the country profile for its documents: publish formats, public keys and revocation lists, clarify stable identifiers;
+- run nodes **like any other operator**, subject to the concentration limits (section 14.3);
+- provide public spaces (libraries, service offices) for in-person ceremonies;
+- recognize USI for specific purposes, and support the project with funding or legal advice.
+
+**What a government may not do:**
+- hold a special vote, veto, guaranteed seat or any other privilege in governance;
+- alter rules, events or the state of any USI;
+- access holders' data. The system is designed so that document verification is done **locally, using public data** (keys and revocation lists), **with no online query to the government**, so that the state does not learn who uses USI or where;
+- make its support conditional on exclusivity, mandatory use or surveillance features.
+
+**Safeguards:**
+1. The system keeps working if support is withdrawn: only that country's document-layer weight drops, and the other layers compensate.
+2. All agreements, contributions and communications with governments are public.
+3. There are public criteria for accepting, weighting or refusing a country profile, including when the state issues documents abusively, uses its support for surveillance or could put holders at risk.
+4. Concentration limits apply to entities tied to the same state.
+5. A government's support does not make the project "Brazilian" or belonging to any other country.
+
+In Brazil, government support is welcome but **not a prerequisite** for the pilot.
 
 ## 15. Adoption and entry strategy
 
@@ -587,6 +637,22 @@ An identity is only valuable if accepted, and only accepted if widely held. Stra
 
 Always measure: sign-ups, retention, fraud detected, successful recovery rate, onboarding time, cost per holder.
 
+### 15.5 Pilot in Brazil and international expansion 🟡
+
+**Pilot in Brazil.**
+- Survey candidate Brazilian documents (for example, the national identity card, the chip passport and the digital driving licence) and check, for each, **whether offline cryptographic verification is possible** and **what the person's stable identifier is**. Accounts on digital government services may be assessed as complementary evidence. *All of these points need technical confirmation from the official specifications.*
+- Engage the data protection authority (ANPD) and, when appropriate, public bodies, asking for support in qualifying the country profile **with no control in return** (section 14.5).
+- Form the first network of partners: universities, libraries, cooperatives, civil society organizations.
+
+**International expansion.** The order in which countries join is determined by the adhesion of local stakeholders, not by a central plan. For a country to be included, a public checklist is proposed:
+1. at least one local stakeholder committed to support;
+2. a country profile written and reviewed, with cryptographic verification of the documents tested;
+3. local legal analysis (data protection, identity regulation);
+4. local in-person validators;
+5. translation and adaptation of interface and documentation;
+6. human-rights risk assessment (countries where using USI could endanger holders);
+7. approval through a USIP.
+
 ## 16. Experimental validation plan
 
 To avoid decisions based on guesses, the project proposes a series of experiments, each with a **hypothesis, method and success criterion**.
@@ -605,6 +671,7 @@ To avoid decisions based on guesses, the project proposes a series of experiment
 | E10 | **In-person ceremonies** | Ceremonies scale and resist local collusion | Pilot in one partner community | Viable cost per person; collusion detected in sampled audit |
 | E11 | **Biometrics without a central database** (optional) | Viable with demonstrated privacy | Feasibility study and expert review | If no secure, accurate variant exists, **drop it** |
 | E12 | **Sustainability** | Verification fees cover operating costs | Financial model and consultation with potential operators and verifiers | Cost coverage without requiring payment from holders |
+| E13 | **Country profile: Brazil** | Brazilian documents can be verified cryptographically and offline and a stable person identifier derived | Survey of official specifications; verification prototype; expert consultation | At least one document verifiable offline with a stable identifier, or a documented conclusion that it is not possible |
 
 Results and data from the experiments will be **published**, including negative ones.
 
@@ -622,6 +689,9 @@ Results and data from the experiments will be **published**, including negative 
 | Perception of "compulsory ID" or surveillance | Medium | High | Non-mandatory use, clear communication, per-service pseudonyms |
 | Dependence on third parties (public network, state certificate chains) | Medium | Medium | Hybrid option, per-country weighting, contingency plan |
 | Coercion of vulnerable users | Medium | High | Emergency mode (under study), freeze by third parties |
+| Perception of control by one government, or capture by a supporting state | Medium | High | Support without control (section 14.5), concentration limits, public agreements, neutral jurisdiction to be considered |
+| Withdrawal of government support or policy change | Medium | Medium | System works without the support; document-layer weight adjustable |
+| Brazil-specific shortcuts that do not generalize | Medium | Medium | Pluggable country profiles; architecture review before expansion |
 
 ## 18. Open questions
 
@@ -640,6 +710,9 @@ Results and data from the experiments will be **published**, including negative 
 13. Which numeric criteria mark the governance phase transitions?
 14. How to include people without smartphones or with limited connectivity?
 15. Is the verification-fee model compatible with the non-profit principle and with system neutrality?
+16. How should dual nationality across countries be handled without exposing the dual citizenship to any state? (E4, E13)
+17. Which public criteria accept, weight or refuse a country's profile, including on human-rights grounds?
+18. Should the foundation be based in the pilot's jurisdiction (Brazil) or a neutral one?
 
 ## 19. Roadmap
 
@@ -648,10 +721,10 @@ Results and data from the experiments will be **published**, including negative 
 | **1. Whitepaper** | Version 0.1 (this document); open review; version 0.2 with contributions |
 | **2. Community and review** | Expert review; presentation to decentralized identity communities; initial core of collaborators |
 | **3. Repository organization** | Licences, `CONTRIBUTING`, code of conduct, USIP process, issues for each open question |
-| **4. Proofs of concept** | Experiments E1–E12 by priority |
+| **4. Proofs of concept** | Experiments E1–E13 by priority |
 | **5. Legal and institutional analysis** | Opinion on LGPD and other rules; foundation design |
 | **6. Funding and outreach** | Grant applications; outreach material; partner search |
-| **7. Pilot** | Initial use case with a partner community; metrics; public report |
+| **7. Pilot (Brazil)** | Initial use case with a partner community in Brazil; metrics; public report; checklist for admitting new countries |
 | **8. Institutionalization** | Foundation incorporated; transition to governance phase 1 |
 
 There are no fixed dates in this version: the schedule depends on community formation and funding.
@@ -663,7 +736,7 @@ This is an open draft. To contribute:
 - **Critical review:** open an issue pointing out errors, gaps or missing risks. Well-founded criticism is welcome.
 - **Source references:** section 5 and the technical claims need primary sources; help verify and add them.
 - **Specialists:** cryptography, distributed systems, digital identity, data protection law, experience design, anthropology/social sciences (for inclusion), ethics.
-- **Experiments:** take on one of experiments E1–E12.
+- **Experiments:** take on one of experiments E1–E13.
 - **Translation and language review:** keep the Portuguese and English versions in sync.
 
 All significant changes must be recorded in the version history (section 22).
@@ -688,3 +761,4 @@ All significant changes must be recorded in the version history (section 22).
 | Version | Date | Description |
 |---|---|---|
 | 0.1 | 2026-10-23 | First draft, open to collaboration. |
+| 0.1.1 | 2026-10-23 | Geographic premise (pilot in Brazil, design without borders), country profiles, role of governments (support without control), experiment E13. |

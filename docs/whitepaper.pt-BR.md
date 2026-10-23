@@ -2,7 +2,7 @@
 
 🌐 [English](whitepaper.md) · **Português (Brasil)**
 
-**Versão 0.1 — rascunho aberto à colaboração** · Outubro de 2026
+**Versão 0.1.1 — rascunho aberto à colaboração** · Outubro de 2026
 Documento complementar ao [README](../README.pt-BR.md).
 
 > **Como ler este documento.** O USI está em fase de concepção. Este whitepaper reúne o que se sabe, propõe caminhos e declara o que ainda não se sabe. Cada seção indica o seu grau de maturidade:
@@ -99,6 +99,13 @@ Um terceiro caminho: uma identidade que **não depende de uma única autoridade*
 - **Não é um mecanismo de vigilância**, nem de identificação compulsória.
 - **Não resolve, por si só, a autorização** (o que a pessoa pode fazer), apenas a autenticação e a prova de unicidade.
 
+### 3.3 Premissa geográfica: piloto no Brasil, desenho sem fronteiras 🟢
+
+- **Piloto no Brasil.** A primeira implantação real será no Brasil: é onde o projeto nasce, onde o conhecimento sobre documentos e legislação (LGPD) está disponível e onde será formada a primeira rede de parceiros.
+- **Desenho sem fronteiras.** O protocolo, o registro e o modelo de unicidade **não podem pressupor um país**. Tudo o que é específico de um país fica em módulos plugáveis, os **perfis de país** (seção 9.2.2). Atalhos que só funcionam no Brasil (por exemplo, assumir um número nacional específico no protocolo) são dívida técnica e devem ser evitados.
+- **Expansão gradual por adesão.** Novos países entram à medida que stakeholders locais (operadores de nós, validadores, emissores de credenciais, juristas, tradutores e governos interessados) aderem e oferecem suporte à infraestrutura e à operação. A adesão é voluntária e sem exclusividade; nenhum país tem prioridade de governança por ter sido o primeiro.
+- **Apoio de governos sem controle.** Governos podem apoiar o projeto, inclusive qualificando a verificação dos seus próprios documentos, mas não adquirem qualquer controle sobre ele (seção 14.5).
+
 ## 4. Modelo de ameaças
 
 ### 4.1 Adversários considerados
@@ -174,6 +181,7 @@ As camadas são independentes e devem poder evoluir separadamente: trocar o regi
 | **Carteira (wallet)** | Aplicativo do titular. Guarda chaves, segredos de identidade, credenciais e consentimentos. Gera provas. |
 | **Registro público** | Armazena e ordena eventos (criação, rotação, revogação, congelamento, nullifiers, resumos de atestações). |
 | **Serviço de unicidade** | Conjunto de regras e processos que convertem evidências em nível de garantia. Em parte *on-chain* (hashes, nullifiers), em parte *off-chain* (grafo, júris). |
+| **Perfis de país** | Módulos públicos e versionados com o que é específico de cada país: documentos aceitos e como verificá-los, identificador estável, peso da evidência, validadores e aspectos legais (seção 9.2.2). |
 | **Atestadores** | Titulares existentes que atestam outro titular. |
 | **Guardiões** | Pessoas ou instituições escolhidas pelo titular para auxiliar na recuperação. |
 | **Validadores presenciais** | Parceiros que realizam cerimônias de verificação física. |
@@ -294,9 +302,26 @@ Cada USI acumula evidências de categorias distintas. Nenhuma é obrigatória is
 - **Mecanismo:** para quem possui documento com chip e assinatura digital verificável (como passaportes eletrônicos), o titular prova, dentro de uma prova de conhecimento zero, que (a) o documento é autêntico, (b) está válido e (c) deriva dele um ***nullifier*** determinístico. O registro guarda apenas o *nullifier*; um segundo cadastro com o mesmo documento produz o mesmo *nullifier* e é recusado.
 - **Vantagem:** aproveita a unicidade que Estados já estabelecem, sem criar base de documentos e sem revelar dados.
 - **Limitações que precisam ser reconhecidas:**
-  - A unicidade é **por documento**, não **por pessoa**. Quem tem múltiplos documentos (dupla nacionalidade, passaporte renovado com novo número) pode, em princípio, produzir múltiplos *nullifiers*. Mitigações a investigar: derivar o *nullifier* de campos estáveis da pessoa (e não do número do documento), o que exige análise cuidadosa de privacidade; e cruzamento com outras camadas.
+  - A unicidade é **por documento**, não **por pessoa**. Quem tem múltiplos documentos (dupla nacionalidade, passaporte renovado com novo número) pode, em princípio, produzir múltiplos *nullifiers*. Mitigações a investigar: derivar o *nullifier* de campos estáveis da pessoa (e não do número do documento), o que exige análise cuidadosa de privacidade; e cruzamento com outras camadas. Ver **perfis de país**, a seguir.
   - Depende da **confiança nas autoridades emissoras** (cadeias de certificados de cada país). Estados maliciosos poderiam, em tese, emitir documentos falsos em massa. Mitigação: o peso da camada documental é ponderado por país e pode ser reduzido por decisão de governança se houver evidência de abuso.
   - Cobre apenas quem **tem** o documento. Para os demais, valem as outras camadas.
+
+**Perfis de país: qualificação dos documentos 🟡**
+
+Cada país que adere ao projeto tem um **perfil de país** público, versionado e revisável, contendo:
+
+1. os **documentos aceitos** (passaporte eletrônico, documento nacional de identidade, habilitação etc.) e **como verificá-los criptograficamente**: formatos, chaves públicas e cadeias de certificados, listas de revogação;
+2. o **identificador estável da pessoa** naquele país, quando existir (por exemplo, um número nacional único), e a forma de derivar dele o *nullifier*, de modo que **todos os documentos do mesmo país (passaporte, identidade, habilitação, reemissões e renovações) resultem no mesmo *nullifier***;
+3. o **peso** da evidência documental do país, definido por critérios públicos;
+4. validadores e parceiros presenciais locais, análise jurídica local e idiomas.
+
+*Quem elabora o perfil.* A comunidade, a partir de especificações públicas. Quando o governo do país apoia o projeto, pode **qualificar** o perfil (confirmar formatos, publicar chaves e listas de revogação, esclarecer quais campos são estáveis), mas o perfil é público e adotado por processo aberto (USIP), não por decisão do governo (seção 14.5). Listas de revogação publicadas pelo emissor (documentos perdidos, roubados, de pessoas falecidas) também ajudam no ciclo de vida do USI (seção 9.5).
+
+*Efeito sobre duplicidades.*
+- **Dentro de um país:** um perfil bem qualificado resolve o caso de pessoas com vários documentos do mesmo país (passaporte renovado, identidade e habilitação): todos levam ao mesmo *nullifier*.
+- **Entre países (dupla nacionalidade):** continua sem solução completa. Dois países produzem dois *nullifiers*. Ligar documentos de países diferentes exigiria cooperação entre Estados e revelaria a dupla cidadania a eles, o que é um risco de privacidade e não deve ser pressuposto. Mitigações: níveis 3 e 4 exigem evidências **não documentais** (presença física, vínculo social) que não se duplicam com um segundo passaporte; contestação e júri; e aceitação consciente de um resíduo, já que pessoas com dupla nacionalidade são minoria e o ganho de uma segunda identidade fica limitado nos níveis mais altos. 🔴 *Em aberto.*
+
+*Estrutura mínima.* No piloto, o Brasil terá o primeiro perfil de país (seção 15.5). O perfil serve de modelo para os seguintes e permite testar, desde o início, que nada no protocolo depende dele.
 
 #### 9.2.3 Presença física 🟡
 
@@ -552,7 +577,32 @@ O desligamento do fundador é **objetivo** e **condicional a métricas** (por ex
 
 ### 14.4 Conflito entre "sem dono" e responsabilidade 🔴
 
-Um sistema sem dono precisa de alguma entidade jurídica para firmar contratos, receber doações, responder a autoridades e contratar auditorias. A fundação cumpre esse papel, mas precisa ser projetada para **não** ser um ponto de controle. A forma jurídica e a jurisdição são questões em aberto.
+Um sistema sem dono precisa de alguma entidade jurídica para firmar contratos, receber doações, responder a autoridades e contratar auditorias. A fundação cumpre esse papel, mas precisa ser projetada para **não** ser um ponto de controle. A forma jurídica e a jurisdição são questões em aberto, inclusive se a fundação deve ficar na jurisdição do piloto (Brasil) ou numa jurisdição neutra, para evitar a percepção de controle nacional.
+
+### 14.5 Papel dos governos: apoio sem controle 🟡
+
+Governos podem ser aliados valiosos e, ao mesmo tempo, são os atores com maior capacidade de captura. O USI adota a postura **apoio sim, controle não**, em termos iguais para qualquer governo.
+
+**O que um governo pode fazer (opcional):**
+- qualificar o perfil de país dos seus documentos: publicar formatos, chaves públicas e listas de revogação, esclarecer identificadores estáveis;
+- operar nós **como qualquer outro operador**, sujeito aos limites de concentração (seção 14.3);
+- ceder espaços públicos (bibliotecas, agências de atendimento) para cerimônias presenciais;
+- reconhecer o USI para finalidades específicas, e apoiar o projeto com financiamento ou assessoria jurídica.
+
+**O que um governo não pode fazer:**
+- ter voto especial, veto, assento garantido ou qualquer outro privilégio na governança;
+- alterar regras, eventos ou o estado de qualquer USI;
+- acessar dados dos titulares. O sistema é concebido para que a verificação dos documentos seja feita **localmente, com dados públicos** (chaves e listas de revogação), **sem consulta online ao governo**, de modo que o Estado não saiba quem usa o USI nem onde;
+- condicionar o apoio a exclusividade, a obrigatoriedade de uso ou a funcionalidades de vigilância.
+
+**Salvaguardas:**
+1. O sistema continua funcionando se o apoio for retirado: cai apenas o peso da camada documental daquele país, e as demais camadas compensam.
+2. Todos os acordos, contribuições e comunicações com governos são públicos.
+3. Há critérios públicos para aceitar, ponderar ou recusar o perfil de um país, inclusive quando o Estado emite documentos de forma abusiva, usa o apoio para vigilância ou pode colocar titulares em risco.
+4. Os limites de concentração valem para entidades ligadas a um mesmo Estado.
+5. O apoio de um governo não torna o projeto "brasileiro" ou de qualquer outro país.
+
+No Brasil, o apoio do governo é bem-vindo, mas **não é pré-requisito** para o piloto.
 
 ## 15. Adoção e estratégia de entrada
 
@@ -587,6 +637,22 @@ Uma identidade só tem valor se aceita, e só é aceita se for amplamente portad
 
 Medir sempre: adesão, retenção, fraude detectada, taxa de recuperação bem-sucedida, tempo de cadastro, custo por titular.
 
+### 15.5 Piloto no Brasil e expansão internacional 🟡
+
+**Piloto no Brasil.**
+- Levantar os documentos brasileiros candidatos (por exemplo, a carteira de identidade nacional, o passaporte com chip e a habilitação digital) e verificar, para cada um, **se é possível a verificação criptográfica offline** e **qual é o identificador estável da pessoa**. Contas de serviços governamentais digitais podem ser avaliadas como evidência complementar. *Todos esses pontos precisam de confirmação técnica a partir das especificações oficiais.*
+- Dialogar com a autoridade de proteção de dados (ANPD) e, quando oportuno, com órgãos públicos, pedindo apoio à qualificação do perfil de país **sem contrapartida de controle** (seção 14.5).
+- Formar a primeira rede de parceiros: universidades, bibliotecas, cooperativas, organizações da sociedade civil.
+
+**Expansão internacional.** A ordem de entrada dos países é determinada pela adesão de stakeholders locais, não por um plano central. Para que um país seja incluído, propõe-se um roteiro público:
+1. ao menos um stakeholder local comprometido com o apoio;
+2. perfil de país elaborado e revisado, com verificação criptográfica dos documentos testada;
+3. análise jurídica local (proteção de dados, regulação de identidade);
+4. validadores presenciais locais;
+5. tradução e adaptação de interface e documentação;
+6. avaliação de riscos a direitos humanos (países onde o uso do USI poderia colocar titulares em perigo);
+7. aprovação por USIP.
+
 ## 16. Plano de validação experimental
 
 Para evitar decisões baseadas em palpites, o projeto propõe uma série de experimentos, cada um com **hipótese, método e critério de sucesso**.
@@ -605,6 +671,7 @@ Para evitar decisões baseadas em palpites, o projeto propõe uma série de expe
 | E10 | **Cerimônias presenciais** | Cerimônias escalam e resistem a conluio local | Piloto em uma comunidade parceira | Custo por pessoa viável; conluio detectado em auditoria amostral |
 | E11 | **Biometria sem base central** (opcional) | É viável com privacidade comprovada | Estudo de viabilidade e revisão por especialistas | Se não houver variante segura e precisa, **descartar** |
 | E12 | **Sustentabilidade** | Taxas de verificação cobrem custos operacionais | Modelo financeiro e consulta a potenciais operadores e verificadores | Cobertura de custos sem exigir pagamento do titular |
+| E13 | **Perfil de país: Brasil** | É possível verificar documentos brasileiros de forma criptográfica e offline e derivar um identificador estável da pessoa | Levantamento das especificações oficiais; protótipo de verificação; consulta a especialistas | Ao menos um documento verificável offline com identificador estável, ou conclusão documentada de que não é possível |
 
 Resultados e dados dos experimentos serão **publicados**, inclusive os negativos.
 
@@ -622,6 +689,9 @@ Resultados e dados dos experimentos serão **publicados**, inclusive os negativo
 | Percepção de "identificação obrigatória" ou vigilância | Média | Alto | Não obrigatoriedade, comunicação clara, pseudônimos por serviço |
 | Dependência de terceiros (rede pública, cadeias de certificados estatais) | Média | Médio | Opção híbrida, ponderação por país, plano de contingência |
 | Coação de usuários vulneráveis | Média | Alto | Modo de emergência (em estudo), congelamento por terceiros |
+| Percepção de controle por um governo, ou captura pelo Estado apoiador | Média | Alto | Apoio sem controle (seção 14.5), limites de concentração, acordos públicos, jurisdição neutra a considerar |
+| Retirada do apoio governamental ou mudança de política | Média | Médio | Sistema funciona sem o apoio; peso da camada documental ajustável |
+| Atalhos específicos do Brasil que não se generalizam | Média | Médio | Perfis de país plugáveis; revisão de arquitetura antes da expansão |
 
 ## 18. Questões em aberto
 
@@ -640,6 +710,9 @@ Resultados e dados dos experimentos serão **publicados**, inclusive os negativo
 13. Quais critérios numéricos marcam as transições de fase da governança?
 14. Como incluir pessoas sem smartphone ou com conectividade limitada?
 15. O modelo de taxa de verificação é compatível com o princípio de não lucro e com a neutralidade do sistema?
+16. Como tratar a dupla nacionalidade entre países sem expor a dupla cidadania a nenhum Estado? (E4, E13)
+17. Quais critérios públicos aceitam, ponderam ou recusam o perfil de um país, inclusive por risco a direitos humanos?
+18. A fundação deve ter sede na jurisdição do piloto (Brasil) ou numa jurisdição neutra?
 
 ## 19. Roteiro
 
@@ -648,10 +721,10 @@ Resultados e dados dos experimentos serão **publicados**, inclusive os negativo
 | **1. Whitepaper** | Versão 0.1 (este documento); revisão aberta; versão 0.2 com contribuições |
 | **2. Comunidade e revisão** | Revisão por especialistas; apresentação a comunidades de identidade descentralizada; núcleo inicial de colaboradores |
 | **3. Organização do repositório** | Licenças, `CONTRIBUTING`, código de conduta, processo de USIPs, *issues* para cada questão em aberto |
-| **4. Provas de conceito** | Experimentos E1–E12 conforme prioridade |
+| **4. Provas de conceito** | Experimentos E1–E13 conforme prioridade |
 | **5. Análise jurídica e institucional** | Parecer sobre LGPD e outras normas; desenho da fundação |
 | **6. Financiamento e divulgação** | Submissão a editais; materiais de divulgação; busca de parceiros |
-| **7. Piloto** | Caso de uso inicial com comunidade parceira; métricas; relatório público |
+| **7. Piloto (Brasil)** | Caso de uso inicial com comunidade parceira no Brasil; métricas; relatório público; roteiro de entrada de novos países |
 | **8. Institucionalização** | Fundação constituída; transição para a fase 1 de governança |
 
 Não há datas fixas nesta versão: o cronograma depende da formação da comunidade e do financiamento.
@@ -663,7 +736,7 @@ Este é um rascunho aberto. Para contribuir:
 - **Revisão crítica:** abra uma *issue* apontando erros, lacunas ou riscos que faltam. Críticas fundamentadas são bem-vindas.
 - **Referência a fontes:** a seção 5 e as afirmações técnicas precisam de fontes primárias; ajude a verificar e acrescentar.
 - **Especialistas:** criptografia, sistemas distribuídos, identidade digital, direito de proteção de dados, design de experiência, antropologia/ciências sociais (para inclusão), ética.
-- **Experimentos:** assuma um dos experimentos E1–E12.
+- **Experimentos:** assuma um dos experimentos E1–E13.
 - **Tradução e revisão linguística:** mantenha as versões em português e em inglês sincronizadas.
 
 Todas as alterações significativas devem ser registradas no histórico de versões (seção 22).
@@ -688,3 +761,4 @@ Todas as alterações significativas devem ser registradas no histórico de vers
 | Versão | Data | Descrição |
 |---|---|---|
 | 0.1 | 2026-10-23 | Primeiro rascunho, aberto à colaboração. |
+| 0.1.1 | 2026-10-23 | Premissa geográfica (piloto no Brasil, desenho sem fronteiras), perfis de país, papel dos governos (apoio sem controle), experimento E13. |

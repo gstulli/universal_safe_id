@@ -4,14 +4,14 @@
 
 **A universal personal identity that is unique, private and recoverable, built as a public good on open source code and a verifiable public registry.**
 
-> **Status:** conception phase, with the **first version of the [whitepaper](docs/whitepaper.md) published (v0.1)**. The whitepaper details the threat model, the architecture, the alternatives still in dispute and a plan of 12 experiments to decide among them. **It is an open draft, open to collaboration**: criticism, corrections and contributions are welcome (see [How to contribute](#15-how-to-contribute)). Nothing here is final: the proposals are hypotheses to be tested, measured and adjusted as the project matures.
+> **Status:** conception phase, with the **first version of the [whitepaper](docs/whitepaper.md) published (v0.1.1)**. The whitepaper details the threat model, the architecture, the alternatives still in dispute and a plan of 13 experiments to decide among them. **It is an open draft, open to collaboration**: criticism, corrections and contributions are welcome (see [How to contribute](#15-how-to-contribute)). Nothing here is final: the proposals are hypotheses to be tested, measured and adjusted as the project matures.
 
 **Documents:**
 
 | Document | English | Português |
 |---|---|---|
 | Project overview | [README.md](README.md) | [README.pt-BR.md](README.pt-BR.md) |
-| Whitepaper v0.1 | [docs/whitepaper.md](docs/whitepaper.md) | [docs/whitepaper.pt-BR.md](docs/whitepaper.pt-BR.md) |
+| Whitepaper v0.1.1 | [docs/whitepaper.md](docs/whitepaper.md) | [docs/whitepaper.pt-BR.md](docs/whitepaper.pt-BR.md) |
 
 ---
 
@@ -65,6 +65,13 @@ USI proposes open, ownerless infrastructure that lets anyone:
 
 USI does not aim to replace official documents. It can coexist with them, use them as evidence where they exist, and offer an alternative to those who do not have them.
 
+### Geographic scope: starts in Brazil, designed without borders
+
+- The **pilot will start in Brazil**, where the project is born, where legislation and documents are known and where the first network of partners will be formed.
+- The **design has no borders**: nothing in the protocol depends on one country. What is specific to each country (accepted documents, validators, legal aspects) lives in pluggable **country profiles**.
+- Expansion is **gradual and by adhesion**: new countries join as local stakeholders (operators, validators, issuers, lawyers and interested governments) provide support for infrastructure and operation.
+- **Governments may support, but do not control.** A government can, for example, help qualify verification of its own documents, which reduces duplicates within the country, without gaining a privileged voice, veto or access to holders' data (see [section 10.3](#103-governments-support-without-control)).
+
 ## 3. Principles
 
 | # | Principle | In practice |
@@ -81,6 +88,8 @@ USI does not aim to replace official documents. It can coexist with them, use th
 | 10 | **Inclusion** | The system must work for people without documents, with little technical familiarity or limited internet access. |
 | 11 | **Transparency and auditability** | Open source, public decisions, public accounts, a registry anyone can verify. |
 | 12 | **Evidence-based evolution** | Each mechanism is treated as a hypothesis, tested in a controlled setting and adjusted from real data. |
+| 13 | **Local pilot, global design** | The pilot starts in Brazil, but nothing in the system may depend on one country. Expansion is gradual, as stakeholders from other countries join. |
+| 14 | **Government support without control** | Governments may support (for example, by qualifying their documents) but have no special vote, veto or access to holders' data. |
 
 ## 4. What sets USI apart
 
@@ -298,6 +307,18 @@ All resources received and spent must be public, managed by a **non-profit found
 - **"One person, one vote"** using the USI itself for decisions that affect the community, once the network is mature.
 - **Separation of roles:** those who develop do not operate alone, those who operate do not decide alone, those who fund do not control.
 
+### 10.3 Governments: support without control
+
+Governments are potentially valuable allies and also the actors with the greatest capacity for capture. The same rules therefore apply to every government:
+
+- **They may:** qualify the country profile for their documents (formats, public keys, revocation lists, stable identifiers); run nodes like any other operator, subject to concentration limits; provide public spaces for in-person ceremonies; recognize USI for specific purposes; support with funding or legal advice.
+- **They may not:** hold a special vote, veto or guaranteed seat; alter rules or the state of any USI; access holders' data; make support conditional on exclusivity, mandatory use or surveillance.
+- **Document verification is local, using public data and with no online query to the government**, so the state does not learn who uses USI or where.
+- **The system keeps working if support is withdrawn**; only the weight of that country's documents decreases.
+- All agreements with governments are public, and a country's profile can be weighted or refused by public criteria.
+
+Details are in [section 14.5 of the whitepaper](docs/whitepaper.md). In Brazil, government support is welcome but not a prerequisite for the pilot.
+
 ## 11. Stakeholders
 
 | Stakeholder | Role | Interest |
@@ -311,6 +332,7 @@ All resources received and spent must be public, managed by a **non-profit found
 | **Credential issuers** (universities, councils, public bodies, employers) | Issue credentials linked to the USI | Forgery-proof credentials |
 | **Developers and researchers** | Build, audit and evolve the system | Purpose, reputation, research |
 | **Regulators and data protection authorities** (such as Brazil's ANPD) | Oversee compliance | Citizen protection |
+| **Governments and public bodies** (of any country) | Optional support: qualify their documents, run nodes, provide spaces, recognize the USI | Reduce fraud and duplication, include people without documents. **No control over the project** |
 | **Funders** (foundations, grant programmes, donors) | Sustain the initial phase | Social impact and open infrastructure |
 | **Civil society and digital rights advocates** | Oversee and propose improvements | Privacy, inclusion, transparency |
 
@@ -331,7 +353,7 @@ An identity is only valuable if accepted, and only accepted if people hold it. T
 Proposed actions to get the project off the ground, in approximate order:
 
 ### Stage 1 – Whitepaper
-- [x] Write the first version of the whitepaper ([v0.1](docs/whitepaper.md)), detailing: threat model, three-layer architecture, uniqueness model and assurance levels, recovery protocol, public registry options, sustainability model, governance plan and experiment plan.
+- [x] Write the first version of the whitepaper ([v0.1.1](docs/whitepaper.md)), detailing: threat model, three-layer architecture, uniqueness model and assurance levels, recovery protocol, public registry options, sustainability model, governance plan and experiment plan.
 - [x] Publish the draft in this repository for open comments.
 - [ ] Deepen the survey of literature and prior experience in decentralized identity and proof of personhood, with primary sources (section 5 of the whitepaper is an initial summary and needs verification).
 - [ ] Incorporate the contributions received and publish version 0.2.
@@ -354,10 +376,13 @@ Proposed actions to get the project off the ground, in approximate order:
 - [ ] Test the zero-knowledge document proof and *nullifiers*.
 - [ ] Simulate Sybil attacks on the social vouching model to calibrate graph analysis.
 - [ ] Experimentally compare the public registry options (A, B and C).
+- [ ] Technically survey the candidate Brazilian documents (offline cryptographic verification and stable identifier) and write the first country profile (experiment E13).
 
 ### Stage 5 – Legal and institutional analysis
 - [ ] Analyse compliance with the LGPD and other relevant legislation.
 - [ ] Study the legal form of the future foundation and the feasibility of institutional recognition of the USI.
+- [ ] Engage the ANPD and, when appropriate, Brazilian public bodies, asking for support in qualifying documents **with no control in return**.
+- [ ] Define the public checklist for admitting new countries (local stakeholder, country profile, legal analysis, validators, human-rights risk assessment).
 
 ### Stage 6 – Funding and outreach
 - [ ] Map and submit proposals to calls and programmes supporting open infrastructure and digital rights.
@@ -365,7 +390,7 @@ Proposed actions to get the project off the ground, in approximate order:
 - [ ] Identify partner institutions for the pilot and to run the first nodes.
 
 ### Stage 7 – Pilot
-- [ ] Choose an initial use case (see [section 12](#12-initial-use-cases)) and a partner community.
+- [ ] Choose an initial use case (see [section 12](#12-initial-use-cases)) and a partner community **in Brazil**.
 - [ ] Run a controlled pilot, with metrics for sign-ups, fraud detected, recovery success and satisfaction.
 - [ ] Publish the results and adjust the model.
 
@@ -388,10 +413,13 @@ Hypotheses and decisions that depend on research and testing:
 - How can the system be made accessible to people without a smartphone or stable internet?
 - Is the verification fee paid by services viable and compatible with the no-profit principle?
 - Which objective criteria mark each governance phase transition?
+- How should dual nationality across countries be handled without exposing the dual citizenship to any state?
+- Which public criteria accept, weight or refuse a country's profile?
+- Should the foundation be based in Brazil or in a neutral jurisdiction?
 
 ## 15. How to contribute
 
-The project is at an early stage and every contribution is welcome, **starting with a critical reading of the [whitepaper v0.1](docs/whitepaper.md)**. Especially from people with experience in:
+The project is at an early stage and every contribution is welcome, **starting with a critical reading of the [whitepaper v0.1.1](docs/whitepaper.md)**. Especially from people with experience in:
 
 - cryptography and security protocols;
 - digital identity and W3C standards;

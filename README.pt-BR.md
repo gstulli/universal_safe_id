@@ -4,14 +4,14 @@
 
 **Uma identidade pessoal universal, única, privada e recuperável, construída como bem público, sobre código aberto e um registro público verificável.**
 
-> **Status:** concepção, com a **primeira versão do [whitepaper](docs/whitepaper.pt-BR.md) publicada (v0.1)**. O whitepaper detalha o modelo de ameaças, a arquitetura, as alternativas em disputa e um plano de 12 experimentos para decidir entre elas. **É um rascunho aberto à colaboração**: críticas, correções e contribuições são bem-vindas (ver [Como contribuir](#15-como-contribuir)). Nada aqui é definitivo: as propostas são hipóteses a serem testadas, medidas e ajustadas à medida que o projeto amadurece.
+> **Status:** concepção, com a **primeira versão do [whitepaper](docs/whitepaper.pt-BR.md) publicada (v0.1.1)**. O whitepaper detalha o modelo de ameaças, a arquitetura, as alternativas em disputa e um plano de 13 experimentos para decidir entre elas. **É um rascunho aberto à colaboração**: críticas, correções e contribuições são bem-vindas (ver [Como contribuir](#15-como-contribuir)). Nada aqui é definitivo: as propostas são hipóteses a serem testadas, medidas e ajustadas à medida que o projeto amadurece.
 
 **Documentos:**
 
 | Documento | Português | English |
 |---|---|---|
 | Visão geral do projeto | [README.pt-BR.md](README.pt-BR.md) | [README.md](README.md) |
-| Whitepaper v0.1 | [docs/whitepaper.pt-BR.md](docs/whitepaper.pt-BR.md) | [docs/whitepaper.md](docs/whitepaper.md) |
+| Whitepaper v0.1.1 | [docs/whitepaper.pt-BR.md](docs/whitepaper.pt-BR.md) | [docs/whitepaper.md](docs/whitepaper.md) |
 
 ---
 
@@ -65,6 +65,13 @@ O USI propõe uma infraestrutura aberta e sem dono que permita a qualquer pessoa
 
 O USI não pretende substituir documentos oficiais. Ele pode conviver com eles, aproveitá-los como evidência quando existirem e oferecer uma alternativa a quem não os possui.
 
+### Alcance geográfico: começa no Brasil, pensado sem fronteiras
+
+- O **piloto começará no Brasil**, onde o projeto nasce, onde a legislação e os documentos são conhecidos e onde será formada a primeira rede de parceiros.
+- O **desenho não tem fronteiras**: nada no protocolo depende de um país. O que é específico de cada país (documentos aceitos, validadores, aspectos legais) fica em **perfis de país** plugáveis.
+- A expansão é **gradual e por adesão**: novos países entram à medida que stakeholders locais (operadores, validadores, emissores, juristas e governos interessados) oferecem suporte à infraestrutura e à operação.
+- **Governos podem apoiar, mas não controlam.** Um governo pode, por exemplo, ajudar a qualificar a verificação dos seus próprios documentos, o que reduz duplicidades dentro do país, sem ganhar voz privilegiada, veto ou acesso a dados de titulares (ver [seção 10.3](#103-governos-apoio-sem-controle)).
+
 ## 3. Princípios
 
 | # | Princípio | O que significa na prática |
@@ -81,6 +88,8 @@ O USI não pretende substituir documentos oficiais. Ele pode conviver com eles, 
 | 10 | **Inclusão** | O sistema deve funcionar para quem não tem documento, tem pouca familiaridade com tecnologia ou acesso limitado à internet. |
 | 11 | **Transparência e auditabilidade** | Código aberto, decisões públicas, contas públicas, registro verificável por qualquer pessoa. |
 | 12 | **Evolução baseada em evidências** | Cada mecanismo é tratado como hipótese, testado em ambiente controlado e ajustado com base em dados reais. |
+| 13 | **Piloto local, desenho global** | O piloto começa no Brasil, mas nada no sistema pode depender de um país. A expansão é gradual, por adesão de stakeholders de outros países. |
+| 14 | **Apoio de governos sem controle** | Governos podem apoiar (por exemplo, qualificando seus documentos), mas não têm voto especial, veto nem acesso a dados dos titulares. |
 
 ## 4. Diferenciais do USI
 
@@ -298,6 +307,18 @@ Todos os recursos recebidos e gastos devem ser públicos, administrados por uma 
 - **Voto "uma pessoa, um voto"** usando o próprio USI para decisões que afetem a comunidade, quando a rede estiver madura.
 - **Separação de papéis:** quem desenvolve não opera sozinho, quem opera não decide sozinho, quem financia não controla.
 
+### 10.3 Governos: apoio sem controle
+
+Governos são aliados potencialmente valiosos e, ao mesmo tempo, os atores com maior capacidade de captura. Por isso valem regras iguais para qualquer governo:
+
+- **Podem:** qualificar o perfil de país dos seus documentos (formatos, chaves públicas, listas de revogação, identificadores estáveis); operar nós como qualquer outro operador, sujeitos aos limites de concentração; ceder espaços públicos para cerimônias presenciais; reconhecer o USI para fins específicos; apoiar com financiamento ou assessoria jurídica.
+- **Não podem:** ter voto especial, veto ou assento garantido; alterar regras ou o estado de qualquer USI; acessar dados dos titulares; condicionar o apoio a exclusividade, obrigatoriedade ou vigilância.
+- **A verificação de documentos é local, com dados públicos e sem consulta online ao governo**, para que o Estado não saiba quem usa o USI nem onde.
+- **O sistema continua funcionando se o apoio for retirado**; apenas o peso dos documentos daquele país diminui.
+- Todos os acordos com governos são públicos, e o perfil de um país pode ser ponderado ou recusado por critérios públicos.
+
+Os detalhes estão na [seção 14.5 do whitepaper](docs/whitepaper.pt-BR.md). No Brasil, o apoio do governo é bem-vindo, mas não é pré-requisito do piloto.
+
 ## 11. Stakeholders
 
 | Stakeholder | Papel | Interesse |
@@ -311,6 +332,7 @@ Todos os recursos recebidos e gastos devem ser públicos, administrados por uma 
 | **Emissores de credenciais** (universidades, conselhos, órgãos públicos, empregadores) | Emitem credenciais vinculadas ao USI | Credenciais à prova de falsificação |
 | **Desenvolvedores e pesquisadores** | Constroem, auditam e evoluem o sistema | Propósito, reputação, pesquisa |
 | **Reguladores e autoridades de proteção de dados** (como a ANPD) | Fiscalizam a conformidade | Proteção dos cidadãos |
+| **Governos e órgãos públicos** (de qualquer país) | Apoio opcional: qualificar seus documentos, operar nós, ceder espaços, reconhecer o USI | Reduzir fraude e duplicidade, incluir pessoas sem documento. **Sem controle sobre o projeto** |
 | **Financiadores** (fundações, programas de fomento, doadores) | Sustentam a fase inicial | Impacto social e infraestrutura aberta |
 | **Sociedade civil e defensores de direitos digitais** | Fiscalizam e propõem melhorias | Privacidade, inclusão, transparência |
 
@@ -331,7 +353,7 @@ Uma identidade só tem valor se for aceita, e só é aceita se as pessoas a tive
 Ações propostas para tirar o projeto do papel, em ordem aproximada:
 
 ### Etapa 1 – Whitepaper
-- [x] Redigir a primeira versão do whitepaper ([v0.1](docs/whitepaper.pt-BR.md)), detalhando: modelo de ameaças, arquitetura das três camadas, modelo de unicidade e níveis de garantia, protocolo de recuperação, opções de registro público, modelo de sustentabilidade, plano de governança e plano de experimentos.
+- [x] Redigir a primeira versão do whitepaper ([v0.1.1](docs/whitepaper.pt-BR.md)), detalhando: modelo de ameaças, arquitetura das três camadas, modelo de unicidade e níveis de garantia, protocolo de recuperação, opções de registro público, modelo de sustentabilidade, plano de governança e plano de experimentos.
 - [x] Publicar o rascunho neste repositório para comentários abertos.
 - [ ] Aprofundar o levantamento da literatura e das experiências anteriores em identidade descentralizada e prova de pessoa única, com fontes primárias (a seção 5 do whitepaper é um resumo inicial e precisa ser verificada).
 - [ ] Incorporar as contribuições recebidas e publicar a versão 0.2.
@@ -354,10 +376,13 @@ Ações propostas para tirar o projeto do papel, em ordem aproximada:
 - [ ] Testar a prova documental com conhecimento zero e *nullifiers*.
 - [ ] Simular ataques Sybil sobre o modelo de vínculo social para calibrar a análise de grafo.
 - [ ] Comparar experimentalmente as opções de registro público (A, B e C).
+- [ ] Levantar tecnicamente os documentos brasileiros candidatos (verificação criptográfica offline e identificador estável) e elaborar o primeiro perfil de país (experimento E13).
 
 ### Etapa 5 – Análise jurídica e institucional
 - [ ] Analisar conformidade com a LGPD e outras legislações relevantes.
 - [ ] Estudar a forma jurídica da futura fundação e a viabilidade de reconhecimento do USI por instituições.
+- [ ] Dialogar com a ANPD e, quando oportuno, com órgãos públicos brasileiros, pedindo apoio à qualificação dos documentos **sem contrapartida de controle**.
+- [ ] Definir o roteiro público de entrada de novos países (stakeholder local, perfil de país, análise jurídica, validadores, avaliação de riscos a direitos humanos).
 
 ### Etapa 6 – Financiamento e divulgação
 - [ ] Mapear e submeter propostas a editais e programas de fomento a infraestrutura aberta e direitos digitais.
@@ -365,7 +390,7 @@ Ações propostas para tirar o projeto do papel, em ordem aproximada:
 - [ ] Identificar instituições parceiras para o piloto e para operar os primeiros nós.
 
 ### Etapa 7 – Piloto
-- [ ] Escolher um caso de uso inicial (ver [seção 12](#12-casos-de-uso-iniciais)) e uma comunidade parceira.
+- [ ] Escolher um caso de uso inicial (ver [seção 12](#12-casos-de-uso-iniciais)) e uma comunidade parceira **no Brasil**.
 - [ ] Executar um piloto controlado, com métricas de adesão, fraude detectada, sucesso de recuperação e satisfação.
 - [ ] Publicar os resultados e ajustar o modelo.
 
@@ -388,10 +413,13 @@ Hipóteses e decisões que dependem de pesquisa e de testes:
 - Como tornar o sistema acessível a quem não tem smartphone ou internet estável?
 - A taxa de verificação paga por serviços é viável e compatível com o princípio de não haver lucro?
 - Quais critérios objetivos marcam cada transição de fase da governança?
+- Como tratar a dupla nacionalidade entre países sem expor a dupla cidadania a nenhum Estado?
+- Quais critérios públicos aceitam, ponderam ou recusam o perfil de um país?
+- A fundação deve ter sede no Brasil ou numa jurisdição neutra?
 
 ## 15. Como contribuir
 
-O projeto está no início e toda contribuição é bem-vinda, **a começar pela leitura crítica do [whitepaper v0.1](docs/whitepaper.pt-BR.md)**. Especialmente de pessoas com experiência em:
+O projeto está no início e toda contribuição é bem-vinda, **a começar pela leitura crítica do [whitepaper v0.1.1](docs/whitepaper.pt-BR.md)**. Especialmente de pessoas com experiência em:
 
 - criptografia e protocolos de segurança;
 - identidade digital e padrões W3C;
