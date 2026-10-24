@@ -4,14 +4,14 @@
 
 **Uma identidade pessoal universal, única, privada e recuperável, construída como bem público, sobre código aberto e um registro público verificável.**
 
-> **Status:** concepção, com a **primeira versão do [whitepaper](docs/whitepaper.pt-BR.md) publicada (v0.1.3)**. O whitepaper detalha o modelo de ameaças, a arquitetura, as alternativas em disputa e um plano de 15 experimentos para decidir entre elas. **É um rascunho aberto à colaboração**: críticas, correções e contribuições são bem-vindas (ver [Como contribuir](#15-como-contribuir)). Nada aqui é definitivo: as propostas são hipóteses a serem testadas, medidas e ajustadas à medida que o projeto amadurece.
+> **Status:** concepção, com a **primeira versão do [whitepaper](docs/whitepaper.pt-BR.md) publicada (v0.1.4)**. O whitepaper detalha o modelo de ameaças, a arquitetura, as alternativas em disputa e um plano de 16 experimentos para decidir entre elas. **É um rascunho aberto à colaboração**: críticas, correções e contribuições são bem-vindas (ver [Como contribuir](#15-como-contribuir)). Nada aqui é definitivo: as propostas são hipóteses a serem testadas, medidas e ajustadas à medida que o projeto amadurece.
 
 **Documentos:**
 
 | Documento | Português | English |
 |---|---|---|
 | Visão geral do projeto | [README.pt-BR.md](README.pt-BR.md) | [README.md](README.md) |
-| Whitepaper v0.1.3 | [docs/whitepaper.pt-BR.md](docs/whitepaper.pt-BR.md) | [docs/whitepaper.md](docs/whitepaper.md) |
+| Whitepaper v0.1.4 | [docs/whitepaper.pt-BR.md](docs/whitepaper.pt-BR.md) | [docs/whitepaper.md](docs/whitepaper.md) |
 
 ---
 
@@ -254,6 +254,15 @@ Os prazos são hipóteses iniciais a serem calibradas em testes.
 - *Perdi tudo e meus guardiões não estão disponíveis:* rota D, combinada com evidência de nível alto, em cerca de um mês.
 - *Alguém roubou meu celular e pediu recuperação:* recebo a notificação em outro canal e veto o pedido; congelo o USI e inicio a recuperação legítima.
 
+### 7.4 Casos extremos: perda total sem preparo e tentativa de abuso
+
+- **Boa-fé, aparelho único, sem backup.** A carteira guarda pouco: o que pode ser refeito a partir do mundo (documentos físicos, atestações dos emissores) não depende do aparelho. Para subir de nível, o titular precisa de ao menos uma **âncora de recuperação** (backup cifrado, folha impressa, guardião pessoal ou institucional). Quem não preparou nada pode recorrer à **revalidação assistida**: emissores que já o conhecem, como bancos, confirmam sua identidade com o próprio cadastro.
+- **Má-fé ("perdi tudo, quero recomeçar").** **Recomeçar não cria um USI novo:** quem tem atributos atestados recupera o mesmo USI, e os emissores que já conhecem o vínculo recusam vincular um segundo USI ao mesmo cliente. Quem nunca teve nada atestado pode recomeçar, pois não há o que perder, e o USI antigo expira.
+- **Proporcionalidade:** quanto mais confiança acumulada, mais exigente é a recuperação.
+- A fase inicial deixa um resíduo (duas identidades de baixa confiança), que só se fecha com a técnica da rede madura.
+
+Nada disso está testado: ver a [seção 10.8 do whitepaper](docs/whitepaper.pt-BR.md) e contribuir.
+
 ## 8. Privacidade e segurança
 
 ### 8.1 Proteções de privacidade
@@ -370,7 +379,7 @@ Uma identidade só tem valor se for aceita, e só é aceita se as pessoas a tive
 Ações propostas para tirar o projeto do papel, em ordem aproximada:
 
 ### Etapa 1 – Whitepaper
-- [x] Redigir a primeira versão do whitepaper ([v0.1.3](docs/whitepaper.pt-BR.md)), detalhando: modelo de ameaças, arquitetura das três camadas, modelo de unicidade e níveis de garantia, protocolo de recuperação, opções de registro público, modelo de sustentabilidade, plano de governança e plano de experimentos.
+- [x] Redigir a primeira versão do whitepaper ([v0.1.4](docs/whitepaper.pt-BR.md)), detalhando: modelo de ameaças, arquitetura das três camadas, modelo de unicidade e níveis de garantia, protocolo de recuperação, opções de registro público, modelo de sustentabilidade, plano de governança e plano de experimentos.
 - [x] Publicar o rascunho neste repositório para comentários abertos.
 - [ ] Aprofundar o levantamento da literatura e das experiências anteriores em identidade descentralizada e prova de pessoa única, com fontes primárias (a seção 5 do whitepaper é um resumo inicial e precisa ser verificada).
 - [ ] Incorporar as contribuições recebidas e publicar a versão 0.2.
@@ -395,6 +404,7 @@ Ações propostas para tirar o projeto do papel, em ordem aproximada:
 - [ ] Comparar experimentalmente as opções de registro público (A, B e C).
 - [ ] Levantar tecnicamente os documentos brasileiros candidatos (verificação criptográfica offline e identificador estável) e elaborar o primeiro perfil de país (experimento E13).
 - [ ] Prototipar o vínculo de atributos (*slots* com compromisso, unicidade por OPRF de limiar, prova de vigência) e simular ataques de ocupação de identidade, conluio de emissores e identidade sintética (experimentos E14 e E15).
+- [ ] Prototipar e testar a revalidação assistida por emissores e os cenários de perda total e de má-fé (experimento E16).
 
 ### Etapa 5 – Análise jurídica e institucional
 - [ ] Analisar conformidade com a LGPD e outras legislações relevantes.
@@ -438,10 +448,11 @@ Hipóteses e decisões que dependem de pesquisa e de testes:
 - Como definir "emissor independente" e quem credencia os emissores?
 - Como permitir a mudança legal de nome sem expor o histórico do titular?
 - Que critérios ativam a técnica criptográfica de unicidade de identificadores na rede madura, e existe alternativa melhor?
+- Como pessoas sem rede de apoio obtêm uma âncora de recuperação sem barreira excessiva, e como padronizar a revalidação assistida pelos emissores?
 
 ## 15. Como contribuir
 
-O projeto está no início e toda contribuição é bem-vinda, **a começar pela leitura crítica do [whitepaper v0.1.3](docs/whitepaper.pt-BR.md)**. Especialmente de pessoas com experiência em:
+O projeto está no início e toda contribuição é bem-vinda, **a começar pela leitura crítica do [whitepaper v0.1.4](docs/whitepaper.pt-BR.md)**. Especialmente de pessoas com experiência em:
 
 - criptografia e protocolos de segurança;
 - identidade digital e padrões W3C;

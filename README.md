@@ -4,14 +4,14 @@
 
 **A universal personal identity that is unique, private and recoverable, built as a public good on open source code and a verifiable public registry.**
 
-> **Status:** conception phase, with the **first version of the [whitepaper](docs/whitepaper.md) published (v0.1.3)**. The whitepaper details the threat model, the architecture, the alternatives still in dispute and a plan of 15 experiments to decide among them. **It is an open draft, open to collaboration**: criticism, corrections and contributions are welcome (see [How to contribute](#15-how-to-contribute)). Nothing here is final: the proposals are hypotheses to be tested, measured and adjusted as the project matures.
+> **Status:** conception phase, with the **first version of the [whitepaper](docs/whitepaper.md) published (v0.1.4)**. The whitepaper details the threat model, the architecture, the alternatives still in dispute and a plan of 16 experiments to decide among them. **It is an open draft, open to collaboration**: criticism, corrections and contributions are welcome (see [How to contribute](#15-how-to-contribute)). Nothing here is final: the proposals are hypotheses to be tested, measured and adjusted as the project matures.
 
 **Documents:**
 
 | Document | English | Português |
 |---|---|---|
 | Project overview | [README.md](README.md) | [README.pt-BR.md](README.pt-BR.md) |
-| Whitepaper v0.1.3 | [docs/whitepaper.md](docs/whitepaper.md) | [docs/whitepaper.pt-BR.md](docs/whitepaper.pt-BR.md) |
+| Whitepaper v0.1.4 | [docs/whitepaper.md](docs/whitepaper.md) | [docs/whitepaper.pt-BR.md](docs/whitepaper.pt-BR.md) |
 
 ---
 
@@ -254,6 +254,15 @@ The waiting periods are initial hypotheses to be calibrated in tests.
 - *I lost everything and my guardians are unavailable:* route D, combined with high-level evidence, in about a month.
 - *Someone stole my phone and requested recovery:* I get the notification on another channel and veto the request; I freeze the USI and start the legitimate recovery.
 
+### 7.4 Extreme cases: total loss without preparation and attempted abuse
+
+- **Good faith, single device, no backup.** The wallet stores little: whatever can be rebuilt from the world (physical documents, issuers' attestations) does not depend on the device. To move up a level, the holder needs at least one **recovery anchor** (encrypted backup, printed sheet, personal or institutional guardian). Those who prepared nothing can turn to **assisted re-validation**: issuers that already know them, such as banks, confirm their identity against their own records.
+- **Bad faith ("I lost everything, I want to start over").** **Starting over does not create a new USI:** those with attested attributes recover the same USI, and issuers that already know the link refuse to bind a second USI to the same customer. Those who never had anything attested may start over, as there is nothing to lose, and the old USI expires.
+- **Proportionality:** the more trust accumulated, the more demanding the recovery.
+- The initial phase leaves a residue (two low-trust identities), which is only closed by the mature-network technique.
+
+None of this is tested: see [section 10.8 of the whitepaper](docs/whitepaper.md) and contribute.
+
 ## 8. Privacy and security
 
 ### 8.1 Privacy protections
@@ -370,7 +379,7 @@ An identity is only valuable if accepted, and only accepted if people hold it. T
 Proposed actions to get the project off the ground, in approximate order:
 
 ### Stage 1 – Whitepaper
-- [x] Write the first version of the whitepaper ([v0.1.3](docs/whitepaper.md)), detailing: threat model, three-layer architecture, uniqueness model and assurance levels, recovery protocol, public registry options, sustainability model, governance plan and experiment plan.
+- [x] Write the first version of the whitepaper ([v0.1.4](docs/whitepaper.md)), detailing: threat model, three-layer architecture, uniqueness model and assurance levels, recovery protocol, public registry options, sustainability model, governance plan and experiment plan.
 - [x] Publish the draft in this repository for open comments.
 - [ ] Deepen the survey of literature and prior experience in decentralized identity and proof of personhood, with primary sources (section 5 of the whitepaper is an initial summary and needs verification).
 - [ ] Incorporate the contributions received and publish version 0.2.
@@ -395,6 +404,7 @@ Proposed actions to get the project off the ground, in approximate order:
 - [ ] Experimentally compare the public registry options (A, B and C).
 - [ ] Technically survey the candidate Brazilian documents (offline cryptographic verification and stable identifier) and write the first country profile (experiment E13).
 - [ ] Prototype attribute binding (slots with commitment, threshold-OPRF uniqueness, proof of currency) and simulate identity squatting, issuer collusion and synthetic identity attacks (experiments E14 and E15).
+- [ ] Prototype and test issuer-assisted re-validation and the total-loss and bad-faith scenarios (experiment E16).
 
 ### Stage 5 – Legal and institutional analysis
 - [ ] Analyse compliance with the LGPD and other relevant legislation.
@@ -438,10 +448,11 @@ Hypotheses and decisions that depend on research and testing:
 - How should "independent issuer" be defined, and who accredits issuers?
 - How can a legal name change be allowed without exposing the holder's history?
 - Which criteria activate the cryptographic identifier-uniqueness technique in the mature network, and is there a better alternative?
+- How can people without a support network obtain a recovery anchor without an excessive barrier, and how should assisted re-validation by issuers be standardized?
 
 ## 15. How to contribute
 
-The project is at an early stage and every contribution is welcome, **starting with a critical reading of the [whitepaper v0.1.3](docs/whitepaper.md)**. Especially from people with experience in:
+The project is at an early stage and every contribution is welcome, **starting with a critical reading of the [whitepaper v0.1.4](docs/whitepaper.md)**. Especially from people with experience in:
 
 - cryptography and security protocols;
 - digital identity and W3C standards;

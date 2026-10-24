@@ -2,7 +2,7 @@
 
 🌐 [English](whitepaper.md) · **Português (Brasil)**
 
-**Versão 0.1.3 — rascunho aberto à colaboração** · Outubro de 2026
+**Versão 0.1.4 — rascunho aberto à colaboração** · Outubro de 2026
 Documento complementar ao [README](../README.pt-BR.md).
 
 > **Como ler este documento.** O USI está em fase de concepção. Este whitepaper reúne o que se sabe, propõe caminhos e declara o que ainda não se sabe. Cada seção indica o seu grau de maturidade:
@@ -541,11 +541,86 @@ ATIVO ──(pedido de recuperação)──► EM_ESPERA ──(prazo cumprido, 
 
 ### 10.6 Qual segredo se recupera? 🔴
 
-A recuperação troca **chaves de controle**. Mas o **segredo de identidade**, base dos pseudônimos e *nullifiers* (seção 11.3), também precisa sobreviver. Se for perdido, o titular passaria a ter novos pseudônimos e poderia, em tese, burlar o limite de "uma conta por pessoa" em cada serviço. Hipóteses a avaliar: dividir o segredo de identidade entre guardiões (Shamir) e/ou em backup cifrado sob controle do titular; ou registrar "épocas" de segredo no registro, com regras para que serviços tratem transições sem permitir contas duplicadas. Esta é uma das questões de projeto mais importantes do protocolo.
+A recuperação troca **chaves de controle**. Mas o **segredo de identidade**, base dos pseudônimos e *nullifiers* (seção 11.3), também precisa sobreviver. Se for perdido, o titular passaria a ter novos pseudônimos e poderia, em tese, burlar o limite de "uma conta por pessoa" em cada serviço. Hipóteses a avaliar: dividir o segredo de identidade entre guardiões (Shamir) e/ou em backup cifrado sob controle do titular; ou registrar "épocas" de segredo no registro, com regras para que serviços tratem transições sem permitir contas duplicadas. Esta é uma das questões de projeto mais importantes do protocolo. O mesmo vale para os números aleatórios que abrem os compromissos dos atributos (seção 9.7.2): a proposta é derivá-los do segredo de identidade, de modo que recuperar este recupere aqueles (seção 10.8).
 
 ### 10.7 Experiência de uso 🟡
 
 A segurança de qualquer esquema de recuperação depende de que as pessoas consigam usá-lo. A carteira deve guiar a configuração inicial (escolha de guardiões, backup da chave de reserva), testar periodicamente a recuperação ("simulado") e ser compreensível para quem tem baixa familiaridade técnica.
+
+### 10.8 Cenários extremos: perda total sem preparo e tentativa de abuso 🟡
+
+Esta seção registra dois cenários identificados na discussão do projeto e as hipóteses de tratamento. **Nenhuma está testada.** O objetivo é deixá-las documentadas para que a comunidade as critique e proponha soluções melhores.
+
+**10.8.1 Cenário 1: boa-fé, aparelho único, sem backup**
+
+*A situação.* A pessoa tem um único celular, que guarda tudo. Ele é roubado ou perdido. Ela não tem computador, backup nem guardiões configurados.
+
+*O que se perde e o que não se perde.*
+
+| Perde (só existia no aparelho) | Não perde |
+|---|---|
+| Chaves de controle e segredo de identidade | O USI em si, que está no registro público |
+| Números aleatórios que abrem os compromissos dos atributos (seção 9.7.2) | Atestações guardadas pelos emissores (por exemplo, o banco sabe que aquele USI está vinculado ao seu cliente) |
+| Credenciais armazenadas na carteira | Documentos físicos, se a pessoa os tiver (o chip pode ser lido de novo) |
+
+*Diagnóstico das rotas atuais.* As rotas A (outro dispositivo) e B (chave de reserva offline) não existem para essa pessoa. A rota C (guardiões) só existe se foi configurada. Resta a rota D, que exige evidência de nível alto **e** outra rota, o que na prática é inviável para quem não preparou nada. O resultado é um **risco real de perda definitiva da identidade**, contrário ao objetivo G4. Há ainda um problema adicional: sem os números aleatórios, mesmo quem recupera o acesso não consegue provar os atributos já registrados.
+
+*Hipóteses de tratamento* 🟡
+
+1. **A carteira guarda pouco: o telefone guarda o essencial, o mundo guarda o resto.** Os números aleatórios dos atributos passam a ser **derivados do segredo de identidade** (e não sorteados e guardados à parte), de modo que recuperar o segredo recupera todos os compromissos. As credenciais são reemitidas pelos emissores, os documentos são relidos do chip físico, e as atestações já estão nos cadastros dos emissores.
+2. **Âncora de recuperação para subir de nível.** Sem pelo menos uma âncora, o USI permanece no nível 1 e os atributos em C0, quando há pouco a perder. A criação do USI continua livre e gratuita. As âncoras possíveis são:
+   - **backup cifrado** guardado na nuvem do fabricante do aparelho, protegido por uma frase-senha escolhida pelo titular (é o material da rota B). Para quem só tem um celular, é provavelmente o caminho mais realista;
+   - **folha de recuperação** escrita ou impressa (bibliotecas e validadores comunitários podem ajudar a imprimir);
+   - **guardião pessoal**;
+   - **guardião institucional** (banco, biblioteca, ONG, serviço público), para quem não tem uma rede de pessoas de confiança.
+
+   *Compromissos:* a nuvem do fabricante reintroduz uma dependência (reduzida pela cifragem local); frases-senha são esquecidas; e qualquer fricção no cadastro pode afastar justamente quem mais precisa. A exigência vale para subir de nível, não para criar o USI.
+3. **Revalidação assistida por emissores (refinamento da rota D).** Quem não preparou nada recorre a emissores que já atestaram seus atributos e, quando possível, a um ponto de presença física. Cada emissor confere a pessoa com o seu cadastro, que contém o vínculo entre o USI e o cliente, e emite uma **confirmação de recuperação** assinada. Exigência indicativa: duas ou mais confirmações de emissores independentes, ou uma confirmação mais um validador presencial. Quanto mais confirmações, menor a espera.
+   *Riscos e custos:* o emissor precisa oferecer o serviço (custo e responsabilidade, ver seção 13.3 para quem financia); engenharia social contra funcionários do emissor exige procedimento padronizado e verificação forte; o emissor passa a saber que o USI foi recuperado.
+4. **Congelamento rápido assistido por emissor.** A pessoa avisa um emissor, que pode solicitar o congelamento do USI após verificá-la. O congelamento tem **prazo máximo** e expira se a revalidação não for iniciada, o que limita o abuso (alguém fingindo ser a vítima para congelar a conta de outra pessoa).
+5. **Rotação completa após a recuperação** (seção 10.3). As consequências para os pseudônimos nos serviços estão na seção 10.6.
+
+**10.8.2 Cenário 2: má-fé ("perdi tudo, preciso recomeçar")**
+
+*A situação.* A pessoa tem backup e todos os meios de se recuperar, mas alega perda total. O objetivo pode ser obter um segundo USI, zerar um histórico (trocas de atributos, recuperações, penalidades de reputação) ou abrir uma segunda conta num serviço.
+
+*A brecha.* Se "recomeçar" significar criar um **USI novo e independente**, a pessoa passa a ter dois. Na fase A não há registro único de identificador no registro público (seção 9.7.10).
+
+*Regra proposta: recomeçar não cria um USI novo.* 🟡
+- Quem tem atributos atestados (C1 ou mais) ou nível de pessoa 2 ou mais deve usar a **recuperação do mesmo USI** (item 3 acima). A criação de um USI novo não é um caminho aberto para esse caso. Os emissores que já conhecem o vínculo **recusam** vincular um segundo USI ao mesmo cliente.
+- Quem **nunca teve nada atestado** e está no nível 1 não tem o que perder. Para essa pessoa, abrir um novo USI é aceitável. O USI antigo fica órfão e é marcado como inativo após um período. O ganho do abusador, nesse caso, é um segundo USI de confiança zero. Esse resíduo é aceito na fase A.
+
+*Camadas que dificultam o abuso*
+1. **Detecção pelo emissor.** O banco que já vinculou o CPF ao USI 1 percebe a tentativa de vincular o USI 2 ao mesmo cliente. Para que dois USIs cheguem a C3 sem que nenhum emissor veja ambos, a pessoa precisa de pelo menos **o dobro de emissores independentes**, o que eleva muito o custo.
+2. **Contador público de recuperações,** sem revelar a pessoa. Verificadores sensíveis podem exigir "sem recuperações recentes". Repetir "perdi tudo" vira um sinal de risco.
+3. **Níveis altos exigem evidências difíceis de duplicar** (presença física, vários emissores independentes).
+4. **Veto.** Se o aparelho antigo ainda está em poder da pessoa, a própria chave antiga pode vetar o pedido.
+5. **Consequências comprovadas.** Uma recuperação fraudulenta comprovada (por exemplo, quando se descobre que o backup existia) reduz a confiança do USI e pode ir a júri (seção 9.4).
+
+*Resíduo.* Uma pessoa pode ter dois USIs de baixa confiança, usando emissores que nunca se cruzam. Esse resíduo é fechado na fase B, quando o registro único por identificador recusa o segundo USI (seção 9.7.10).
+
+**10.8.3 Proporcionalidade** 🟡
+
+A exigência da recuperação cresce com o que há em jogo.
+
+| Situação | O que há em jogo | Tratamento indicativo |
+|---|---|---|
+| USI sem atributos atestados, nível 1 | Quase nada | Recomeço simples; o USI antigo expira |
+| Atributos C1 a C2 | Médio | Revalidação assistida com duas confirmações; espera curta a média |
+| Atributos C3 a C4 ou nível 3 a 4 | Alto | Revalidação com presença física e emissores; espera longa; veto |
+
+**10.8.4 Pseudônimos e a fase B** 🔴
+
+Recuperar o USI mas perder o segredo de identidade gera novos pseudônimos nos serviços (seção 10.6). Hipótese, ainda não analisada com cuidado: na fase B, o valor usado para garantir "uma conta por pessoa" em cada serviço poderia ser derivado de um segredo calculado a partir do documento físico por meio da técnica da seção 9.7.2, e portanto refeito sem backup. Precisa de análise de privacidade antes de ser considerada.
+
+**10.8.5 Limites e convites à comunidade**
+
+Há uma tensão de fundo: recuperação fácil demais abre a porta ao sequestro e ao abuso; difícil demais destrói a identidade de quem agiu de boa-fé. Este desenho tenta tornar a exigência proporcional, apoiá-la em instituições que já conhecem a pessoa e preparar o titular desde o início. **Ele não elimina o resíduo.** Pontos em que se procuram ideias melhores:
+- alternativas à dependência de emissores e de instituições para quem está isolado;
+- como credenciar guardiões institucionais sem criar novos pontos de controle;
+- como proteger a revalidação assistida contra engenharia social;
+- como distinguir, sem expor ninguém, o recomeço legítimo da tentativa de obter um segundo USI;
+- como preservar a privacidade do vínculo entre o USI e o emissor durante a recuperação.
 
 ## 11. Privacidade
 
@@ -788,6 +863,7 @@ Para evitar decisões baseadas em palpites, o projeto propõe uma série de expe
 | E13 | **Perfil de país: Brasil** | É possível verificar documentos brasileiros de forma criptográfica e offline e derivar um identificador estável da pessoa | Levantamento das especificações oficiais; protótipo de verificação; consulta a especialistas | Ao menos um documento verificável offline com identificador estável, ou conclusão documentada de que não é possível |
 | E14 | **Vínculo de atributos (criptografia)** | É possível registrar *slots* com compromisso, unicidade por OPRF de limiar e prova de vigência em conhecimento zero, com custo viável | Protótipo do *slot*, do *nullifier* com OPRF dividida entre operadores e da apresentação; teste de ataque de dicionário e de privacidade das atestações | Nenhum vazamento de valores por força bruta nos cenários testados; provas em tempo aceitável em celular |
 | E15 | **Modelo de confiança do atributo** | Emissores independentes elevam a confiança de forma confiável e o modelo resiste a ocupação, conluio e identidade sintética | Simulação de emissores honestos e fraudulentos, ataques de ocupação, cartéis e identidades sintéticas; teste com casos de mudança legal de nome | Alta detecção com baixos falsos positivos; nenhum caminho de ocupação sem contestação possível |
+| E16 | **Recuperação sem preparo e abuso** | A revalidação assistida por emissores recupera pessoas de boa-fé com alta taxa de sucesso, e uma equipe de ataque (*red team*) não consegue sequestrar um USI nem obter um segundo USI de confiança alta | Piloto da revalidação assistida com instituições parceiras; simulação de perda total; ataque com engenharia social contra emissores; tentativa de obter dois USIs com emissores disjuntos | Alta taxa de recuperação legítima; nenhum sequestro nem segundo USI com C3 ou mais nos cenários definidos |
 
 Resultados e dados dos experimentos serão **publicados**, inclusive os negativos.
 
@@ -813,6 +889,9 @@ Resultados e dados dos experimentos serão **publicados**, inclusive os negativo
 | Conluio ou cartel de emissores | Média | Alto | Critérios públicos de independência, credenciamento transparente, auditoria |
 | Exposição de pessoas por histórico de mudança de nome | Média | Muito alto | Histórico visível só ao titular e ao júri; consulta a organizações de direitos humanos |
 | Duplicidade de identificadores na fase inicial (sem *nullifier* global) | Alta | Médio | Marca de "unicidade global não verificada"; mais emissores independentes; detecção local pelo emissor; outras camadas de unicidade; ativação futura da OPRF (seção 9.7.10) |
+| Perda definitiva de identidade por pessoas sem preparo | Alta | Alto | Âncoras de recuperação para subir de nível; revalidação assistida por emissores (seção 10.8) |
+| Engenharia social contra emissores na revalidação assistida | Média | Alto | Procedimento padronizado, verificação forte, várias confirmações independentes |
+| Recuperação fraudulenta para obter segunda identidade | Média | Médio | "Recomeçar não cria USI novo", detecção pelo emissor, contador de recuperações, proporcionalidade |
 
 ## 18. Questões em aberto
 
@@ -841,6 +920,10 @@ Resultados e dados dos experimentos serão **publicados**, inclusive os negativo
 23. Como corresponder nomes entre documentos (acentos, abreviações, transliteração)?
 24. Que critérios objetivos ativam a OPRF de limiar (fase B) e como migrar os registros da fase A, incluindo as duplicidades acumuladas? (E14)
 25. Existe uma alternativa melhor que a OPRF de limiar para detectar duplicidade de identificadores de espaço pequeno sem expô-los?
+26. Como garantir que pessoas sem rede de apoio obtenham uma âncora de recuperação sem barreira excessiva de entrada? (E6, E16)
+27. Como incentivar e padronizar a revalidação assistida pelos emissores (custo, responsabilidade, defesa contra engenharia social)? (E16)
+28. Como derivar o segredo de identidade e os números aleatórios dos atributos de modo que sejam recuperáveis sem comprometer a privacidade? (E9, E16)
+29. Como distinguir, sem expor ninguém, o recomeço legítimo da tentativa de obter um segundo USI?
 
 ## 19. Roteiro
 
@@ -849,7 +932,7 @@ Resultados e dados dos experimentos serão **publicados**, inclusive os negativo
 | **1. Whitepaper** | Versão 0.1 (este documento); revisão aberta; versão 0.2 com contribuições |
 | **2. Comunidade e revisão** | Revisão por especialistas; apresentação a comunidades de identidade descentralizada; núcleo inicial de colaboradores |
 | **3. Organização do repositório** | Licenças, `CONTRIBUTING`, código de conduta, processo de USIPs, *issues* para cada questão em aberto |
-| **4. Provas de conceito** | Experimentos E1–E15 conforme prioridade |
+| **4. Provas de conceito** | Experimentos E1–E16 conforme prioridade |
 | **5. Análise jurídica e institucional** | Parecer sobre LGPD e outras normas; desenho da fundação |
 | **6. Financiamento e divulgação** | Submissão a editais; materiais de divulgação; busca de parceiros |
 | **7. Piloto (Brasil)** | Caso de uso inicial com comunidade parceira no Brasil; métricas; relatório público; roteiro de entrada de novos países |
@@ -864,7 +947,7 @@ Este é um rascunho aberto. Para contribuir:
 - **Revisão crítica:** abra uma *issue* apontando erros, lacunas ou riscos que faltam. Críticas fundamentadas são bem-vindas.
 - **Referência a fontes:** a seção 5 e as afirmações técnicas precisam de fontes primárias; ajude a verificar e acrescentar.
 - **Especialistas:** criptografia, sistemas distribuídos, identidade digital, direito de proteção de dados, design de experiência, antropologia/ciências sociais (para inclusão), ética.
-- **Experimentos:** assuma um dos experimentos E1–E15.
+- **Experimentos:** assuma um dos experimentos E1–E16.
 - **Tradução e revisão linguística:** mantenha as versões em português e em inglês sincronizadas.
 
 Todas as alterações significativas devem ser registradas no histórico de versões (seção 22).
@@ -892,3 +975,4 @@ Todas as alterações significativas devem ser registradas no histórico de vers
 | 0.1.1 | 2026-10-23 | Premissa geográfica (piloto no Brasil, desenho sem fronteiras), perfis de país, papel dos governos (apoio sem controle), experimento E13. |
 | 0.1.2 | 2026-10-24 | Vínculo entre USI e atributos de identidade (seção 9.7): atributos-chave, confiança do atributo, ocupação de identidade, nome social e mudança legal de nome; experimentos E14 e E15. |
 | 0.1.3 | 2026-10-24 | Seção 9.7.10: alternativa descartada (chave aleatória individual) e implantação em fases da unicidade de identificadores (fase A sem *nullifier*, fase B com OPRF de limiar). |
+| 0.1.4 | 2026-10-24 | Seção 10.8: cenários extremos de recuperação (perda total sem preparo e tentativa de abuso), âncoras de recuperação, revalidação assistida por emissores, regra "recomeçar não cria USI novo" e proporcionalidade; experimento E16. |

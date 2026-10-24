@@ -2,7 +2,7 @@
 
 🌐 **English** · [Português (Brasil)](whitepaper.pt-BR.md)
 
-**Version 0.1.3 — open draft, open to collaboration** · October 2026
+**Version 0.1.4 — open draft, open to collaboration** · October 2026
 Companion to the [README](../README.md).
 
 > **How to read this document.** USI is in the conception phase. This whitepaper gathers what is known, proposes paths and states what is still unknown. Each section is tagged with its maturity:
@@ -541,11 +541,86 @@ ACTIVE ──(recovery request)──► WAITING ──(period elapsed, no veto)
 
 ### 10.6 Which secret is recovered? 🔴
 
-Recovery swaps **control keys**. But the **identity secret**, the basis of pseudonyms and *nullifiers* (section 11.3), must also survive. If lost, the holder would get new pseudonyms and could in theory circumvent the "one account per person" limit at each service. Hypotheses to evaluate: splitting the identity secret among guardians (Shamir) and/or in an encrypted backup under the holder's control; or recording secret "epochs" in the registry, with rules so services handle transitions without allowing duplicate accounts. This is one of the protocol's most important design questions.
+Recovery swaps **control keys**. But the **identity secret**, the basis of pseudonyms and *nullifiers* (section 11.3), must also survive. If lost, the holder would get new pseudonyms and could in theory circumvent the "one account per person" limit at each service. Hypotheses to evaluate: splitting the identity secret among guardians (Shamir) and/or in an encrypted backup under the holder's control; or recording secret "epochs" in the registry, with rules so services handle transitions without allowing duplicate accounts. This is one of the protocol's most important design questions. The same applies to the random numbers that open the attribute commitments (section 9.7.2): the proposal is to derive them from the identity secret, so that recovering the latter recovers the former (section 10.8).
 
 ### 10.7 User experience 🟡
 
 The security of any recovery scheme depends on people being able to use it. The wallet must guide initial setup (choosing guardians, backing up the backup key), periodically test recovery (a "drill") and be understandable to people with low technical familiarity.
+
+### 10.8 Extreme scenarios: total loss without preparation and attempted abuse 🟡
+
+This section records two scenarios identified in the project discussion and the hypotheses for handling them. **None has been tested.** The aim is to have them documented so the community can critique them and propose better solutions.
+
+**10.8.1 Scenario 1: good faith, single device, no backup**
+
+*The situation.* The person has a single phone, which holds everything. It is stolen or lost. They have no computer, backup or configured guardians.
+
+*What is lost and what is not.*
+
+| Lost (existed only on the device) | Not lost |
+|---|---|
+| Control keys and identity secret | The USI itself, which is in the public registry |
+| Random numbers that open the attribute commitments (section 9.7.2) | Attestations held by issuers (for example, the bank knows that USI is linked to its customer) |
+| Credentials stored in the wallet | Physical documents, if the person has them (the chip can be read again) |
+
+*Diagnosis of current routes.* Routes A (another device) and B (offline backup key) do not exist for this person. Route C (guardians) exists only if configured. Route D remains, which requires high-level evidence **and** another route, and in practice is infeasible for someone who prepared nothing. The result is a **real risk of permanent loss of identity**, contrary to goal G4. There is an additional problem: without the random numbers, even a person who regains access cannot prove the attributes already registered.
+
+*Treatment hypotheses* 🟡
+
+1. **The wallet stores little: the phone holds the essentials, the world holds the rest.** The attributes' random numbers are **derived from the identity secret** (rather than drawn and stored separately), so recovering the secret recovers all commitments. Credentials are reissued by issuers, documents are read again from the physical chip, and attestations already sit in issuers' records.
+2. **Recovery anchor to move up a level.** Without at least one anchor, the USI stays at level 1 and attributes at C0, when there is little to lose. Creating a USI remains free and unrestricted. Possible anchors are:
+   - **encrypted backup** kept in the device maker's cloud, protected by a passphrase the holder chooses (this is the route B material). For someone with a single phone it is probably the most realistic path;
+   - a **recovery sheet**, written or printed (libraries and community validators can help print it);
+   - a **personal guardian**;
+   - an **institutional guardian** (bank, library, NGO, public service), for people without a network of trusted individuals.
+
+   *Trade-offs:* the maker's cloud reintroduces a dependency (reduced by local encryption); passphrases get forgotten; and any friction at sign-up can deter exactly those who need it most. The requirement applies to moving up a level, not to creating the USI.
+3. **Issuer-assisted re-validation (a refinement of route D).** Those who prepared nothing turn to issuers that already attested their attributes and, where possible, to a physical presence point. Each issuer checks the person against its own records, which contain the link between the USI and the customer, and issues a signed **recovery confirmation**. Indicative requirement: two or more confirmations from independent issuers, or one confirmation plus an in-person validator. The more confirmations, the shorter the wait.
+   *Risks and costs:* the issuer must offer the service (cost and liability; see section 13.3 on who funds it); social engineering against issuer staff requires a standardized procedure and strong verification; the issuer learns that the USI was recovered.
+4. **Issuer-assisted quick freeze.** The person alerts an issuer, which may request that the USI be frozen after verifying them. The freeze has a **maximum duration** and expires if re-validation is not started, which limits abuse (someone pretending to be the victim to freeze another person's account).
+5. **Full rotation after recovery** (section 10.3). The consequences for pseudonyms at services are in section 10.6.
+
+**10.8.2 Scenario 2: bad faith ("I lost everything, I need to start over")**
+
+*The situation.* The person has backups and every means of recovering, but claims total loss. The aim may be to obtain a second USI, to wipe a history (attribute changes, recoveries, reputation penalties) or to open a second account at a service.
+
+*The loophole.* If "starting over" means creating a **new, independent USI**, the person ends up with two. In phase A there is no unique-identifier record in the public registry (section 9.7.10).
+
+*Proposed rule: starting over does not create a new USI.* 🟡
+- Those with attested attributes (C1 or higher) or person level 2 or higher must use **recovery of the same USI** (item 3 above). Creating a new USI is not an open path in this case. Issuers that already know the link **refuse** to bind a second USI to the same customer.
+- Those who **never had anything attested** and are at level 1 have nothing to lose. For them, opening a new USI is acceptable. The old USI becomes orphaned and is marked inactive after a period. The abuser's gain in this case is a second USI with zero trust. This residue is accepted in phase A.
+
+*Layers that hinder abuse*
+1. **Detection by the issuer.** The bank that already linked the CPF to USI 1 notices the attempt to link USI 2 to the same customer. For two USIs to reach C3 without any issuer seeing both, the person needs at least **twice as many independent issuers**, which raises the cost considerably.
+2. **Public recovery counter,** without identifying the person. Sensitive verifiers may require "no recent recoveries". Repeating "I lost everything" becomes a risk signal.
+3. **High levels require evidence that is hard to duplicate** (physical presence, several independent issuers).
+4. **Veto.** If the old device is still in the person's possession, the old key itself can veto the request.
+5. **Proven consequences.** A proven fraudulent recovery (for example, when it turns out the backup existed) reduces the USI's trust and may go to a jury (section 9.4).
+
+*Residue.* A person may hold two low-trust USIs, using issuers that never overlap. This residue is closed in phase B, when the unique-identifier record refuses the second USI (section 9.7.10).
+
+**10.8.3 Proportionality** 🟡
+
+The demands of recovery grow with what is at stake.
+
+| Situation | What is at stake | Indicative handling |
+|---|---|---|
+| USI with no attested attributes, level 1 | Almost nothing | Simple restart; the old USI expires |
+| Attributes C1 to C2 | Medium | Assisted re-validation with two confirmations; short to medium wait |
+| Attributes C3 to C4 or level 3 to 4 | High | Re-validation with physical presence and issuers; long wait; veto |
+
+**10.8.4 Pseudonyms and phase B** 🔴
+
+Recovering the USI but losing the identity secret yields new pseudonyms at services (section 10.6). A hypothesis, not yet carefully analysed: in phase B, the value used to ensure "one account per person" at each service could be derived from a secret computed from the physical document through the technique in section 9.7.2, and so be rebuilt without a backup. It needs privacy analysis before being considered.
+
+**10.8.5 Limits and invitations to the community**
+
+There is a fundamental tension: recovery that is too easy opens the door to hijacking and abuse; too hard destroys the identity of those who acted in good faith. This design tries to make the demands proportional, to lean on institutions that already know the person and to prepare the holder from the start. **It does not eliminate the residue.** Points where better ideas are sought:
+- alternatives to depending on issuers and institutions for people who are isolated;
+- how to accredit institutional guardians without creating new control points;
+- how to protect assisted re-validation against social engineering;
+- how to tell, without exposing anyone, a legitimate restart from an attempt to obtain a second USI;
+- how to preserve the privacy of the link between USI and issuer during recovery.
 
 ## 11. Privacy
 
@@ -788,6 +863,7 @@ To avoid decisions based on guesses, the project proposes a series of experiment
 | E13 | **Country profile: Brazil** | Brazilian documents can be verified cryptographically and offline and a stable person identifier derived | Survey of official specifications; verification prototype; expert consultation | At least one document verifiable offline with a stable identifier, or a documented conclusion that it is not possible |
 | E14 | **Attribute binding (cryptography)** | Slots with commitment, threshold-OPRF uniqueness and zero-knowledge proof of currency can be built at viable cost | Prototype of the slot, of the *nullifier* with OPRF split among operators and of presentation; dictionary-attack and attestation-privacy tests | No leakage of values by brute force in tested scenarios; proofs in acceptable time on a phone |
 | E15 | **Attribute trust model** | Independent issuers raise trust reliably and the model resists squatting, collusion and synthetic identity | Simulation of honest and fraudulent issuers, squatting attacks, cartels and synthetic identities; tests with legal name-change cases | High detection with low false positives; no squatting path without a possible challenge |
+| E16 | **Unprepared recovery and abuse** | Issuer-assisted re-validation recovers good-faith people at a high success rate, and a red team can neither hijack a USI nor obtain a second high-trust USI | Pilot of assisted re-validation with partner institutions; total-loss simulation; social-engineering attacks against issuers; attempts to obtain two USIs with disjoint issuers | High legitimate recovery rate; no hijack or second USI at C3 or above in the defined scenarios |
 
 Results and data from the experiments will be **published**, including negative ones.
 
@@ -813,6 +889,9 @@ Results and data from the experiments will be **published**, including negative 
 | Collusion or cartel of issuers | Medium | High | Public independence criteria, transparent accreditation, audit |
 | Exposure of people through name-change history | Medium | Very high | History visible only to the holder and jury; consultation with human-rights organizations |
 | Identifier duplication in the initial phase (no global *nullifier*) | High | Medium | "Global uniqueness not verified" mark; more independent issuers; local detection by the issuer; other uniqueness layers; future OPRF activation (section 9.7.10) |
+| Permanent loss of identity by unprepared people | High | High | Recovery anchors to move up a level; issuer-assisted re-validation (section 10.8) |
+| Social engineering against issuers in assisted re-validation | Medium | High | Standardized procedure, strong verification, several independent confirmations |
+| Fraudulent recovery to obtain a second identity | Medium | Medium | "Starting over does not create a new USI", detection by the issuer, recovery counter, proportionality |
 
 ## 18. Open questions
 
@@ -841,6 +920,10 @@ Results and data from the experiments will be **published**, including negative 
 23. How should names be matched across documents (accents, abbreviations, transliteration)?
 24. Which objective criteria activate the threshold OPRF (phase B), and how should phase A records be migrated, including accumulated duplicates? (E14)
 25. Is there a better alternative to the threshold OPRF for detecting duplicates of small-space identifiers without exposing them?
+26. How can people without a support network obtain a recovery anchor without an excessive entry barrier? (E6, E16)
+27. How can assisted re-validation by issuers be incentivised and standardized (cost, liability, defence against social engineering)? (E16)
+28. How can the identity secret and the attributes' random numbers be derived so that they are recoverable without compromising privacy? (E9, E16)
+29. How can a legitimate restart be told apart, without exposing anyone, from an attempt to obtain a second USI?
 
 ## 19. Roadmap
 
@@ -849,7 +932,7 @@ Results and data from the experiments will be **published**, including negative 
 | **1. Whitepaper** | Version 0.1 (this document); open review; version 0.2 with contributions |
 | **2. Community and review** | Expert review; presentation to decentralized identity communities; initial core of collaborators |
 | **3. Repository organization** | Licences, `CONTRIBUTING`, code of conduct, USIP process, issues for each open question |
-| **4. Proofs of concept** | Experiments E1–E15 by priority |
+| **4. Proofs of concept** | Experiments E1–E16 by priority |
 | **5. Legal and institutional analysis** | Opinion on LGPD and other rules; foundation design |
 | **6. Funding and outreach** | Grant applications; outreach material; partner search |
 | **7. Pilot (Brazil)** | Initial use case with a partner community in Brazil; metrics; public report; checklist for admitting new countries |
@@ -864,7 +947,7 @@ This is an open draft. To contribute:
 - **Critical review:** open an issue pointing out errors, gaps or missing risks. Well-founded criticism is welcome.
 - **Source references:** section 5 and the technical claims need primary sources; help verify and add them.
 - **Specialists:** cryptography, distributed systems, digital identity, data protection law, experience design, anthropology/social sciences (for inclusion), ethics.
-- **Experiments:** take on one of experiments E1–E15.
+- **Experiments:** take on one of experiments E1–E16.
 - **Translation and language review:** keep the Portuguese and English versions in sync.
 
 All significant changes must be recorded in the version history (section 22).
@@ -892,3 +975,4 @@ All significant changes must be recorded in the version history (section 22).
 | 0.1.1 | 2026-10-23 | Geographic premise (pilot in Brazil, design without borders), country profiles, role of governments (support without control), experiment E13. |
 | 0.1.2 | 2026-10-24 | Binding between USI and identity attributes (section 9.7): key attributes, attribute trust, identity squatting, social name and legal name change; experiments E14 and E15. |
 | 0.1.3 | 2026-10-24 | Section 9.7.10: discarded alternative (individual random key) and phased rollout of identifier uniqueness (phase A without *nullifier*, phase B with threshold OPRF). |
+| 0.1.4 | 2026-10-24 | Section 10.8: extreme recovery scenarios (total loss without preparation and attempted abuse), recovery anchors, issuer-assisted re-validation, the "starting over does not create a new USI" rule and proportionality; experiment E16. |
