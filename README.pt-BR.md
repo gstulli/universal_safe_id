@@ -4,14 +4,14 @@
 
 **Uma identidade pessoal universal, única, privada e recuperável, construída como bem público, sobre código aberto e um registro público verificável.**
 
-> **Status:** concepção, com a **primeira versão do [whitepaper](docs/whitepaper.pt-BR.md) publicada (v0.1.2)**. O whitepaper detalha o modelo de ameaças, a arquitetura, as alternativas em disputa e um plano de 15 experimentos para decidir entre elas. **É um rascunho aberto à colaboração**: críticas, correções e contribuições são bem-vindas (ver [Como contribuir](#15-como-contribuir)). Nada aqui é definitivo: as propostas são hipóteses a serem testadas, medidas e ajustadas à medida que o projeto amadurece.
+> **Status:** concepção, com a **primeira versão do [whitepaper](docs/whitepaper.pt-BR.md) publicada (v0.1.3)**. O whitepaper detalha o modelo de ameaças, a arquitetura, as alternativas em disputa e um plano de 15 experimentos para decidir entre elas. **É um rascunho aberto à colaboração**: críticas, correções e contribuições são bem-vindas (ver [Como contribuir](#15-como-contribuir)). Nada aqui é definitivo: as propostas são hipóteses a serem testadas, medidas e ajustadas à medida que o projeto amadurece.
 
 **Documentos:**
 
 | Documento | Português | English |
 |---|---|---|
 | Visão geral do projeto | [README.pt-BR.md](README.pt-BR.md) | [README.md](README.md) |
-| Whitepaper v0.1.2 | [docs/whitepaper.pt-BR.md](docs/whitepaper.pt-BR.md) | [docs/whitepaper.md](docs/whitepaper.md) |
+| Whitepaper v0.1.3 | [docs/whitepaper.pt-BR.md](docs/whitepaper.pt-BR.md) | [docs/whitepaper.md](docs/whitepaper.md) |
 
 ---
 
@@ -218,7 +218,9 @@ Ter um único USI por pessoa não basta: é preciso também evitar que a mesma p
 - **Ocupação de identidade alheia:** vence a evidência mais forte (prova criptográfica do documento original, mais atestações), e não quem chegou primeiro. Disputas vão a júri.
 - **Nome social e mudança legal de nome:** são tratados à parte e sempre apresentados com rótulo de tipo. A mudança por ato legal tem caminho próprio, preservando a continuidade do USI e sem expor o nome anterior a terceiros.
 
-O USI **não torna uma informação verdadeira**: garante que ela é única e mede o quanto se pode confiar nela. A veracidade é garantida por quem a verifica. Detalhes na [seção 9.7 do whitepaper](docs/whitepaper.pt-BR.md).
+- **Unicidade do identificador em fases:** na rede inicial, identificadores como o CPF **não** são expostos no registro, e a possibilidade de duplicidade é aceita e mitigada por outras camadas (mais verificações, detecção pelo emissor, outras evidências de unicidade). Quando a rede for grande e descentralizada, uma técnica criptográfica (OPRF de limiar) será ativada como melhoria prevista.
+
+O USI **não torna uma informação verdadeira**: garante que ela é única e mede o quanto se pode confiar nela. A veracidade é garantida por quem a verifica. Detalhes na [seção 9.7 do whitepaper](docs/whitepaper.pt-BR.md), inclusive a discussão de alternativas descartadas, aberta a novas ideias.
 
 ## 7. Recuperação de acesso
 
@@ -368,7 +370,7 @@ Uma identidade só tem valor se for aceita, e só é aceita se as pessoas a tive
 Ações propostas para tirar o projeto do papel, em ordem aproximada:
 
 ### Etapa 1 – Whitepaper
-- [x] Redigir a primeira versão do whitepaper ([v0.1.2](docs/whitepaper.pt-BR.md)), detalhando: modelo de ameaças, arquitetura das três camadas, modelo de unicidade e níveis de garantia, protocolo de recuperação, opções de registro público, modelo de sustentabilidade, plano de governança e plano de experimentos.
+- [x] Redigir a primeira versão do whitepaper ([v0.1.3](docs/whitepaper.pt-BR.md)), detalhando: modelo de ameaças, arquitetura das três camadas, modelo de unicidade e níveis de garantia, protocolo de recuperação, opções de registro público, modelo de sustentabilidade, plano de governança e plano de experimentos.
 - [x] Publicar o rascunho neste repositório para comentários abertos.
 - [ ] Aprofundar o levantamento da literatura e das experiências anteriores em identidade descentralizada e prova de pessoa única, com fontes primárias (a seção 5 do whitepaper é um resumo inicial e precisa ser verificada).
 - [ ] Incorporar as contribuições recebidas e publicar a versão 0.2.
@@ -435,10 +437,11 @@ Hipóteses e decisões que dependem de pesquisa e de testes:
 - Como calcular a unicidade de CPFs e números de documento sem permitir ataque de dicionário?
 - Como definir "emissor independente" e quem credencia os emissores?
 - Como permitir a mudança legal de nome sem expor o histórico do titular?
+- Que critérios ativam a técnica criptográfica de unicidade de identificadores na rede madura, e existe alternativa melhor?
 
 ## 15. Como contribuir
 
-O projeto está no início e toda contribuição é bem-vinda, **a começar pela leitura crítica do [whitepaper v0.1.2](docs/whitepaper.pt-BR.md)**. Especialmente de pessoas com experiência em:
+O projeto está no início e toda contribuição é bem-vinda, **a começar pela leitura crítica do [whitepaper v0.1.3](docs/whitepaper.pt-BR.md)**. Especialmente de pessoas com experiência em:
 
 - criptografia e protocolos de segurança;
 - identidade digital e padrões W3C;

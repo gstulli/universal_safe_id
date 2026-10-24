@@ -2,7 +2,7 @@
 
 🌐 [English](whitepaper.md) · **Português (Brasil)**
 
-**Versão 0.1.2 — rascunho aberto à colaboração** · Outubro de 2026
+**Versão 0.1.3 — rascunho aberto à colaboração** · Outubro de 2026
 Documento complementar ao [README](../README.pt-BR.md).
 
 > **Como ler este documento.** O USI está em fase de concepção. Este whitepaper reúne o que se sabe, propõe caminhos e declara o que ainda não se sabe. Cada seção indica o seu grau de maturidade:
@@ -302,7 +302,7 @@ Cada USI acumula evidências de categorias distintas. Nenhuma é obrigatória is
 
 #### 9.2.2 Prova documental com conhecimento zero 🟡
 
-- **Mecanismo:** para quem possui documento com chip e assinatura digital verificável (como passaportes eletrônicos), o titular prova, dentro de uma prova de conhecimento zero, que (a) o documento é autêntico, (b) está válido e (c) deriva dele um ***nullifier*** determinístico. O registro guarda apenas o *nullifier*; um segundo cadastro com o mesmo documento produz o mesmo *nullifier* e é recusado.
+- **Mecanismo:** para quem possui documento com chip e assinatura digital verificável (como passaportes eletrônicos), o titular prova, dentro de uma prova de conhecimento zero, que (a) o documento é autêntico, (b) está válido e (c) deriva dele um ***nullifier*** determinístico. O registro guarda apenas o *nullifier*; um segundo cadastro com o mesmo documento produz o mesmo *nullifier* e é recusado. *Na fase inicial da rede, o *nullifier* não é publicado, e a duplicidade é mitigada de outras formas (seção 9.7.10).*
 - **Vantagem:** aproveita a unicidade que Estados já estabelecem, sem criar base de documentos e sem revelar dados.
 - **Limitações que precisam ser reconhecidas:**
   - A unicidade é **por documento**, não **por pessoa**. Quem tem múltiplos documentos (dupla nacionalidade, passaporte renovado com novo número) pode, em princípio, produzir múltiplos *nullifiers*. Mitigações a investigar: derivar o *nullifier* de campos estáveis da pessoa (e não do número do documento), o que exige análise cuidadosa de privacidade; e cruzamento com outras camadas. Ver **perfis de país**, a seguir.
@@ -404,7 +404,7 @@ O **nome é chave no sentido de ser imutável e vinculado ao USI**, mas **não �
 
 **9.7.2 Como o vínculo é registrado**
 - Para cada USI e tipo de atributo existe um único **espaço (*slot*)**. O valor vigente fica na carteira do titular. O registro guarda apenas um **compromisso criptográfico** do valor e metadados mínimos (tipo, país, data, contador de trocas).
-- **Unicidade entre USIs.** Para impedir que o mesmo CPF seja vinculado a dois USIs, o registro guarda um *nullifier* do identificador. Atenção: CPFs e números de documento têm um espaço pequeno de valores possíveis, e um *hash* simples seria revertido por força bruta (ataque de dicionário). Hipótese: calcular o *nullifier* com uma **função pseudoaleatória oblívia (OPRF) cuja chave é dividida entre vários operadores** (criptografia de limiar), com limite de consultas, de modo que nenhum operador, sozinho, consiga testar CPFs. 🔴 Isso vale também para o *nullifier* documental (seção 9.2.2).
+- **Unicidade entre USIs.** Para impedir que o mesmo CPF seja vinculado a dois USIs, o registro guarda um *nullifier* do identificador. Atenção: CPFs e números de documento têm um espaço pequeno de valores possíveis, e um *hash* simples seria revertido por força bruta (ataque de dicionário). Hipótese: calcular o *nullifier* com uma **função pseudoaleatória oblívia (OPRF) cuja chave é dividida entre vários operadores** (criptografia de limiar), com limite de consultas, de modo que nenhum operador, sozinho, consiga testar CPFs. 🔴 Isso vale também para o *nullifier* documental (seção 9.2.2). A alternativa descartada e a implantação em fases, com a OPRF só na rede madura, estão na seção 9.7.10.
 - **Apresentação.** O titular revela o valor que quiser (por exemplo, o CPF) e prova, em conhecimento zero, que é o valor vigente no *slot* do seu USI, com confiança igual ou superior à exigida, sem revelar mais nada.
 
 **9.7.3 Confiança do atributo**
@@ -460,6 +460,39 @@ Onde há apoio de um governo (seção 14.5), credenciais assinadas pela **fonte 
 - Depende de emissores confiáveis e **independentes**. Um cartel ou conluio de emissores pode inflar a confiança. Mitigações: critérios públicos de independência, credenciamento transparente, auditoria amostral e perda de credenciamento.
 - Quem credencia os emissores e com quais critérios é uma questão de governança em aberto (seção 14).
 - Exige que a carteira comunique com clareza que os atributos-chave são permanentes, para evitar frustração do titular.
+
+**9.7.10 Unicidade dos identificadores: alternativa descartada e implantação em fases**
+
+*Alternativa considerada e descartada: chave aleatória individual.* Combinar o CPF com um número aleatório que só o titular guarda (um compromisso criptográfico oculto) protege contra o ataque de dicionário: sem o número aleatório, ninguém consegue testar CPFs. É exatamente o que o *slot* do atributo já usa para esconder o valor. Mas **não serve para detectar duplicidade**: dois registros do mesmo CPF, com números aleatórios diferentes, produzem valores completamente diferentes, e o sistema não percebe a repetição.
+
+O impasse é de fundo:
+- para detectar duplicidade, **todos precisam calcular o mesmo valor** a partir do mesmo CPF;
+- se todos calculam o mesmo valor, **quem conhecer o cálculo** pode testar todos os CPFs possíveis.
+
+A saída conhecida é a OPRF de limiar (seção 9.7.2): um segredo comum ao sistema, mas que nenhum operador possui sozinho. É a hipótese mais sólida identificada até agora, não uma certeza. **Alternativas melhores são bem-vindas** (questão em aberto 19).
+
+*Implantação em fases.* Um registro público é permanente. Qualquer valor derivado de um CPF gravado antes de a rede ser grande e diversa fica exposto para sempre se o segredo da OPRF vier a ser comprometido, e a segurança da OPRF de limiar depende de haver muitos operadores independentes. Por isso, propõe-se:
+
+**Fase A: rede inicial (piloto e crescimento)** 🟡
+- **Nenhum *nullifier* de identificador único** (CPF, número de passaporte) é gravado no registro. O *slot* guarda apenas o compromisso oculto, com o número aleatório do titular.
+- **Aceita-se explicitamente que a duplicidade de identificador é possível.** Mitigações combinadas:
+  1. as demais camadas de unicidade de pessoa (vínculo social, presença física, contestação);
+  2. **mais verificações:** níveis altos de confiança do atributo exigem mais emissores independentes;
+  3. **detecção local pelo emissor,** que vê o CPF em claro: um banco percebe, dentro da sua própria base, que o mesmo CPF foi apresentado por dois USIs, e pode recusar a atestação ou sinalizar o caso;
+  4. **verificação governamental,** onde houver apoio (seção 14.5): a credencial da fonte primária garante a **veracidade** do dado (C4). Atenção: ela **não** garante que exista um único USI vinculado ao CPF, porque isso exigiria que o governo guardasse a relação USI↔CPF, o que contraria o princípio de que o Estado não sabe quem usa o USI.
+- O atributo carrega uma marca explícita de **"unicidade global não verificada"**, para que nenhum verificador a pressuponha. Usos sensíveis à duplicidade (como distribuição de benefícios) devem apoiar-se nas outras camadas.
+- A camada documental (seção 9.2.2) comprova a autenticidade do documento, mas **não publica *nullifier*** nessa fase; seu peso como evidência de unicidade é reduzido.
+
+**Fase B: rede madura** 🟡
+- A OPRF de limiar é ativada como **melhoria já prevista**, mediante critérios objetivos e públicos:
+  1. experimento E14 concluído com sucesso e protocolo auditado de forma independente;
+  2. número mínimo de operadores independentes, em jurisdições diversas, respeitados os limites de concentração (seção 14.3);
+  3. governança ao menos na fase 1 (seção 14.1);
+  4. aprovação por USIP.
+- **Migração.** Cada titular, pela carteira, reapresenta o valor do *slot* e gera o *nullifier* sem expô-lo. As duplicidades acumuladas na fase A aparecem nesse momento e seguem o processo de contestação (seções 9.4 e 9.7.6): vence a evidência mais forte e os demais perdem confiança naquele identificador. A migração tem janela de prazo; *slots* não migrados ficam limitados a uma confiança menor (por exemplo, no máximo C2) e marcados como tal.
+- A **rotação da chave do sistema** exige um protocolo de re-derivação dos valores. 🔴 *Em aberto.*
+
+*Custos aceitos na fase A:* duplicidade possível, mais fricção para atingir confiança alta e uma migração futura com possíveis conflitos. *Benefício:* nada que possa ser revertido por força bruta é gravado de forma permanente antes de a rede ter a diversidade necessária para protegê-lo.
 
 ## 10. Recuperação de acesso
 
@@ -779,6 +812,7 @@ Resultados e dados dos experimentos serão **publicados**, inclusive os negativo
 | Identidade sintética com documentos falsos de boa qualidade | Média | Alto | Emissores responsáveis, prova criptográfica, contestação, revogação de atestações |
 | Conluio ou cartel de emissores | Média | Alto | Critérios públicos de independência, credenciamento transparente, auditoria |
 | Exposição de pessoas por histórico de mudança de nome | Média | Muito alto | Histórico visível só ao titular e ao júri; consulta a organizações de direitos humanos |
+| Duplicidade de identificadores na fase inicial (sem *nullifier* global) | Alta | Médio | Marca de "unicidade global não verificada"; mais emissores independentes; detecção local pelo emissor; outras camadas de unicidade; ativação futura da OPRF (seção 9.7.10) |
 
 ## 18. Questões em aberto
 
@@ -805,6 +839,8 @@ Resultados e dados dos experimentos serão **publicados**, inclusive os negativo
 21. Como definir "emissor independente", quem credencia os emissores e como evitar conluio? (E15)
 22. Como permitir a mudança legal de nome sem expor o histórico do titular? (E15)
 23. Como corresponder nomes entre documentos (acentos, abreviações, transliteração)?
+24. Que critérios objetivos ativam a OPRF de limiar (fase B) e como migrar os registros da fase A, incluindo as duplicidades acumuladas? (E14)
+25. Existe uma alternativa melhor que a OPRF de limiar para detectar duplicidade de identificadores de espaço pequeno sem expô-los?
 
 ## 19. Roteiro
 
@@ -855,3 +891,4 @@ Todas as alterações significativas devem ser registradas no histórico de vers
 | 0.1 | 2026-10-23 | Primeiro rascunho, aberto à colaboração. |
 | 0.1.1 | 2026-10-23 | Premissa geográfica (piloto no Brasil, desenho sem fronteiras), perfis de país, papel dos governos (apoio sem controle), experimento E13. |
 | 0.1.2 | 2026-10-24 | Vínculo entre USI e atributos de identidade (seção 9.7): atributos-chave, confiança do atributo, ocupação de identidade, nome social e mudança legal de nome; experimentos E14 e E15. |
+| 0.1.3 | 2026-10-24 | Seção 9.7.10: alternativa descartada (chave aleatória individual) e implantação em fases da unicidade de identificadores (fase A sem *nullifier*, fase B com OPRF de limiar). |

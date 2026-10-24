@@ -4,14 +4,14 @@
 
 **A universal personal identity that is unique, private and recoverable, built as a public good on open source code and a verifiable public registry.**
 
-> **Status:** conception phase, with the **first version of the [whitepaper](docs/whitepaper.md) published (v0.1.2)**. The whitepaper details the threat model, the architecture, the alternatives still in dispute and a plan of 15 experiments to decide among them. **It is an open draft, open to collaboration**: criticism, corrections and contributions are welcome (see [How to contribute](#15-how-to-contribute)). Nothing here is final: the proposals are hypotheses to be tested, measured and adjusted as the project matures.
+> **Status:** conception phase, with the **first version of the [whitepaper](docs/whitepaper.md) published (v0.1.3)**. The whitepaper details the threat model, the architecture, the alternatives still in dispute and a plan of 15 experiments to decide among them. **It is an open draft, open to collaboration**: criticism, corrections and contributions are welcome (see [How to contribute](#15-how-to-contribute)). Nothing here is final: the proposals are hypotheses to be tested, measured and adjusted as the project matures.
 
 **Documents:**
 
 | Document | English | Português |
 |---|---|---|
 | Project overview | [README.md](README.md) | [README.pt-BR.md](README.pt-BR.md) |
-| Whitepaper v0.1.2 | [docs/whitepaper.md](docs/whitepaper.md) | [docs/whitepaper.pt-BR.md](docs/whitepaper.pt-BR.md) |
+| Whitepaper v0.1.3 | [docs/whitepaper.md](docs/whitepaper.md) | [docs/whitepaper.pt-BR.md](docs/whitepaper.pt-BR.md) |
 
 ---
 
@@ -218,7 +218,9 @@ Having a single USI per person is not enough: we must also prevent the same pers
 - **Squatting on someone else's identity:** the stronger evidence wins (cryptographic proof of the original document, plus attestations), not whoever arrived first. Disputes go to a jury.
 - **Social name and legal name change:** handled separately and always presented with a type label. A change by legal act has its own path, preserving USI continuity and without exposing the previous name to third parties.
 
-USI **does not make information true**: it guarantees it is unique and measures how far it can be trusted. Truth is guaranteed by whoever verifies it. Details in [section 9.7 of the whitepaper](docs/whitepaper.md).
+- **Identifier uniqueness in phases:** in the initial network, identifiers such as the CPF are **not** exposed in the registry, and the possibility of duplication is accepted and mitigated by other layers (more verifications, detection by the issuer, other uniqueness evidence). Once the network is large and decentralized, a cryptographic technique (threshold OPRF) will be activated as a planned improvement.
+
+USI **does not make information true**: it guarantees it is unique and measures how far it can be trusted. Truth is guaranteed by whoever verifies it. Details in [section 9.7 of the whitepaper](docs/whitepaper.md), including the discussion of discarded alternatives, open to new ideas.
 
 ## 7. Access recovery
 
@@ -368,7 +370,7 @@ An identity is only valuable if accepted, and only accepted if people hold it. T
 Proposed actions to get the project off the ground, in approximate order:
 
 ### Stage 1 – Whitepaper
-- [x] Write the first version of the whitepaper ([v0.1.2](docs/whitepaper.md)), detailing: threat model, three-layer architecture, uniqueness model and assurance levels, recovery protocol, public registry options, sustainability model, governance plan and experiment plan.
+- [x] Write the first version of the whitepaper ([v0.1.3](docs/whitepaper.md)), detailing: threat model, three-layer architecture, uniqueness model and assurance levels, recovery protocol, public registry options, sustainability model, governance plan and experiment plan.
 - [x] Publish the draft in this repository for open comments.
 - [ ] Deepen the survey of literature and prior experience in decentralized identity and proof of personhood, with primary sources (section 5 of the whitepaper is an initial summary and needs verification).
 - [ ] Incorporate the contributions received and publish version 0.2.
@@ -435,10 +437,11 @@ Hypotheses and decisions that depend on research and testing:
 - How can uniqueness of CPFs and document numbers be computed without allowing a dictionary attack?
 - How should "independent issuer" be defined, and who accredits issuers?
 - How can a legal name change be allowed without exposing the holder's history?
+- Which criteria activate the cryptographic identifier-uniqueness technique in the mature network, and is there a better alternative?
 
 ## 15. How to contribute
 
-The project is at an early stage and every contribution is welcome, **starting with a critical reading of the [whitepaper v0.1.2](docs/whitepaper.md)**. Especially from people with experience in:
+The project is at an early stage and every contribution is welcome, **starting with a critical reading of the [whitepaper v0.1.3](docs/whitepaper.md)**. Especially from people with experience in:
 
 - cryptography and security protocols;
 - digital identity and W3C standards;

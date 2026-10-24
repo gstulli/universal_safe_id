@@ -2,7 +2,7 @@
 
 🌐 **English** · [Português (Brasil)](whitepaper.pt-BR.md)
 
-**Version 0.1.2 — open draft, open to collaboration** · October 2026
+**Version 0.1.3 — open draft, open to collaboration** · October 2026
 Companion to the [README](../README.md).
 
 > **How to read this document.** USI is in the conception phase. This whitepaper gathers what is known, proposes paths and states what is still unknown. Each section is tagged with its maturity:
@@ -302,7 +302,7 @@ Each USI accumulates evidence from distinct categories. None is mandatory on its
 
 #### 9.2.2 Zero-knowledge document proof 🟡
 
-- **Mechanism:** for those holding a document with a chip and verifiable digital signature (such as e-passports), the holder proves, inside a zero-knowledge proof, that (a) the document is authentic, (b) it is valid and (c) a deterministic ***nullifier*** derives from it. The registry stores only the *nullifier*; a second registration with the same document yields the same *nullifier* and is refused.
+- **Mechanism:** for those holding a document with a chip and verifiable digital signature (such as e-passports), the holder proves, inside a zero-knowledge proof, that (a) the document is authentic, (b) it is valid and (c) a deterministic ***nullifier*** derives from it. The registry stores only the *nullifier*; a second registration with the same document yields the same *nullifier* and is refused. *In the initial phase of the network, the *nullifier* is not published, and duplication is mitigated in other ways (section 9.7.10).*
 - **Advantage:** leverages the uniqueness states already establish, without creating a document database and without revealing data.
 - **Limitations that must be acknowledged:**
   - Uniqueness is **per document**, not **per person**. People with several documents (dual nationality, a renewed passport with a new number) could in principle produce several *nullifiers*. Mitigations to investigate: deriving the *nullifier* from stable personal fields (not the document number), which requires careful privacy analysis; and cross-checking with other layers. See **country profiles**, below.
@@ -404,7 +404,7 @@ The **name is a key in the sense of being immutable and bound to the USI**, but 
 
 **9.7.2 How the binding is recorded**
 - For each USI and attribute type there is a single **slot**. The current value stays in the holder's wallet. The registry keeps only a **cryptographic commitment** to the value and minimal metadata (type, country, date, change counter).
-- **Uniqueness across USIs.** To prevent the same CPF from being bound to two USIs, the registry stores a *nullifier* of the identifier. Caution: CPFs and document numbers have a small space of possible values, and a plain hash would be reversed by brute force (dictionary attack). Hypothesis: compute the *nullifier* with an **oblivious pseudorandom function (OPRF) whose key is split among several operators** (threshold cryptography), with query limits, so that no single operator can test CPFs. 🔴 This also applies to the document *nullifier* (section 9.2.2).
+- **Uniqueness across USIs.** To prevent the same CPF from being bound to two USIs, the registry stores a *nullifier* of the identifier. Caution: CPFs and document numbers have a small space of possible values, and a plain hash would be reversed by brute force (dictionary attack). Hypothesis: compute the *nullifier* with an **oblivious pseudorandom function (OPRF) whose key is split among several operators** (threshold cryptography), with query limits, so that no single operator can test CPFs. 🔴 This also applies to the document *nullifier* (section 9.2.2). The discarded alternative and the phased rollout, with the OPRF only in the mature network, are in section 9.7.10.
 - **Presentation.** The holder reveals whichever value they choose (for example, the CPF) and proves, in zero knowledge, that it is the current value in the slot of their USI, with trust at or above the level required, revealing nothing else.
 
 **9.7.3 Attribute trust**
@@ -460,6 +460,39 @@ Where a government supports the project (section 14.5), credentials signed by th
 - It depends on trustworthy and **independent** issuers. A cartel or collusion of issuers can inflate trust. Mitigations: public independence criteria, transparent accreditation, sampled audits and loss of accreditation.
 - Who accredits issuers and under what criteria is an open governance question (section 14).
 - The wallet must communicate clearly that key attributes are permanent, to avoid holder frustration.
+
+**9.7.10 Identifier uniqueness: discarded alternative and phased rollout**
+
+*Alternative considered and discarded: individual random key.* Combining the CPF with a random number that only the holder keeps (a hiding cryptographic commitment) protects against dictionary attacks: without the random number, nobody can test CPFs. It is exactly what the attribute slot already uses to hide the value. But it **cannot detect duplicates**: two registrations of the same CPF, with different random numbers, produce completely different values, and the system does not notice the repetition.
+
+The deadlock is fundamental:
+- to detect duplicates, **everyone must compute the same value** from the same CPF;
+- if everyone computes the same value, **anyone who knows the computation** can test every possible CPF.
+
+The known way out is the threshold OPRF (section 9.7.2): a secret common to the system but which no single operator holds. It is the soundest hypothesis identified so far, not a certainty. **Better alternatives are welcome** (open question 19).
+
+*Phased rollout.* A public registry is permanent. Any value derived from a CPF that is written before the network is large and diverse stays exposed forever if the OPRF secret is ever compromised, and the security of a threshold OPRF depends on having many independent operators. Therefore the proposal is:
+
+**Phase A: initial network (pilot and growth)** 🟡
+- **No *nullifier* of a unique identifier** (CPF, passport number) is written to the registry. The slot holds only the hiding commitment, with the holder's random number.
+- **It is explicitly accepted that identifier duplication is possible.** Combined mitigations:
+  1. the other person-uniqueness layers (social vouching, physical presence, challenge);
+  2. **more verifications:** high attribute-trust levels require more independent issuers;
+  3. **local detection by the issuer,** who sees the CPF in clear: a bank notices, within its own customer base, that the same CPF was presented by two USIs, and may refuse to attest or flag the case;
+  4. **government verification,** where supported (section 14.5): the primary-source credential guarantees the **truth** of the data (C4). Note: it does **not** guarantee that only one USI is bound to the CPF, because that would require the government to hold the USI↔CPF relationship, contradicting the principle that the state does not learn who uses USI.
+- The attribute carries an explicit **"global uniqueness not verified"** mark, so no verifier assumes it. Duplicate-sensitive uses (such as benefit distribution) should rely on the other layers.
+- The document layer (section 9.2.2) proves document authenticity but **publishes no *nullifier*** in this phase; its weight as uniqueness evidence is reduced.
+
+**Phase B: mature network** 🟡
+- The threshold OPRF is activated as an **already planned improvement**, under objective, public criteria:
+  1. experiment E14 completed successfully and the protocol independently audited;
+  2. a minimum number of independent operators, in diverse jurisdictions, respecting concentration limits (section 14.3);
+  3. governance at least at phase 1 (section 14.1);
+  4. approval through a USIP.
+- **Migration.** Each holder, through the wallet, re-presents the slot value and generates the *nullifier* without exposing it. Duplicates accumulated in phase A surface at that moment and follow the challenge process (sections 9.4 and 9.7.6): the stronger evidence wins and the others lose trust in that identifier. Migration has a deadline window; unmigrated slots are capped at lower trust (for example, at most C2) and marked accordingly.
+- **Rotating the system key** requires a re-derivation protocol for the values. 🔴 *Open.*
+
+*Costs accepted in phase A:* possible duplication, more friction to reach high trust and a future migration with possible conflicts. *Benefit:* nothing that could be reversed by brute force is permanently recorded before the network has the diversity needed to protect it.
 
 ## 10. Access recovery
 
@@ -779,6 +812,7 @@ Results and data from the experiments will be **published**, including negative 
 | Synthetic identity built with high-quality fake documents | Medium | High | Accountable issuers, cryptographic proof, challenge, revocation of attestations |
 | Collusion or cartel of issuers | Medium | High | Public independence criteria, transparent accreditation, audit |
 | Exposure of people through name-change history | Medium | Very high | History visible only to the holder and jury; consultation with human-rights organizations |
+| Identifier duplication in the initial phase (no global *nullifier*) | High | Medium | "Global uniqueness not verified" mark; more independent issuers; local detection by the issuer; other uniqueness layers; future OPRF activation (section 9.7.10) |
 
 ## 18. Open questions
 
@@ -805,6 +839,8 @@ Results and data from the experiments will be **published**, including negative 
 21. How should "independent issuer" be defined, who accredits issuers, and how is collusion avoided? (E15)
 22. How can a legal name change be allowed without exposing the holder's history? (E15)
 23. How should names be matched across documents (accents, abbreviations, transliteration)?
+24. Which objective criteria activate the threshold OPRF (phase B), and how should phase A records be migrated, including accumulated duplicates? (E14)
+25. Is there a better alternative to the threshold OPRF for detecting duplicates of small-space identifiers without exposing them?
 
 ## 19. Roadmap
 
@@ -855,3 +891,4 @@ All significant changes must be recorded in the version history (section 22).
 | 0.1 | 2026-10-23 | First draft, open to collaboration. |
 | 0.1.1 | 2026-10-23 | Geographic premise (pilot in Brazil, design without borders), country profiles, role of governments (support without control), experiment E13. |
 | 0.1.2 | 2026-10-24 | Binding between USI and identity attributes (section 9.7): key attributes, attribute trust, identity squatting, social name and legal name change; experiments E14 and E15. |
+| 0.1.3 | 2026-10-24 | Section 9.7.10: discarded alternative (individual random key) and phased rollout of identifier uniqueness (phase A without *nullifier*, phase B with threshold OPRF). |
