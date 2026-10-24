@@ -4,14 +4,14 @@
 
 **Uma identidade pessoal universal, única, privada e recuperável, construída como bem público, sobre código aberto e um registro público verificável.**
 
-> **Status:** concepção, com a **primeira versão do [whitepaper](docs/whitepaper.pt-BR.md) publicada (v0.1.1)**. O whitepaper detalha o modelo de ameaças, a arquitetura, as alternativas em disputa e um plano de 13 experimentos para decidir entre elas. **É um rascunho aberto à colaboração**: críticas, correções e contribuições são bem-vindas (ver [Como contribuir](#15-como-contribuir)). Nada aqui é definitivo: as propostas são hipóteses a serem testadas, medidas e ajustadas à medida que o projeto amadurece.
+> **Status:** concepção, com a **primeira versão do [whitepaper](docs/whitepaper.pt-BR.md) publicada (v0.1.2)**. O whitepaper detalha o modelo de ameaças, a arquitetura, as alternativas em disputa e um plano de 15 experimentos para decidir entre elas. **É um rascunho aberto à colaboração**: críticas, correções e contribuições são bem-vindas (ver [Como contribuir](#15-como-contribuir)). Nada aqui é definitivo: as propostas são hipóteses a serem testadas, medidas e ajustadas à medida que o projeto amadurece.
 
 **Documentos:**
 
 | Documento | Português | English |
 |---|---|---|
 | Visão geral do projeto | [README.pt-BR.md](README.pt-BR.md) | [README.md](README.md) |
-| Whitepaper v0.1.1 | [docs/whitepaper.pt-BR.md](docs/whitepaper.pt-BR.md) | [docs/whitepaper.md](docs/whitepaper.md) |
+| Whitepaper v0.1.2 | [docs/whitepaper.pt-BR.md](docs/whitepaper.pt-BR.md) | [docs/whitepaper.md](docs/whitepaper.md) |
 
 ---
 
@@ -90,6 +90,7 @@ O USI não pretende substituir documentos oficiais. Ele pode conviver com eles, 
 | 12 | **Evolução baseada em evidências** | Cada mecanismo é tratado como hipótese, testado em ambiente controlado e ajustado com base em dados reais. |
 | 13 | **Piloto local, desenho global** | O piloto começa no Brasil, mas nada no sistema pode depender de um país. A expansão é gradual, por adesão de stakeholders de outros países. |
 | 14 | **Apoio de governos sem controle** | Governos podem apoiar (por exemplo, qualificando seus documentos), mas não têm voto especial, veto nem acesso a dados dos titulares. |
+| 15 | **Atributos únicos e verificáveis** | Cada USI tem um único nome oficial e um único identificador por país, vinculados por compromisso criptográfico. A confiança cresce com a verificação de emissores independentes e cai se o valor for alterado. |
 
 ## 4. Diferenciais do USI
 
@@ -204,6 +205,20 @@ As evidências se convertem em **níveis de garantia** públicos e padronizados.
 **Criação** → **Acúmulo de evidências** → **Uso** → **Rotação de chaves** → **Recuperação** (se necessário) → **Contestação** (se houver) → **Inatividade ou óbito**
 
 O tratamento de óbito e de inatividade prolongada deve ser definido de modo a impedir o uso indevido de identidades de pessoas falecidas sem expor dados de ninguém.
+
+### 6.5 Vínculo com nome e documentos: uma identidade, um conjunto de atributos
+
+Ter um único USI por pessoa não basta: é preciso também evitar que a mesma pessoa use dois nomes ou dois CPFs e que um terceiro receba informações diferentes das verdadeiras. Como o registro não guarda dados pessoais, o modelo proposto é:
+
+- **Atributos-chave** (nome oficial, data de nascimento, identificador nacional estável de cada país, como o CPF): cada USI tem **um único valor vigente** por tipo. O valor fica na carteira; o registro guarda apenas um compromisso criptográfico. O nome é único *para o USI*, mas não entre pessoas; identificadores do Estado (CPF, passaporte) são únicos entre USIs.
+- **Documentos** (passaporte, RG, habilitação): podem ser vários e renovados, mas sempre coerentes com os atributos-chave.
+- **Confiança do atributo (C0 a C4):** começa em "declarado" e sobe à medida que **emissores independentes** (bancos que verificam seus clientes, órgãos públicos, outras instituições) verificam e atestam o atributo. Exemplo: João informa nome e CPF; ao abrir conta no Banco A, o banco verifica e atesta; outros bancos repetem o processo; quando a confiança é alta, qualquer contraparte pode aceitar o CPF apresentado como verdadeiro.
+- **Alterar um atributo-chave zera a confiança** dele e exige nova validação (o histórico de trocas é preservado). Antes da primeira atestação, o titular pode corrigir erros livremente.
+- **Identidade falsa:** quem se registra com nome ou CPF falsos precisa enganar vários emissores independentes e depois fica preso a essa identidade: não pode ter outro USI nem voltar atrás sem perder a confiança.
+- **Ocupação de identidade alheia:** vence a evidência mais forte (prova criptográfica do documento original, mais atestações), e não quem chegou primeiro. Disputas vão a júri.
+- **Nome social e mudança legal de nome:** são tratados à parte e sempre apresentados com rótulo de tipo. A mudança por ato legal tem caminho próprio, preservando a continuidade do USI e sem expor o nome anterior a terceiros.
+
+O USI **não torna uma informação verdadeira**: garante que ela é única e mede o quanto se pode confiar nela. A veracidade é garantida por quem a verifica. Detalhes na [seção 9.7 do whitepaper](docs/whitepaper.pt-BR.md).
 
 ## 7. Recuperação de acesso
 
@@ -329,7 +344,7 @@ Os detalhes estão na [seção 14.5 do whitepaper](docs/whitepaper.pt-BR.md). No
 | **Validadores comunitários e instituições parceiras** | Realizam verificações presenciais | Inclusão e serviço à comunidade |
 | **Operadores de nós** | Mantêm o registro público | Infraestrutura confiável da qual dependem |
 | **Verificadores** (plataformas, bancos, comércio, ONGs, órgãos públicos) | Aceitam e verificam USIs | Reduzir fraude, custos de verificação e contas falsas |
-| **Emissores de credenciais** (universidades, conselhos, órgãos públicos, empregadores) | Emitem credenciais vinculadas ao USI | Credenciais à prova de falsificação |
+| **Emissores de credenciais e atestadores de atributos** (universidades, conselhos, órgãos públicos, empregadores, bancos e outras instituições que verificam clientes) | Emitem credenciais e atestam nome e documentos do titular | Credenciais à prova de falsificação; reaproveitar a verificação de clientes que já são obrigados a fazer |
 | **Desenvolvedores e pesquisadores** | Constroem, auditam e evoluem o sistema | Propósito, reputação, pesquisa |
 | **Reguladores e autoridades de proteção de dados** (como a ANPD) | Fiscalizam a conformidade | Proteção dos cidadãos |
 | **Governos e órgãos públicos** (de qualquer país) | Apoio opcional: qualificar seus documentos, operar nós, ceder espaços, reconhecer o USI | Reduzir fraude e duplicidade, incluir pessoas sem documento. **Sem controle sobre o projeto** |
@@ -353,7 +368,7 @@ Uma identidade só tem valor se for aceita, e só é aceita se as pessoas a tive
 Ações propostas para tirar o projeto do papel, em ordem aproximada:
 
 ### Etapa 1 – Whitepaper
-- [x] Redigir a primeira versão do whitepaper ([v0.1.1](docs/whitepaper.pt-BR.md)), detalhando: modelo de ameaças, arquitetura das três camadas, modelo de unicidade e níveis de garantia, protocolo de recuperação, opções de registro público, modelo de sustentabilidade, plano de governança e plano de experimentos.
+- [x] Redigir a primeira versão do whitepaper ([v0.1.2](docs/whitepaper.pt-BR.md)), detalhando: modelo de ameaças, arquitetura das três camadas, modelo de unicidade e níveis de garantia, protocolo de recuperação, opções de registro público, modelo de sustentabilidade, plano de governança e plano de experimentos.
 - [x] Publicar o rascunho neste repositório para comentários abertos.
 - [ ] Aprofundar o levantamento da literatura e das experiências anteriores em identidade descentralizada e prova de pessoa única, com fontes primárias (a seção 5 do whitepaper é um resumo inicial e precisa ser verificada).
 - [ ] Incorporar as contribuições recebidas e publicar a versão 0.2.
@@ -377,6 +392,7 @@ Ações propostas para tirar o projeto do papel, em ordem aproximada:
 - [ ] Simular ataques Sybil sobre o modelo de vínculo social para calibrar a análise de grafo.
 - [ ] Comparar experimentalmente as opções de registro público (A, B e C).
 - [ ] Levantar tecnicamente os documentos brasileiros candidatos (verificação criptográfica offline e identificador estável) e elaborar o primeiro perfil de país (experimento E13).
+- [ ] Prototipar o vínculo de atributos (*slots* com compromisso, unicidade por OPRF de limiar, prova de vigência) e simular ataques de ocupação de identidade, conluio de emissores e identidade sintética (experimentos E14 e E15).
 
 ### Etapa 5 – Análise jurídica e institucional
 - [ ] Analisar conformidade com a LGPD e outras legislações relevantes.
@@ -416,10 +432,13 @@ Hipóteses e decisões que dependem de pesquisa e de testes:
 - Como tratar a dupla nacionalidade entre países sem expor a dupla cidadania a nenhum Estado?
 - Quais critérios públicos aceitam, ponderam ou recusam o perfil de um país?
 - A fundação deve ter sede no Brasil ou numa jurisdição neutra?
+- Como calcular a unicidade de CPFs e números de documento sem permitir ataque de dicionário?
+- Como definir "emissor independente" e quem credencia os emissores?
+- Como permitir a mudança legal de nome sem expor o histórico do titular?
 
 ## 15. Como contribuir
 
-O projeto está no início e toda contribuição é bem-vinda, **a começar pela leitura crítica do [whitepaper v0.1.1](docs/whitepaper.pt-BR.md)**. Especialmente de pessoas com experiência em:
+O projeto está no início e toda contribuição é bem-vinda, **a começar pela leitura crítica do [whitepaper v0.1.2](docs/whitepaper.pt-BR.md)**. Especialmente de pessoas com experiência em:
 
 - criptografia e protocolos de segurança;
 - identidade digital e padrões W3C;

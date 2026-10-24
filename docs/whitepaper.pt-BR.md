@@ -2,7 +2,7 @@
 
 🌐 [English](whitepaper.md) · **Português (Brasil)**
 
-**Versão 0.1.1 — rascunho aberto à colaboração** · Outubro de 2026
+**Versão 0.1.2 — rascunho aberto à colaboração** · Outubro de 2026
 Documento complementar ao [README](../README.pt-BR.md).
 
 > **Como ler este documento.** O USI está em fase de concepção. Este whitepaper reúne o que se sabe, propõe caminhos e declara o que ainda não se sabe. Cada seção indica o seu grau de maturidade:
@@ -88,12 +88,14 @@ Um terceiro caminho: uma identidade que **não depende de uma única autoridade*
 | O7 | Ser inclusivo: funcionar para quem não tem documento, smartphone novo ou conexão estável. |
 | O8 | Ser verificável e auditável publicamente, em código aberto e com padrões abertos. |
 | O9 | Descentralizar a governança de forma planejada, até que ninguém, incluindo o fundador, tenha poder unilateral. |
+| O10 | Garantir que cada USI tenha um único conjunto vigente de atributos-chave (nome oficial, identificadores) e que terceiros saibam o quanto confiar neles. |
 
 ### 3.2 Não objetivos 🟢
 
 - **Não é uma moeda, um token ou um ativo financeiro.**
 - **Não substitui documentos oficiais.** Convive com eles e os usa como evidência quando existirem.
 - **Não garante unicidade absoluta.** Nenhum sistema garante; o objetivo é um custo de fraude muito superior ao benefício.
+- **Não garante a veracidade das informações**, apenas que são únicas e o quanto são confiáveis. Quem responde pela veracidade é quem as verifica (seção 9.7).
 - **Não é um sistema de crédito social, reputação pública ou pontuação de cidadãos.** Reputação interna serve apenas para ponderar atestações.
 - **Não armazena dados pessoais** no registro público, em qualquer forma.
 - **Não é um mecanismo de vigilância**, nem de identificação compulsória.
@@ -121,6 +123,7 @@ Um terceiro caminho: uma identidade que **não depende de uma única autoridade*
 | **Coator** | Força fisicamente ou legalmente o titular a ceder acesso, chaves ou dados. |
 | **Adversário futuro** | Guarda dados de hoje para quebrá-los quando houver computação quântica ou novas técnicas. |
 | **Insider** | Desenvolvedor, validador ou jurado que abusa da posição. |
+| **Ocupante de identidade** | Registra primeiro o nome ou o CPF de outra pessoa para impedi-la de registrar a própria identidade, ou constrói uma identidade sintética com documentos falsos (seção 9.7). |
 
 ### 4.2 Premissas de confiança 🟡
 
@@ -185,7 +188,7 @@ As camadas são independentes e devem poder evoluir separadamente: trocar o regi
 | **Atestadores** | Titulares existentes que atestam outro titular. |
 | **Guardiões** | Pessoas ou instituições escolhidas pelo titular para auxiliar na recuperação. |
 | **Validadores presenciais** | Parceiros que realizam cerimônias de verificação física. |
-| **Emissores** | Instituições que emitem credenciais verificáveis (diplomas, registros). |
+| **Emissores** | Instituições que emitem credenciais verificáveis (diplomas, registros) e **atestam atributos** do titular (nome, documentos), como bancos que verificam seus clientes (seção 9.7). |
 | **Verificadores** | Serviços que pedem e conferem provas do USI. |
 | **Júris** | Grupos sorteados que decidem contestações. |
 
@@ -379,6 +382,84 @@ O ataque mais difícil de eliminar é o da pessoa real que **vende** seu USI ou 
 - **Resistência à coerção e à compra de voto:** em votações, esquemas que impeçam o titular de provar a terceiros em quem votou.
 
 Este é um tema de pesquisa permanente.
+
+### 9.7 Vínculo entre o USI e os atributos de identidade (nome e documentos) 🟡
+
+**O problema.** Garantir um único USI por pessoa (seções 9.1 a 9.6) não basta. É preciso também impedir que a mesma pessoa use dois nomes ou dois CPFs e que um terceiro, ao verificar um USI, receba informações diferentes das verdadeiras. Como o registro público não guarda dado pessoal, o caminho óbvio, gravar "USI → nome, CPF" na rede, está descartado.
+
+**Princípio.** O USI garante duas coisas distintas:
+1. que a informação é **única** para aquele USI (não existem duas versões vigentes);
+2. **quanto se pode confiar** nela (quantos emissores independentes a verificaram).
+
+O USI **não torna uma informação verdadeira**. Quem responde pela veracidade é quem a verifica (seção 9.7.5).
+
+**9.7.1 Dois tipos de informação**
+
+| Tipo | Exemplos | Regra |
+|---|---|---|
+| **Atributos-chave** | nome oficial, data de nascimento, identificador nacional estável de cada país (por exemplo, o CPF) | **Um único valor vigente** por tipo (e por país, no caso do identificador). Alterar um valor que já foi atestado zera a confiança dele. |
+| **Documentos** | passaporte, RG, carteira de habilitação | Podem existir vários e ser renovados ou reemitidos (inclusive por entidades diferentes do mesmo país), mas todos devem ser **coerentes** com os atributos-chave: mesmo identificador estável e nome compatível. |
+
+O **nome é chave no sentido de ser imutável e vinculado ao USI**, mas **não é único entre pessoas** (há muitos "João da Silva"). A unicidade *entre USIs* só se aplica aos identificadores que o Estado garante serem únicos (CPF, passaporte com país). A correspondência entre nomes (acentos, abreviações, transliteração de outros alfabetos) deve ser definida no perfil de país. 🔴
+
+**9.7.2 Como o vínculo é registrado**
+- Para cada USI e tipo de atributo existe um único **espaço (*slot*)**. O valor vigente fica na carteira do titular. O registro guarda apenas um **compromisso criptográfico** do valor e metadados mínimos (tipo, país, data, contador de trocas).
+- **Unicidade entre USIs.** Para impedir que o mesmo CPF seja vinculado a dois USIs, o registro guarda um *nullifier* do identificador. Atenção: CPFs e números de documento têm um espaço pequeno de valores possíveis, e um *hash* simples seria revertido por força bruta (ataque de dicionário). Hipótese: calcular o *nullifier* com uma **função pseudoaleatória oblívia (OPRF) cuja chave é dividida entre vários operadores** (criptografia de limiar), com limite de consultas, de modo que nenhum operador, sozinho, consiga testar CPFs. 🔴 Isso vale também para o *nullifier* documental (seção 9.2.2).
+- **Apresentação.** O titular revela o valor que quiser (por exemplo, o CPF) e prova, em conhecimento zero, que é o valor vigente no *slot* do seu USI, com confiança igual ou superior à exigida, sem revelar mais nada.
+
+**9.7.3 Confiança do atributo**
+
+É uma dimensão **separada** dos níveis de garantia de pessoa única (seção 9.3): aqueles dizem "é um humano único"; esta diz "este nome/CPF pode ser aceito como verdadeiro". Níveis indicativos, a calibrar:
+
+| Nível | Nome | Requisito indicativo |
+|---|---|---|
+| **C0** | Declarado | Informado pelo titular, sem verificação |
+| **C1** | Verificado | Um emissor qualificado verificou e atestou |
+| **C2** | Corroborado | Dois ou mais emissores **independentes** |
+| **C3** | Confiável | Três ou mais emissores independentes, ou dois mais prova documental criptográfica |
+| **C4** | Autoritativo | Prova criptográfica da fonte primária (por exemplo, documento com chip emitido pelo Estado) mais corroboração |
+
+A pontuação depende de:
+- **quantos emissores independentes** atestaram (independente = sem controle societário ou operacional comum);
+- **o tipo de emissor**: fonte primária (quem criou o identificador, como o Estado), instituição regulada com dever legal de verificar clientes (como bancos), outros;
+- **o método de verificação** declarado na atestação: consulta a fonte oficial, conferência de documento, autodeclaração;
+- **o tempo** (as atestações envelhecem e podem exigir renovação);
+- **revogações e contestações**: um emissor que descobre fraude pode retirar a atestação, e a confiança cai.
+
+*Privacidade das atestações.* Mostrar publicamente que "o Banco X atestou o CPF do USI Y" revelaria com que instituições a pessoa se relaciona. Hipótese: atestações anônimas, em que o titular prova que um emissor credenciado atestou o atributo, sem revelar qual, e um *nullifier* por emissor impede a contagem dupla. 🔴
+
+**9.7.4 Fluxo de exemplo: João**
+1. **Cadastro.** João informa nome, data de nascimento, CPF e documentos. A carteira lê documentos com chip sempre que possível, para reduzir erros de digitação, e **avisa claramente que esses atributos são chave e não podem ser alterados sem perder a confiança**. Enquanto nenhum emissor atestou (C0), João pode corrigir erros livremente.
+2. **Primeira atestação.** Ao abrir conta (ou ao vincular seu USI à conta) no Banco A, João apresenta nome e CPF. O banco, que já é obrigado por lei a verificar o cliente, confere e emite uma atestação assinada. O atributo vai a C1.
+3. **Corroboração.** Outros bancos e instituições repetem o processo. Com emissores independentes suficientes, o atributo chega a C2 e C3.
+4. **Uso.** Dali em diante, ao apresentar seu USI com o CPF, qualquer contraparte pode aceitar o CPF e o nome como verdadeiros, conforme o nível que exigir. Outro banco não receberia a informação de que João se chama "José" ou tem outro CPF, porque só existe um valor vigente por *slot*.
+5. **Alteração.** Se João tentar trocar o CPF depois de atestado, o novo valor nasce em C0, o histórico de trocas é preservado (contador) e ele precisa passar por todo o processo de novo. Verificadores podem exigir "sem trocas recentes".
+
+**9.7.5 O que o USI garante e o que não garante**
+- Garante a **unicidade** (um valor vigente por tipo e uma versão por identificador) e **mede a confiança** a partir de emissores independentes.
+- **Não garante a veracidade.** Se emissores independentes forem enganados por documentos falsos de boa qualidade, uma **identidade sintética** pode atingir confiança alta. Defesas: qualidade e responsabilização dos emissores (cada um responde legal e reputacionalmente pelo que atesta), prova criptográfica sempre que existir, e contestação (seção 9.4).
+- Quem registra um nome ou CPF falsos (o "José que quer ser Paulo") precisa enganar vários emissores independentes e depois **fica preso a essa identidade**: não pode ter outro USI e não consegue voltar a ser reconhecido como José sem perder a confiança ganha.
+
+**9.7.6 Ataque de ocupação de identidade alheia (*squatting*)**
+
+CPFs e números de documentos não são segredos. Um fraudador pode tentar registrar primeiro o CPF de outra pessoa. Se valesse "quem chegou primeiro", a vítima ficaria impedida de registrar a própria identidade. Regra proposta: **evidência mais forte vence, e não a ordem de chegada**.
+- Um atributo apenas declarado (C0) **não bloqueia** o identificador. Quem apresentar prova criptográfica do documento original (seção 9.2.2), ou atingir confiança maior, assume o *slot*; o registro anterior é marcado como disputado e suspenso.
+- Disputas entre evidências comparáveis vão a **júri**, com presença física quando necessário (seção 9.4).
+- Os atestadores do registro derrubado perdem reputação.
+
+**9.7.7 Casos especiais: nome social e mudança legal de nome**
+- **Nome oficial e nome social** são atributos distintos. O nome social é declarado, **nunca atinge confiança "oficial"** e é sempre apresentado com um **rótulo de tipo**, de modo que o verificador saiba se recebeu o nome oficial ou o social.
+- **Mudança legal** (decisão judicial ou administrativa, casamento, retificação). Há um caminho próprio, **alteração oficial**: o titular apresenta evidência do ato legal (novo documento emitido pela autoridade, via perfil de país). O novo nome nasce com confiança proporcional à força dessa evidência (documento com chip: alta; apenas papel: sobe com as atestações dos emissores), e o USI mantém **continuidade** (mesmo USI e demais atributos). Durante o período transitório, a confiança do novo nome vai subindo.
+- **Dignidade e proteção (🔴).** Uma mudança legal de nome não deve expor o nome anterior nem revelar a terceiros que houve mudança. Isso pode colocar em risco pessoas trans, vítimas de violência que trocam de nome por proteção, entre outras. Hipótese: o histórico de trocas fica visível apenas ao titular e, em caso de contestação, ao júri; o contador "trocas recentes" que verificadores veem conta apenas as alterações **sem** ato legal. Esse desenho precisa ser discutido com organizações de direitos humanos antes de ser adotado.
+
+**9.7.8 Relação com perfis de país e governos**
+
+Onde há apoio de um governo (seção 14.5), credenciais assinadas pela **fonte primária** (documento com chip, credencial oficial) chegam diretamente a níveis altos de confiança (C3 ou C4). Onde não há, a confiança é construída por emissores secundários, como bancos. Em ambos os casos, o emissor é apenas um emissor: não adquire poder sobre as regras do sistema.
+
+**9.7.9 Limites**
+- Depende de emissores confiáveis e **independentes**. Um cartel ou conluio de emissores pode inflar a confiança. Mitigações: critérios públicos de independência, credenciamento transparente, auditoria amostral e perda de credenciamento.
+- Quem credencia os emissores e com quais critérios é uma questão de governança em aberto (seção 14).
+- Exige que a carteira comunique com clareza que os atributos-chave são permanentes, para evitar frustração do titular.
 
 ## 10. Recuperação de acesso
 
@@ -672,6 +753,8 @@ Para evitar decisões baseadas em palpites, o projeto propõe uma série de expe
 | E11 | **Biometria sem base central** (opcional) | É viável com privacidade comprovada | Estudo de viabilidade e revisão por especialistas | Se não houver variante segura e precisa, **descartar** |
 | E12 | **Sustentabilidade** | Taxas de verificação cobrem custos operacionais | Modelo financeiro e consulta a potenciais operadores e verificadores | Cobertura de custos sem exigir pagamento do titular |
 | E13 | **Perfil de país: Brasil** | É possível verificar documentos brasileiros de forma criptográfica e offline e derivar um identificador estável da pessoa | Levantamento das especificações oficiais; protótipo de verificação; consulta a especialistas | Ao menos um documento verificável offline com identificador estável, ou conclusão documentada de que não é possível |
+| E14 | **Vínculo de atributos (criptografia)** | É possível registrar *slots* com compromisso, unicidade por OPRF de limiar e prova de vigência em conhecimento zero, com custo viável | Protótipo do *slot*, do *nullifier* com OPRF dividida entre operadores e da apresentação; teste de ataque de dicionário e de privacidade das atestações | Nenhum vazamento de valores por força bruta nos cenários testados; provas em tempo aceitável em celular |
+| E15 | **Modelo de confiança do atributo** | Emissores independentes elevam a confiança de forma confiável e o modelo resiste a ocupação, conluio e identidade sintética | Simulação de emissores honestos e fraudulentos, ataques de ocupação, cartéis e identidades sintéticas; teste com casos de mudança legal de nome | Alta detecção com baixos falsos positivos; nenhum caminho de ocupação sem contestação possível |
 
 Resultados e dados dos experimentos serão **publicados**, inclusive os negativos.
 
@@ -692,6 +775,10 @@ Resultados e dados dos experimentos serão **publicados**, inclusive os negativo
 | Percepção de controle por um governo, ou captura pelo Estado apoiador | Média | Alto | Apoio sem controle (seção 14.5), limites de concentração, acordos públicos, jurisdição neutra a considerar |
 | Retirada do apoio governamental ou mudança de política | Média | Médio | Sistema funciona sem o apoio; peso da camada documental ajustável |
 | Atalhos específicos do Brasil que não se generalizam | Média | Médio | Perfis de país plugáveis; revisão de arquitetura antes da expansão |
+| Ocupação de identificadores alheios (*squatting*) | Alta | Alto | Evidência mais forte vence, não a ordem de chegada; contestação e júri (seção 9.7.6) |
+| Identidade sintética com documentos falsos de boa qualidade | Média | Alto | Emissores responsáveis, prova criptográfica, contestação, revogação de atestações |
+| Conluio ou cartel de emissores | Média | Alto | Critérios públicos de independência, credenciamento transparente, auditoria |
+| Exposição de pessoas por histórico de mudança de nome | Média | Muito alto | Histórico visível só ao titular e ao júri; consulta a organizações de direitos humanos |
 
 ## 18. Questões em aberto
 
@@ -713,6 +800,11 @@ Resultados e dados dos experimentos serão **publicados**, inclusive os negativo
 16. Como tratar a dupla nacionalidade entre países sem expor a dupla cidadania a nenhum Estado? (E4, E13)
 17. Quais critérios públicos aceitam, ponderam ou recusam o perfil de um país, inclusive por risco a direitos humanos?
 18. A fundação deve ter sede na jurisdição do piloto (Brasil) ou numa jurisdição neutra?
+19. Como calcular a unicidade de identificadores de espaço pequeno (CPF, números de documento) sem permitir ataque de dicionário? (E14)
+20. Como registrar atestações sem revelar a relação do titular com cada emissor? (E14)
+21. Como definir "emissor independente", quem credencia os emissores e como evitar conluio? (E15)
+22. Como permitir a mudança legal de nome sem expor o histórico do titular? (E15)
+23. Como corresponder nomes entre documentos (acentos, abreviações, transliteração)?
 
 ## 19. Roteiro
 
@@ -721,7 +813,7 @@ Resultados e dados dos experimentos serão **publicados**, inclusive os negativo
 | **1. Whitepaper** | Versão 0.1 (este documento); revisão aberta; versão 0.2 com contribuições |
 | **2. Comunidade e revisão** | Revisão por especialistas; apresentação a comunidades de identidade descentralizada; núcleo inicial de colaboradores |
 | **3. Organização do repositório** | Licenças, `CONTRIBUTING`, código de conduta, processo de USIPs, *issues* para cada questão em aberto |
-| **4. Provas de conceito** | Experimentos E1–E13 conforme prioridade |
+| **4. Provas de conceito** | Experimentos E1–E15 conforme prioridade |
 | **5. Análise jurídica e institucional** | Parecer sobre LGPD e outras normas; desenho da fundação |
 | **6. Financiamento e divulgação** | Submissão a editais; materiais de divulgação; busca de parceiros |
 | **7. Piloto (Brasil)** | Caso de uso inicial com comunidade parceira no Brasil; métricas; relatório público; roteiro de entrada de novos países |
@@ -736,7 +828,7 @@ Este é um rascunho aberto. Para contribuir:
 - **Revisão crítica:** abra uma *issue* apontando erros, lacunas ou riscos que faltam. Críticas fundamentadas são bem-vindas.
 - **Referência a fontes:** a seção 5 e as afirmações técnicas precisam de fontes primárias; ajude a verificar e acrescentar.
 - **Especialistas:** criptografia, sistemas distribuídos, identidade digital, direito de proteção de dados, design de experiência, antropologia/ciências sociais (para inclusão), ética.
-- **Experimentos:** assuma um dos experimentos E1–E13.
+- **Experimentos:** assuma um dos experimentos E1–E15.
 - **Tradução e revisão linguística:** mantenha as versões em português e em inglês sincronizadas.
 
 Todas as alterações significativas devem ser registradas no histórico de versões (seção 22).
@@ -762,3 +854,4 @@ Todas as alterações significativas devem ser registradas no histórico de vers
 |---|---|---|
 | 0.1 | 2026-10-23 | Primeiro rascunho, aberto à colaboração. |
 | 0.1.1 | 2026-10-23 | Premissa geográfica (piloto no Brasil, desenho sem fronteiras), perfis de país, papel dos governos (apoio sem controle), experimento E13. |
+| 0.1.2 | 2026-10-24 | Vínculo entre USI e atributos de identidade (seção 9.7): atributos-chave, confiança do atributo, ocupação de identidade, nome social e mudança legal de nome; experimentos E14 e E15. |

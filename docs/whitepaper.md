@@ -2,7 +2,7 @@
 
 🌐 **English** · [Português (Brasil)](whitepaper.pt-BR.md)
 
-**Version 0.1.1 — open draft, open to collaboration** · October 2026
+**Version 0.1.2 — open draft, open to collaboration** · October 2026
 Companion to the [README](../README.md).
 
 > **How to read this document.** USI is in the conception phase. This whitepaper gathers what is known, proposes paths and states what is still unknown. Each section is tagged with its maturity:
@@ -88,12 +88,14 @@ A third path: an identity that **does not depend on a single authority**, **does
 | G7 | Be inclusive: work for people without documents, with older smartphones or unstable connections. |
 | G8 | Be publicly verifiable and auditable, using open source and open standards. |
 | G9 | Decentralize governance in a planned way, until no one — including the founder — has unilateral power. |
+| G10 | Ensure each USI has a single current set of key attributes (official name, identifiers) and that third parties know how far to trust them. |
 
 ### 3.2 Non-goals 🟢
 
 - **It is not a currency, token or financial asset.**
 - **It does not replace official documents.** It coexists with them and uses them as evidence where they exist.
 - **It does not guarantee absolute uniqueness.** No system does; the aim is a cost of fraud far above its benefit.
+- **It does not guarantee the truth of information**, only that it is unique and how far it can be trusted. Whoever verifies it answers for its truth (section 9.7).
 - **It is not a social credit, public reputation or citizen scoring system.** Internal reputation only weights attestations.
 - **It does not store personal data** in the public registry, in any form.
 - **It is not a surveillance mechanism**, nor compulsory identification.
@@ -121,6 +123,7 @@ A third path: an identity that **does not depend on a single authority**, **does
 | **Coercer** | Physically or legally forces the holder to surrender access, keys or data. |
 | **Future adversary** | Stores today's data to break it once quantum computing or new techniques arrive. |
 | **Insider** | A developer, validator or juror who abuses their position. |
+| **Identity squatter** | Registers someone else's name or CPF first to block them from registering their own identity, or builds a synthetic identity with fake documents (section 9.7). |
 
 ### 4.2 Trust assumptions 🟡
 
@@ -185,7 +188,7 @@ The layers are independent and should evolve separately: replacing the public re
 | **Attesters** | Existing holders who vouch for another holder. |
 | **Guardians** | People or institutions chosen by the holder to assist recovery. |
 | **In-person validators** | Partners who run physical verification ceremonies. |
-| **Issuers** | Institutions that issue verifiable credentials (diplomas, registrations). |
+| **Issuers** | Institutions that issue verifiable credentials (diplomas, registrations) and **attest attributes** of the holder (name, documents), such as banks that verify their customers (section 9.7). |
 | **Verifiers** | Services that request and check USI proofs. |
 | **Juries** | Randomly drawn groups that decide challenges. |
 
@@ -379,6 +382,84 @@ The hardest attack to eliminate is the real person who **sells** their USI or ac
 - **Resistance to coercion and vote buying:** in voting, schemes that prevent holders from proving to third parties how they voted.
 
 This is a permanent research topic.
+
+### 9.7 Binding between the USI and identity attributes (name and documents) 🟡
+
+**The problem.** Guaranteeing a single USI per person (sections 9.1 to 9.6) is not enough. We must also prevent the same person from using two names or two CPFs, and prevent a third party who checks a USI from receiving information that differs from the truth. Since the public registry stores no personal data, the obvious path of writing "USI → name, CPF" on the ledger is ruled out.
+
+**Principle.** USI guarantees two distinct things:
+1. that the information is **unique** for that USI (there are no two current versions);
+2. **how far it can be trusted** (how many independent issuers have verified it).
+
+USI **does not make information true**. Whoever verifies it answers for its truth (section 9.7.5).
+
+**9.7.1 Two kinds of information**
+
+| Type | Examples | Rule |
+|---|---|---|
+| **Key attributes** | official name, date of birth, each country's stable national identifier (for example, the CPF) | **One current value** per type (and per country, for the identifier). Changing a value that has already been attested resets its trust. |
+| **Documents** | passport, ID card, driving licence | Several may exist and be renewed or reissued (even by different bodies in the same country), but all must be **consistent** with the key attributes: same stable identifier and a compatible name. |
+
+The **name is a key in the sense of being immutable and bound to the USI**, but it is **not unique across people** (there are many "John Smiths"). Uniqueness *across USIs* only applies to identifiers that the state guarantees to be unique (CPF, passport with country). Name matching (accents, abbreviations, transliteration from other alphabets) must be defined in the country profile. 🔴
+
+**9.7.2 How the binding is recorded**
+- For each USI and attribute type there is a single **slot**. The current value stays in the holder's wallet. The registry keeps only a **cryptographic commitment** to the value and minimal metadata (type, country, date, change counter).
+- **Uniqueness across USIs.** To prevent the same CPF from being bound to two USIs, the registry stores a *nullifier* of the identifier. Caution: CPFs and document numbers have a small space of possible values, and a plain hash would be reversed by brute force (dictionary attack). Hypothesis: compute the *nullifier* with an **oblivious pseudorandom function (OPRF) whose key is split among several operators** (threshold cryptography), with query limits, so that no single operator can test CPFs. 🔴 This also applies to the document *nullifier* (section 9.2.2).
+- **Presentation.** The holder reveals whichever value they choose (for example, the CPF) and proves, in zero knowledge, that it is the current value in the slot of their USI, with trust at or above the level required, revealing nothing else.
+
+**9.7.3 Attribute trust**
+
+This is a dimension **separate** from the uniqueness assurance levels (section 9.3): those say "this is a unique human"; this one says "this name/CPF can be accepted as true". Indicative levels, to be calibrated:
+
+| Level | Name | Indicative requirement |
+|---|---|---|
+| **C0** | Declared | Provided by the holder, unverified |
+| **C1** | Verified | One qualified issuer verified and attested |
+| **C2** | Corroborated | Two or more **independent** issuers |
+| **C3** | Trusted | Three or more independent issuers, or two plus cryptographic document proof |
+| **C4** | Authoritative | Cryptographic proof from the primary source (for example, a state-issued chip document) plus corroboration |
+
+The score depends on:
+- **how many independent issuers** attested (independent = no common ownership or operational control);
+- **the type of issuer**: primary source (whoever created the identifier, such as the state), a regulated institution with a legal duty to verify customers (such as banks), others;
+- **the verification method** stated in the attestation: lookup in an official source, document check, self-declaration;
+- **time** (attestations age and may require renewal);
+- **revocations and challenges**: an issuer that discovers fraud can withdraw its attestation, and trust drops.
+
+*Privacy of attestations.* Showing publicly that "Bank X attested the CPF of USI Y" would reveal which institutions the person deals with. Hypothesis: anonymous attestations, where the holder proves that an accredited issuer attested the attribute, without revealing which, and a per-issuer *nullifier* prevents double counting. 🔴
+
+**9.7.4 Worked example: John**
+1. **Registration.** John enters his name, date of birth, CPF and documents. The wallet reads chip documents whenever possible, to reduce typing errors, and **clearly warns that these attributes are keys and cannot be changed without losing trust**. While no issuer has attested (C0), John can correct mistakes freely.
+2. **First attestation.** On opening an account (or linking his USI to his account) at Bank A, John presents his name and CPF. The bank, already legally required to verify its customers, checks them and issues a signed attestation. The attribute moves to C1.
+3. **Corroboration.** Other banks and institutions repeat the process. With enough independent issuers, the attribute reaches C2 and C3.
+4. **Use.** From then on, when presenting his USI with the CPF, any counterparty can accept the CPF and name as true, according to the level it requires. Another bank would not be told that John is called "Joseph" or has another CPF, because only one current value exists per slot.
+5. **Change.** If John tries to change the CPF after it was attested, the new value is born at C0, the change history is preserved (counter) and he must go through the whole process again. Verifiers may require "no recent changes".
+
+**9.7.5 What USI guarantees and what it does not**
+- It guarantees **uniqueness** (one current value per type and one holder per identifier) and **measures trust** from independent issuers.
+- It **does not guarantee truth**. If independent issuers are fooled by high-quality fake documents, a **synthetic identity** may reach high trust. Defences: issuer quality and accountability (each answers legally and reputationally for what it attests), cryptographic proof wherever it exists, and challenge (section 9.4).
+- Someone who registers a false name or CPF (the "Joseph who wants to be Paul") must deceive several independent issuers and then **is stuck with that identity**: they cannot hold another USI and cannot go back to being recognized as Joseph without losing the trust earned.
+
+**9.7.6 Identity squatting attack**
+
+CPFs and document numbers are not secrets. A fraudster may try to register someone else's CPF first. If "first come" prevailed, the victim would be blocked from registering their own identity. Proposed rule: **stronger evidence wins, not order of arrival**.
+- A merely declared attribute (C0) **does not block** the identifier. Whoever presents cryptographic proof of the original document (section 9.2.2), or reaches higher trust, takes the slot; the previous record is marked as disputed and suspended.
+- Disputes between comparable evidence go to a **jury**, with physical presence when needed (section 9.4).
+- The attesters of the overturned record lose reputation.
+
+**9.7.7 Special cases: social name and legal name change**
+- **Official name and social name** are distinct attributes. The social name is declared, **never reaches "official" trust** and is always presented with a **type label**, so that the verifier knows whether it received the official or the social name.
+- **Legal change** (court or administrative decision, marriage, rectification). There is a dedicated path, **official change**: the holder presents evidence of the legal act (a new document issued by the authority, through the country profile). The new name is born with trust proportional to the strength of that evidence (chip document: high; paper only: rises with issuers' attestations), and the USI keeps **continuity** (same USI and other attributes). During the transition period, trust in the new name keeps rising.
+- **Dignity and protection (🔴).** A legal name change must not expose the previous name or reveal to third parties that a change occurred. That could endanger trans people, victims of violence who change names for protection, among others. Hypothesis: change history is visible only to the holder and, in case of challenge, to the jury; the "recent changes" counter verifiers see counts only changes **without** a legal act. This design must be discussed with human-rights organizations before adoption.
+
+**9.7.8 Relation to country profiles and governments**
+
+Where a government supports the project (section 14.5), credentials signed by the **primary source** (chip document, official credential) reach high trust levels directly (C3 or C4). Where it does not, trust is built by secondary issuers, such as banks. In both cases the issuer is just an issuer: it gains no power over the system's rules.
+
+**9.7.9 Limits**
+- It depends on trustworthy and **independent** issuers. A cartel or collusion of issuers can inflate trust. Mitigations: public independence criteria, transparent accreditation, sampled audits and loss of accreditation.
+- Who accredits issuers and under what criteria is an open governance question (section 14).
+- The wallet must communicate clearly that key attributes are permanent, to avoid holder frustration.
 
 ## 10. Access recovery
 
@@ -672,6 +753,8 @@ To avoid decisions based on guesses, the project proposes a series of experiment
 | E11 | **Biometrics without a central database** (optional) | Viable with demonstrated privacy | Feasibility study and expert review | If no secure, accurate variant exists, **drop it** |
 | E12 | **Sustainability** | Verification fees cover operating costs | Financial model and consultation with potential operators and verifiers | Cost coverage without requiring payment from holders |
 | E13 | **Country profile: Brazil** | Brazilian documents can be verified cryptographically and offline and a stable person identifier derived | Survey of official specifications; verification prototype; expert consultation | At least one document verifiable offline with a stable identifier, or a documented conclusion that it is not possible |
+| E14 | **Attribute binding (cryptography)** | Slots with commitment, threshold-OPRF uniqueness and zero-knowledge proof of currency can be built at viable cost | Prototype of the slot, of the *nullifier* with OPRF split among operators and of presentation; dictionary-attack and attestation-privacy tests | No leakage of values by brute force in tested scenarios; proofs in acceptable time on a phone |
+| E15 | **Attribute trust model** | Independent issuers raise trust reliably and the model resists squatting, collusion and synthetic identity | Simulation of honest and fraudulent issuers, squatting attacks, cartels and synthetic identities; tests with legal name-change cases | High detection with low false positives; no squatting path without a possible challenge |
 
 Results and data from the experiments will be **published**, including negative ones.
 
@@ -692,6 +775,10 @@ Results and data from the experiments will be **published**, including negative 
 | Perception of control by one government, or capture by a supporting state | Medium | High | Support without control (section 14.5), concentration limits, public agreements, neutral jurisdiction to be considered |
 | Withdrawal of government support or policy change | Medium | Medium | System works without the support; document-layer weight adjustable |
 | Brazil-specific shortcuts that do not generalize | Medium | Medium | Pluggable country profiles; architecture review before expansion |
+| Squatting on other people's identifiers | High | High | Stronger evidence wins, not order of arrival; challenge and jury (section 9.7.6) |
+| Synthetic identity built with high-quality fake documents | Medium | High | Accountable issuers, cryptographic proof, challenge, revocation of attestations |
+| Collusion or cartel of issuers | Medium | High | Public independence criteria, transparent accreditation, audit |
+| Exposure of people through name-change history | Medium | Very high | History visible only to the holder and jury; consultation with human-rights organizations |
 
 ## 18. Open questions
 
@@ -713,6 +800,11 @@ Results and data from the experiments will be **published**, including negative 
 16. How should dual nationality across countries be handled without exposing the dual citizenship to any state? (E4, E13)
 17. Which public criteria accept, weight or refuse a country's profile, including on human-rights grounds?
 18. Should the foundation be based in the pilot's jurisdiction (Brazil) or a neutral one?
+19. How can uniqueness of small-space identifiers (CPF, document numbers) be computed without allowing a dictionary attack? (E14)
+20. How can attestations be recorded without revealing the holder's relationship with each issuer? (E14)
+21. How should "independent issuer" be defined, who accredits issuers, and how is collusion avoided? (E15)
+22. How can a legal name change be allowed without exposing the holder's history? (E15)
+23. How should names be matched across documents (accents, abbreviations, transliteration)?
 
 ## 19. Roadmap
 
@@ -721,7 +813,7 @@ Results and data from the experiments will be **published**, including negative 
 | **1. Whitepaper** | Version 0.1 (this document); open review; version 0.2 with contributions |
 | **2. Community and review** | Expert review; presentation to decentralized identity communities; initial core of collaborators |
 | **3. Repository organization** | Licences, `CONTRIBUTING`, code of conduct, USIP process, issues for each open question |
-| **4. Proofs of concept** | Experiments E1–E13 by priority |
+| **4. Proofs of concept** | Experiments E1–E15 by priority |
 | **5. Legal and institutional analysis** | Opinion on LGPD and other rules; foundation design |
 | **6. Funding and outreach** | Grant applications; outreach material; partner search |
 | **7. Pilot (Brazil)** | Initial use case with a partner community in Brazil; metrics; public report; checklist for admitting new countries |
@@ -736,7 +828,7 @@ This is an open draft. To contribute:
 - **Critical review:** open an issue pointing out errors, gaps or missing risks. Well-founded criticism is welcome.
 - **Source references:** section 5 and the technical claims need primary sources; help verify and add them.
 - **Specialists:** cryptography, distributed systems, digital identity, data protection law, experience design, anthropology/social sciences (for inclusion), ethics.
-- **Experiments:** take on one of experiments E1–E13.
+- **Experiments:** take on one of experiments E1–E15.
 - **Translation and language review:** keep the Portuguese and English versions in sync.
 
 All significant changes must be recorded in the version history (section 22).
@@ -762,3 +854,4 @@ All significant changes must be recorded in the version history (section 22).
 |---|---|---|
 | 0.1 | 2026-10-23 | First draft, open to collaboration. |
 | 0.1.1 | 2026-10-23 | Geographic premise (pilot in Brazil, design without borders), country profiles, role of governments (support without control), experiment E13. |
+| 0.1.2 | 2026-10-24 | Binding between USI and identity attributes (section 9.7): key attributes, attribute trust, identity squatting, social name and legal name change; experiments E14 and E15. |

@@ -4,14 +4,14 @@
 
 **A universal personal identity that is unique, private and recoverable, built as a public good on open source code and a verifiable public registry.**
 
-> **Status:** conception phase, with the **first version of the [whitepaper](docs/whitepaper.md) published (v0.1.1)**. The whitepaper details the threat model, the architecture, the alternatives still in dispute and a plan of 13 experiments to decide among them. **It is an open draft, open to collaboration**: criticism, corrections and contributions are welcome (see [How to contribute](#15-how-to-contribute)). Nothing here is final: the proposals are hypotheses to be tested, measured and adjusted as the project matures.
+> **Status:** conception phase, with the **first version of the [whitepaper](docs/whitepaper.md) published (v0.1.2)**. The whitepaper details the threat model, the architecture, the alternatives still in dispute and a plan of 15 experiments to decide among them. **It is an open draft, open to collaboration**: criticism, corrections and contributions are welcome (see [How to contribute](#15-how-to-contribute)). Nothing here is final: the proposals are hypotheses to be tested, measured and adjusted as the project matures.
 
 **Documents:**
 
 | Document | English | Português |
 |---|---|---|
 | Project overview | [README.md](README.md) | [README.pt-BR.md](README.pt-BR.md) |
-| Whitepaper v0.1.1 | [docs/whitepaper.md](docs/whitepaper.md) | [docs/whitepaper.pt-BR.md](docs/whitepaper.pt-BR.md) |
+| Whitepaper v0.1.2 | [docs/whitepaper.md](docs/whitepaper.md) | [docs/whitepaper.pt-BR.md](docs/whitepaper.pt-BR.md) |
 
 ---
 
@@ -90,6 +90,7 @@ USI does not aim to replace official documents. It can coexist with them, use th
 | 12 | **Evidence-based evolution** | Each mechanism is treated as a hypothesis, tested in a controlled setting and adjusted from real data. |
 | 13 | **Local pilot, global design** | The pilot starts in Brazil, but nothing in the system may depend on one country. Expansion is gradual, as stakeholders from other countries join. |
 | 14 | **Government support without control** | Governments may support (for example, by qualifying their documents) but have no special vote, veto or access to holders' data. |
+| 15 | **Unique, verifiable attributes** | Each USI has a single official name and a single identifier per country, bound by a cryptographic commitment. Trust grows as independent issuers verify, and drops if the value is changed. |
 
 ## 4. What sets USI apart
 
@@ -204,6 +205,20 @@ Evidence is converted into public, standardized **assurance levels**. Verifiers 
 **Creation** → **Evidence accumulation** → **Use** → **Key rotation** → **Recovery** (if needed) → **Challenge** (if any) → **Inactivity or death**
 
 Handling death and long-term inactivity must be defined so as to prevent misuse of deceased people's identities without exposing anyone's data.
+
+### 6.5 Binding to name and documents: one identity, one set of attributes
+
+Having a single USI per person is not enough: we must also prevent the same person from using two names or two CPFs, and prevent a third party from receiving information that differs from the truth. Since the registry stores no personal data, the proposed model is:
+
+- **Key attributes** (official name, date of birth, each country's stable national identifier, such as the CPF): each USI has **one current value** per type. The value stays in the wallet; the registry keeps only a cryptographic commitment. The name is unique *to the USI*, but not across people; state identifiers (CPF, passport) are unique across USIs.
+- **Documents** (passport, ID card, driving licence): there may be several, renewed over time, but always consistent with the key attributes.
+- **Attribute trust (C0 to C4):** starts at "declared" and rises as **independent issuers** (banks that verify their customers, public bodies, other institutions) verify and attest the attribute. Example: John enters his name and CPF; on opening an account at Bank A, the bank verifies and attests; other banks repeat the process; once trust is high, any counterparty can accept the CPF presented as true.
+- **Changing a key attribute resets its trust** and requires new validation (the change history is preserved). Before the first attestation, the holder can correct mistakes freely.
+- **False identity:** someone who registers a false name or CPF must deceive several independent issuers and is then stuck with that identity: they cannot hold another USI or go back without losing trust.
+- **Squatting on someone else's identity:** the stronger evidence wins (cryptographic proof of the original document, plus attestations), not whoever arrived first. Disputes go to a jury.
+- **Social name and legal name change:** handled separately and always presented with a type label. A change by legal act has its own path, preserving USI continuity and without exposing the previous name to third parties.
+
+USI **does not make information true**: it guarantees it is unique and measures how far it can be trusted. Truth is guaranteed by whoever verifies it. Details in [section 9.7 of the whitepaper](docs/whitepaper.md).
 
 ## 7. Access recovery
 
@@ -329,7 +344,7 @@ Details are in [section 14.5 of the whitepaper](docs/whitepaper.md). In Brazil, 
 | **Community validators and partner institutions** | Run in-person verifications | Inclusion and community service |
 | **Node operators** | Maintain the public registry | Reliable infrastructure they depend on |
 | **Verifiers** (platforms, banks, retail, NGOs, public bodies) | Accept and verify USIs | Reduce fraud, verification costs and fake accounts |
-| **Credential issuers** (universities, councils, public bodies, employers) | Issue credentials linked to the USI | Forgery-proof credentials |
+| **Credential issuers and attribute attesters** (universities, councils, public bodies, employers, banks and other institutions that verify customers) | Issue credentials and attest the holder's name and documents | Forgery-proof credentials; reuse the customer verification they are already required to do |
 | **Developers and researchers** | Build, audit and evolve the system | Purpose, reputation, research |
 | **Regulators and data protection authorities** (such as Brazil's ANPD) | Oversee compliance | Citizen protection |
 | **Governments and public bodies** (of any country) | Optional support: qualify their documents, run nodes, provide spaces, recognize the USI | Reduce fraud and duplication, include people without documents. **No control over the project** |
@@ -353,7 +368,7 @@ An identity is only valuable if accepted, and only accepted if people hold it. T
 Proposed actions to get the project off the ground, in approximate order:
 
 ### Stage 1 – Whitepaper
-- [x] Write the first version of the whitepaper ([v0.1.1](docs/whitepaper.md)), detailing: threat model, three-layer architecture, uniqueness model and assurance levels, recovery protocol, public registry options, sustainability model, governance plan and experiment plan.
+- [x] Write the first version of the whitepaper ([v0.1.2](docs/whitepaper.md)), detailing: threat model, three-layer architecture, uniqueness model and assurance levels, recovery protocol, public registry options, sustainability model, governance plan and experiment plan.
 - [x] Publish the draft in this repository for open comments.
 - [ ] Deepen the survey of literature and prior experience in decentralized identity and proof of personhood, with primary sources (section 5 of the whitepaper is an initial summary and needs verification).
 - [ ] Incorporate the contributions received and publish version 0.2.
@@ -377,6 +392,7 @@ Proposed actions to get the project off the ground, in approximate order:
 - [ ] Simulate Sybil attacks on the social vouching model to calibrate graph analysis.
 - [ ] Experimentally compare the public registry options (A, B and C).
 - [ ] Technically survey the candidate Brazilian documents (offline cryptographic verification and stable identifier) and write the first country profile (experiment E13).
+- [ ] Prototype attribute binding (slots with commitment, threshold-OPRF uniqueness, proof of currency) and simulate identity squatting, issuer collusion and synthetic identity attacks (experiments E14 and E15).
 
 ### Stage 5 – Legal and institutional analysis
 - [ ] Analyse compliance with the LGPD and other relevant legislation.
@@ -416,10 +432,13 @@ Hypotheses and decisions that depend on research and testing:
 - How should dual nationality across countries be handled without exposing the dual citizenship to any state?
 - Which public criteria accept, weight or refuse a country's profile?
 - Should the foundation be based in Brazil or in a neutral jurisdiction?
+- How can uniqueness of CPFs and document numbers be computed without allowing a dictionary attack?
+- How should "independent issuer" be defined, and who accredits issuers?
+- How can a legal name change be allowed without exposing the holder's history?
 
 ## 15. How to contribute
 
-The project is at an early stage and every contribution is welcome, **starting with a critical reading of the [whitepaper v0.1.1](docs/whitepaper.md)**. Especially from people with experience in:
+The project is at an early stage and every contribution is welcome, **starting with a critical reading of the [whitepaper v0.1.2](docs/whitepaper.md)**. Especially from people with experience in:
 
 - cryptography and security protocols;
 - digital identity and W3C standards;
