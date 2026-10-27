@@ -4,14 +4,14 @@
 
 **A universal personal identity that is unique, private and recoverable, built as a public good on open source code and a verifiable public registry.**
 
-> **Status:** conception phase, with the **first version of the [whitepaper](docs/whitepaper.md) published (v0.1.4)**. The whitepaper details the threat model, the architecture, the alternatives still in dispute and a plan of 16 experiments to decide among them. **It is an open draft, open to collaboration**: criticism, corrections and contributions are welcome (see [How to contribute](#15-how-to-contribute)). Nothing here is final: the proposals are hypotheses to be tested, measured and adjusted as the project matures.
+> **Status:** conception phase, with the **first version of the [whitepaper](docs/whitepaper.md) published (v0.1.5)**. The whitepaper details the threat model, the architecture, the alternatives still in dispute and a plan of 16 experiments to decide among them. **It is an open draft, open to collaboration**: criticism, corrections and contributions are welcome (see [How to contribute](#15-how-to-contribute)). Nothing here is final: the proposals are hypotheses to be tested, measured and adjusted as the project matures.
 
 **Documents:**
 
 | Document | English | Português |
 |---|---|---|
 | Project overview | [README.md](README.md) | [README.pt-BR.md](README.pt-BR.md) |
-| Whitepaper v0.1.4 | [docs/whitepaper.md](docs/whitepaper.md) | [docs/whitepaper.pt-BR.md](docs/whitepaper.pt-BR.md) |
+| Whitepaper v0.1.5 | [docs/whitepaper.md](docs/whitepaper.md) | [docs/whitepaper.pt-BR.md](docs/whitepaper.pt-BR.md) |
 
 ---
 
@@ -91,6 +91,7 @@ USI does not aim to replace official documents. It can coexist with them, use th
 | 13 | **Local pilot, global design** | The pilot starts in Brazil, but nothing in the system may depend on one country. Expansion is gradual, as stakeholders from other countries join. |
 | 14 | **Government support without control** | Governments may support (for example, by qualifying their documents) but have no special vote, veto or access to holders' data. |
 | 15 | **Unique, verifiable attributes** | Each USI has a single official name and a single identifier per country, bound by a cryptographic commitment. Trust grows as independent issuers verify, and drops if the value is changed. |
+| 16 | **Collaborate, do not compete** | USI seeks to contribute to similar initiatives, interoperate and reuse what is open, without giving up being universal, collaborative, secure, non-profit and ownerless. |
 
 ## 4. What sets USI apart
 
@@ -111,6 +112,17 @@ USI does not start from scratch: it combines techniques already proven in decent
 7. **Accountable vouchers.** Anyone who attests to another person's identity puts their own reputation at stake. Vouching for a fake account has consequences.
 
 8. **Progressive, planned decentralization.** Instead of an "ownerless" system from day one, which tends to create a governance vacuum, USI defines phases and objective criteria for handing control to the community.
+
+### Collaborate, do not compete
+
+USI **does not intend to compete** with similar initiatives: the goal is shared, that anyone can prove they are a unique human being and control their own data. There are proof-of-personhood, decentralized-identity and open-standards projects, among them [Ğ1/Duniter](https://duniter.org/), [Encointer](https://encointer.org/), [BrightID](https://brightid.org/), [Proof of Humanity](https://gov.proofofhumanity.id/t/poh-origin-constitution-v2/3053), the [Decentralized Identity Foundation](https://learnworkecosystemlibrary.com/organizations/decentralized-identity-foundation/) and [LF Decentralized Trust](https://www.linuxfoundation.org/press/linux-foundation-decentralized-trust-launches-with-17-projects-100-founding-members). The initial (incomplete) survey is in [section 5 of the whitepaper](docs/whitepaper.md).
+
+Our stance:
+- **Research before building** and talk to these communities before any prototype of our own.
+- **Contribute back,** **interoperate** through open standards and **reuse** what is open, with credit.
+- **Accept convergence:** if an existing initiative meets the essential characteristics, the path is to contribute to it rather than duplicate effort.
+
+What does **not** change in any partnership: USI must remain **universal, collaborative, secure, non-profit and ownerless**. Each of these characteristics has a practical test described in section 5.3 of the whitepaper.
 
 ## 5. Proposed architecture
 
@@ -359,6 +371,7 @@ Details are in [section 14.5 of the whitepaper](docs/whitepaper.md). In Brazil, 
 | **Developers and researchers** | Build, audit and evolve the system | Purpose, reputation, research |
 | **Regulators and data protection authorities** (such as Brazil's ANPD) | Oversee compliance | Citizen protection |
 | **Governments and public bodies** (of any country) | Optional support: qualify their documents, run nodes, provide spaces, recognize the USI | Reduce fraud and duplication, include people without documents. **No control over the project** |
+| **Similar initiatives and organizations** (proof of personhood, decentralized identity, standards bodies) | Partners: share research, standards and open components | Shared goal; avoid duplicated effort |
 | **Funders** (foundations, grant programmes, donors) | Sustain the initial phase | Social impact and open infrastructure |
 | **Civil society and digital rights advocates** | Oversee and propose improvements | Privacy, inclusion, transparency |
 
@@ -379,13 +392,14 @@ An identity is only valuable if accepted, and only accepted if people hold it. T
 Proposed actions to get the project off the ground, in approximate order:
 
 ### Stage 1 – Whitepaper
-- [x] Write the first version of the whitepaper ([v0.1.4](docs/whitepaper.md)), detailing: threat model, three-layer architecture, uniqueness model and assurance levels, recovery protocol, public registry options, sustainability model, governance plan and experiment plan.
+- [x] Write the first version of the whitepaper ([v0.1.5](docs/whitepaper.md)), detailing: threat model, three-layer architecture, uniqueness model and assurance levels, recovery protocol, public registry options, sustainability model, governance plan and experiment plan.
 - [x] Publish the draft in this repository for open comments.
 - [ ] Deepen the survey of literature and prior experience in decentralized identity and proof of personhood, with primary sources (section 5 of the whitepaper is an initial summary and needs verification).
 - [ ] Incorporate the contributions received and publish version 0.2.
 
 ### Stage 2 – Review and first collaborators
 - [ ] Submit the whitepaper for review by specialists in cryptography, digital identity, security and digital law (LGPD).
+- [ ] Contact similar initiatives and standards bodies (see [section 5 of the whitepaper](docs/whitepaper.md)), proposing collaboration **before** any prototype of our own, and check what remains pending in the survey.
 - [ ] Present the proposal in decentralized identity communities (such as the W3C Credentials Community Group and the Decentralized Identity Foundation), universities and security research groups.
 - [ ] Form an initial core of collaborators with complementary profiles: cryptography, development, law, experience design, community management.
 
@@ -449,10 +463,11 @@ Hypotheses and decisions that depend on research and testing:
 - How can a legal name change be allowed without exposing the holder's history?
 - Which criteria activate the cryptographic identifier-uniqueness technique in the mature network, and is there a better alternative?
 - How can people without a support network obtain a recovery anchor without an excessive barrier, and how should assisted re-validation by issuers be standardized?
+- Build our own infrastructure or contribute to an existing initiative that meets the same characteristics? Which components to reuse?
 
 ## 15. How to contribute
 
-The project is at an early stage and every contribution is welcome, **starting with a critical reading of the [whitepaper v0.1.4](docs/whitepaper.md)**. Especially from people with experience in:
+The project is at an early stage and every contribution is welcome, **starting with a critical reading of the [whitepaper v0.1.5](docs/whitepaper.md)**. Especially from people with experience in:
 
 - cryptography and security protocols;
 - digital identity and W3C standards;

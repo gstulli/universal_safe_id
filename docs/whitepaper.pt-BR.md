@@ -2,7 +2,7 @@
 
 🌐 [English](whitepaper.md) · **Português (Brasil)**
 
-**Versão 0.1.4 — rascunho aberto à colaboração** · Outubro de 2026
+**Versão 0.1.5 — rascunho aberto à colaboração** · Outubro de 2026
 Documento complementar ao [README](../README.pt-BR.md).
 
 > **Como ler este documento.** O USI está em fase de concepção. Este whitepaper reúne o que se sabe, propõe caminhos e declara o que ainda não se sabe. Cada seção indica o seu grau de maturidade:
@@ -89,6 +89,7 @@ Um terceiro caminho: uma identidade que **não depende de uma única autoridade*
 | O8 | Ser verificável e auditável publicamente, em código aberto e com padrões abertos. |
 | O9 | Descentralizar a governança de forma planejada, até que ninguém, incluindo o fundador, tenha poder unilateral. |
 | O10 | Garantir que cada USI tenha um único conjunto vigente de atributos-chave (nome oficial, identificadores) e que terceiros saibam o quanto confiar neles. |
+| O11 | Colaborar com iniciativas similares, reaproveitando padrões e componentes abertos, sem abrir mão das características essenciais: universal, colaborativo, seguro, sem fins lucrativos e sem dono (seção 5). |
 
 ### 3.2 Não objetivos 🟢
 
@@ -157,6 +158,77 @@ Esta seção resume padrões observados em abordagens existentes, com ênfase na
 1. Nenhuma evidência isolada resiste; as abordagens mais frágeis dependem de um único sinal.
 2. O ponto mais atacado costuma ser o **mercado de identidades** (pagar pessoas reais), e não a força bruta técnica.
 3. Tokens financeiros atraem fraude e especulação e distorcem os incentivos de quem deveria validar.
+
+### 5.1 Panorama de iniciativas relacionadas (levantamento inicial, outubro de 2026) 🟡
+
+Este levantamento foi feito com buscas públicas e leitura dos sites dos projetos. **É incompleto:** não cobre iniciativas fora do universo de criptomoedas nem em outros idiomas, e vários dados (forma jurídica, governança, situação atual) não puderam ser confirmados. Deve ser verificado e ampliado com fontes primárias (seção 5.6).
+
+| Iniciativa | Escopo principal | Natureza, conforme apurado | Possível colaboração com o USI |
+|---|---|---|---|
+| [Ğ1 / Duniter](https://duniter.org/) | Moeda com renda básica; identidades por teia de confiança, uma por pessoa viva | Software livre mantido por comunidade; mais de 6.000 participantes. Forma jurídica e governança não apuradas | Análise de resistência a contas falsas em teia de confiança ([estudo de 2025](https://www.arxiv.org/pdf/2512.07897)); compartilhar simulações (E2) |
+| [Encointer](https://encointer.org/) | Moedas locais; unicidade por encontros presenciais aleatórios | Protocolo na rede Kusama, em uso na Tanzânia e na Nigéria; há uma associação ligada ao projeto (a confirmar); [operação financiada por tesouraria on-chain](https://kusama-static.polkassembly.io/referenda/645). Licença a confirmar | Cerimônias presenciais (E10); experiência de campo com pessoas sem documento |
+| [BrightID](https://brightid.org/) | Prova de unicidade por grafo social | Apresenta-se como bem público e aberto; o site indica uma empresa (BrightID Main LLC) | Análise de grafo, lições de operação (E2) |
+| [Proof of Humanity](https://gov.proofofhumanity.id/t/poh-origin-constitution-v2/3053) | Cadastro com vídeo, avais e contestação | Governança comunitária por propostas, com o Kleros como árbitro; [discussão de bifurcação](https://gov.proofofhumanity.id/t/hip-74-peaceful-fork-status-thread/2695). Situação atual a confirmar | Contestação e júri (E8) |
+| [Decentralized Identity Foundation](https://learnworkecosystemlibrary.com/organizations/decentralized-identity-foundation/) | Padrões e ferramentas de identidade descentralizada | Organização sem fins lucrativos, segundo fonte secundária (a confirmar) | Revisão da especificação `did:usi` e das credenciais |
+| [LF Decentralized Trust](https://www.linuxfoundation.org/press/linux-foundation-decentralized-trust-launches-with-17-projects-100-founding-members) e [OpenWallet](https://www.ledgerinsights.com/openwallet-foundation-to-merge-into-lf-decentralized-trust/) | Software aberto de carteiras, credenciais e confiança | Fundação de código aberto (lançada em 2024); a OpenWallet deve se integrar a ela em 2027 (a confirmar) | Carteiras e bibliotecas reaproveitáveis; possível abrigo para a especificação |
+| Self e [ZKPassport](https://itbrief.co.uk/story/aztec-labs-acquires-obsidion-for-zkpassport-identity) | Provas de passaporte em conhecimento zero | Código aberto, mas mantido por empresas; a ZKPassport foi adquirida pela Aztec Labs em junho de 2026 | Reaproveitar provas documentais (E4) |
+| [Human Passport](https://human.tech/blog/human-tech-launch-acquisition-gitcoin-passport) | Pontuação de humanidade | Adquirido pela Holonym Foundation em fevereiro de 2025; ligado ao human.tech e a uma rede com token | Referência de aprendizado |
+| World ID | Unicidade por íris, em hardware próprio | Comercial. No Brasil, a [ANPD proibiu o pagamento pela coleta de íris](https://olhardigital.com.br/2025/08/06/reviews/world-brasil-mantem-proibicao-de-pagamento-por-escaneamento-de-olhos/) | Referência de aprendizado (privacidade e regulação); reaproveitamento de componentes não previsto |
+| Idena | Unicidade por testes sincronizados | Situação atual não apurada | Não apurado |
+
+**Conclusão do levantamento.** Nenhum dos projetos encontrados reúne, ao mesmo tempo, as cinco características do USI (seção 5.3) e o escopo completo da proposta (unicidade em camadas, recuperação de acesso, vínculo verificável de atributos, piloto com conformidade à LGPD). Há projetos próximos no espírito (Ğ1/Duniter, Encointer) cujo escopo principal é outro, projetos de unicidade ligados a empresas ou tokens, e organizações de padrões que fornecem a base técnica. Isso **não prova** que a lacuna exista: o levantamento é parcial.
+
+### 5.2 Postura: colaborar, não disputar 🟢
+
+O USI não pretende disputar espaço com iniciativas similares. O objetivo é comum: que qualquer pessoa possa provar que é um ser humano único e controlar seus próprios dados. Se uma iniciativa existente já cumprir as características essenciais do USI (seção 5.3), o caminho é **contribuir com ela**, e não construir infraestrutura paralela. Compromissos:
+
+1. **Pesquisar antes de construir.** Verificar o que já existe e conversar com as comunidades antes de qualquer protótipo próprio.
+2. **Contribuir de volta.** Publicar pesquisa, resultados de experimentos (inclusive os negativos), correções e código para quem possa aproveitá-los.
+3. **Interoperar.** Adotar padrões abertos e construir pontes, para que quem usa outra iniciativa não precise escolher.
+4. **Reaproveitar o que é aberto,** com crédito e dentro das licenças.
+5. **Reconhecer e respeitar** o trabalho das demais iniciativas, sem tratá-las como adversárias.
+6. **Aceitar a convergência.** Se, ao final do levantamento e das conversas, for mais eficaz unir esforços (adesão, fusão ou adoção da especificação por outra iniciativa) e as características essenciais forem preservadas, essa decisão será discutida e registrada por USIP (seção 14.2).
+
+### 5.3 O que o USI não abre mão 🟢
+
+Colaborar não significa diluir. Estas cinco características são **inegociáveis** em qualquer parceria, fusão ou reaproveitamento:
+
+| Característica | O que significa | Teste ao avaliar uma colaboração |
+|---|---|---|
+| **Universal** | Sem fronteiras: aberto a qualquer pessoa e país, sem depender de um único país, idioma ou infraestrutura (seção 3.3) | A solução exclui regiões, línguas ou pessoas sem documento? |
+| **Colaborativo** | Processo aberto de propostas e governança comunitária; qualquer pessoa pode contribuir (seção 14.2) | As decisões são abertas, ou dependem de uma entidade fechada? |
+| **Seguro** | Privacidade e segurança desde a concepção; nenhum dado pessoal no registro; auditorias independentes; recuperação de acesso (seções 8, 10, 11 e 12) | Exige dados pessoais centralizados ou biometria obrigatória? Foi auditada? |
+| **Sem fins lucrativos** | Sem token, sem lucro para fundadores, investidores ou mantenedores; receita só cobre custos (seção 13) | Há token obrigatório, participação societária ou extração de valor? |
+| **Sem dono** | Descentralização progressiva; ninguém, incluindo o fundador e os parceiros, tem poder unilateral (seção 14) | Alguém ganha voto especial, veto ou controle sobre as regras? |
+
+### 5.4 Formas de colaboração 🟡
+
+| Nível | Exemplos |
+|---|---|
+| **Conhecimento** | Compartilhar pesquisas, simulações e dados de experimentos (E2, E8, E10); revisão cruzada de especificações |
+| **Padrões** | Adotar e contribuir com DID, credenciais verificáveis e protocolos de apresentação |
+| **Componentes** | Reaproveitar código aberto (carteiras, bibliotecas de credenciais, provas de documentos) em vez de reescrevê-lo |
+| **Integração** | Aceitar evidências de outras iniciativas de prova de pessoa única como uma das camadas de evidência (seção 9.2), e permitir que elas aceitem o USI. Hipótese a avaliar |
+| **Institucional** | Parcerias, projetos conjuntos, pedidos de apoio conjuntos e, se for o caso, adesão ou fusão |
+
+### 5.5 Critérios para reaproveitar um componente ou firmar uma parceria 🟡
+
+1. Licença de código aberto reconhecida.
+2. Sem dependência de token obrigatório nem de um único mantenedor ou empresa.
+3. Não impõe controle, voto especial ou veto ao USI.
+4. Compatível com a privacidade do USI (sem dado pessoal no registro, sem biometria obrigatória).
+5. Auditável e passível de auditoria independente; possibilidade de bifurcação honesta (seção 14.3).
+6. Saúde do projeto: manutenção ativa e estabilidade de propriedade. Várias iniciativas foram adquiridas ou mudaram de rumo; por isso as dependências devem ficar atrás de interfaces que permitam trocar um componente por outro.
+
+### 5.6 O que ainda precisa ser verificado 🔴
+
+- Forma jurídica, governança e financiamento atuais de Ğ1/Duniter, Encointer, BrightID e Proof of Humanity.
+- Situação atual do Idena e de iniciativas de prova de pessoa única fora do universo de criptomoedas.
+- Iniciativas governamentais de identidade digital (por exemplo, as carteiras de identidade digital europeias) e como se relacionam com o USI.
+- Projetos em outros idiomas e regiões, inclusive na América Latina.
+- Se existe iniciativa com **vínculo verificável de nome e documentos por emissores independentes** (seção 9.7). Não encontramos, mas isso não prova que não exista.
+
+Contribuições a este levantamento são especialmente bem-vindas.
 
 ## 6. Visão geral da arquitetura
 
@@ -892,6 +964,8 @@ Resultados e dados dos experimentos serão **publicados**, inclusive os negativo
 | Perda definitiva de identidade por pessoas sem preparo | Alta | Alto | Âncoras de recuperação para subir de nível; revalidação assistida por emissores (seção 10.8) |
 | Engenharia social contra emissores na revalidação assistida | Média | Alto | Procedimento padronizado, verificação forte, várias confirmações independentes |
 | Recuperação fraudulenta para obter segunda identidade | Média | Médio | "Recomeçar não cria USI novo", detecção pelo emissor, contador de recuperações, proporcionalidade |
+| Duplicação de esforços ou disputa com iniciativas similares | Média | Médio | Postura de colaboração (seção 5.2); pesquisar e conversar antes de construir; interoperar |
+| Dependência de projeto de terceiros que muda de rumo, é adquirido ou encerrado | Média | Médio | Critérios de reaproveitamento (seção 5.5); dependências atrás de interfaces substituíveis |
 
 ## 18. Questões em aberto
 
@@ -924,13 +998,15 @@ Resultados e dados dos experimentos serão **publicados**, inclusive os negativo
 27. Como incentivar e padronizar a revalidação assistida pelos emissores (custo, responsabilidade, defesa contra engenharia social)? (E16)
 28. Como derivar o segredo de identidade e os números aleatórios dos atributos de modo que sejam recuperáveis sem comprometer a privacidade? (E9, E16)
 29. Como distinguir, sem expor ninguém, o recomeço legítimo da tentativa de obter um segundo USI?
+30. Construir infraestrutura própria ou contribuir com uma iniciativa existente que cumpra as mesmas características? Quais componentes reaproveitar e com quais projetos firmar parceria? (seção 5)
+31. Como colaborar com iniciativas que têm token, empresa ou governança diferente sem comprometer a ausência de dono e de fins lucrativos?
 
 ## 19. Roteiro
 
 | Etapa | Entregas |
 |---|---|
 | **1. Whitepaper** | Versão 0.1 (este documento); revisão aberta; versão 0.2 com contribuições |
-| **2. Comunidade e revisão** | Revisão por especialistas; apresentação a comunidades de identidade descentralizada; núcleo inicial de colaboradores |
+| **2. Comunidade e revisão** | Revisão por especialistas; contato com projetos similares para colaboração (seção 5.2); apresentação a comunidades de identidade descentralizada; núcleo inicial de colaboradores |
 | **3. Organização do repositório** | Licenças, `CONTRIBUTING`, código de conduta, processo de USIPs, *issues* para cada questão em aberto |
 | **4. Provas de conceito** | Experimentos E1–E16 conforme prioridade |
 | **5. Análise jurídica e institucional** | Parecer sobre LGPD e outras normas; desenho da fundação |
@@ -946,6 +1022,7 @@ Este é um rascunho aberto. Para contribuir:
 
 - **Revisão crítica:** abra uma *issue* apontando erros, lacunas ou riscos que faltam. Críticas fundamentadas são bem-vindas.
 - **Referência a fontes:** a seção 5 e as afirmações técnicas precisam de fontes primárias; ajude a verificar e acrescentar.
+- **Panorama de iniciativas:** ajude a verificar e ampliar o levantamento da seção 5.1, inclusive projetos fora do universo de criptomoedas e em outros idiomas.
 - **Especialistas:** criptografia, sistemas distribuídos, identidade digital, direito de proteção de dados, design de experiência, antropologia/ciências sociais (para inclusão), ética.
 - **Experimentos:** assuma um dos experimentos E1–E16.
 - **Tradução e revisão linguística:** mantenha as versões em português e em inglês sincronizadas.
@@ -976,3 +1053,4 @@ Todas as alterações significativas devem ser registradas no histórico de vers
 | 0.1.2 | 2026-10-24 | Vínculo entre USI e atributos de identidade (seção 9.7): atributos-chave, confiança do atributo, ocupação de identidade, nome social e mudança legal de nome; experimentos E14 e E15. |
 | 0.1.3 | 2026-10-24 | Seção 9.7.10: alternativa descartada (chave aleatória individual) e implantação em fases da unicidade de identificadores (fase A sem *nullifier*, fase B com OPRF de limiar). |
 | 0.1.4 | 2026-10-24 | Seção 10.8: cenários extremos de recuperação (perda total sem preparo e tentativa de abuso), âncoras de recuperação, revalidação assistida por emissores, regra "recomeçar não cria USI novo" e proporcionalidade; experimento E16. |
+| 0.1.5 | 2026-10-27 | Seção 5: panorama de iniciativas relacionadas, postura de colaboração, características inegociáveis, formas de colaboração e critérios de reaproveitamento; objetivo O11. |
