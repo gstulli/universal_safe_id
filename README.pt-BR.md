@@ -4,14 +4,14 @@
 
 **Uma identidade pessoal universal, única, privada e recuperável, construída como bem público, sobre código aberto e um registro público verificável.**
 
-> **Status:** concepção, com a **primeira versão do [whitepaper](docs/whitepaper.pt-BR.md) publicada (v0.1.5)**. O whitepaper detalha o modelo de ameaças, a arquitetura, as alternativas em disputa e um plano de 16 experimentos para decidir entre elas. **É um rascunho aberto à colaboração**: críticas, correções e contribuições são bem-vindas (ver [Como contribuir](#15-como-contribuir)). Nada aqui é definitivo: as propostas são hipóteses a serem testadas, medidas e ajustadas à medida que o projeto amadurece.
+> **Status:** concepção, com a **primeira versão do [whitepaper](docs/whitepaper.pt-BR.md) publicada (v0.2.0)**. O whitepaper detalha o modelo de ameaças, a arquitetura, as alternativas em disputa e um plano de 20 experimentos para decidir entre elas. **É um rascunho aberto à colaboração**: críticas, correções e contribuições são bem-vindas (ver [Como contribuir](#15-como-contribuir)). Nada aqui é definitivo: as propostas são hipóteses a serem testadas, medidas e ajustadas à medida que o projeto amadurece.
 
 **Documentos:**
 
 | Documento | Português | English |
 |---|---|---|
 | Visão geral do projeto | [README.pt-BR.md](README.pt-BR.md) | [README.md](README.md) |
-| Whitepaper v0.1.5 | [docs/whitepaper.pt-BR.md](docs/whitepaper.pt-BR.md) | [docs/whitepaper.md](docs/whitepaper.md) |
+| Whitepaper v0.2.0 | [docs/whitepaper.pt-BR.md](docs/whitepaper.pt-BR.md) | [docs/whitepaper.md](docs/whitepaper.md) |
 
 ---
 
@@ -65,6 +65,14 @@ O USI propõe uma infraestrutura aberta e sem dono que permita a qualquer pessoa
 
 O USI não pretende substituir documentos oficiais. Ele pode conviver com eles, aproveitá-los como evidência quando existirem e oferecer uma alternativa a quem não os possui.
 
+### A família USI: pessoas, organizações e assinatura
+
+O projeto tem duas partes que compartilham o mesmo núcleo (registro, chaves, recuperação, transparência, criptografia ágil e governança):
+- **USI-P:** identidade da **pessoa humana** (unicidade, atributos, privacidade).
+- **USI-O:** identidade de **organizações** (pessoas jurídicas), com atributos, representação e poderes verificáveis. A relação entre a pessoa e a organização, hoje representada pelo e-CPF e pelo e-CNPJ, passa a ser um dado explícito: a pessoa assina, e uma credencial mostra que ela pode agir pela organização, dentro de limites.
+
+Sobre esse núcleo, o USI oferece **assinatura digital de documentos** e **autenticação** em sistemas online, como alternativa transparente à hierarquia de autoridades certificadoras. O valor jurídico depende de lei e de aceitação: a estratégia é coexistir primeiro e buscar reconhecimento depois. Detalhes nas [seções 21 e 22 do whitepaper](docs/whitepaper.pt-BR.md).
+
 ### Alcance geográfico: começa no Brasil, pensado sem fronteiras
 
 - O **piloto começará no Brasil**, onde o projeto nasce, onde a legislação e os documentos são conhecidos e onde será formada a primeira rede de parceiros.
@@ -92,6 +100,8 @@ O USI não pretende substituir documentos oficiais. Ele pode conviver com eles, 
 | 14 | **Apoio de governos sem controle** | Governos podem apoiar (por exemplo, qualificando seus documentos), mas não têm voto especial, veto nem acesso a dados dos titulares. |
 | 15 | **Atributos únicos e verificáveis** | Cada USI tem um único nome oficial e um único identificador por país, vinculados por compromisso criptográfico. A confiança cresce com a verificação de emissores independentes e cai se o valor for alterado. |
 | 16 | **Colaborar, não competir** | O USI busca contribuir com iniciativas similares, interoperar e reaproveitar o que é aberto, sem abrir mão de ser universal, colaborativo, seguro, sem fins lucrativos e sem dono. |
+| 17 | **Falha humana impossível por construção** | O sistema gera e valida chaves, senhas e códigos; chaves fracas são rejeitadas; chaves sensíveis só são ativadas após verificação independente. A segurança de terceiros nunca depende do cuidado de uma única pessoa. |
+| 18 | **Agilidade criptográfica** | Troca de algoritmos sem trocar de identidade, desde o projeto, inclusive para a computação quântica. |
 
 ## 4. Diferenciais do USI
 
@@ -177,6 +187,28 @@ O registro público funciona como **âncora de confiança**: guarda apenas o mí
 - **Provas de conhecimento zero** (*zero-knowledge proofs*) permitem provar afirmações sem revelar o dado: "tenho mais de 18 anos", "moro neste município", "sou um humano único neste serviço".
 - **Compartilhamento por tempo limitado:** o titular concede acesso a dados com prazo e pode revogá-lo a qualquer momento. Limitação importante, que deve ficar clara ao usuário: só é possível limitar o *acesso contínuo*. Uma informação que já foi vista ou copiada não pode ser "desvista".
 - **Registro de consentimentos:** o titular mantém o histórico de quem acessou o quê e quando, visível apenas para ele.
+
+### 5.4 Assinatura, autenticação e autoridades certificadoras
+
+Hoje, a confiança em assinaturas e certificados depende de uma hierarquia de autoridades certificadoras. No modelo do USI, não há hierarquia de emissão de chaves: o identificador é auto-certificado, a confiança nos atributos vem de vários emissores independentes e todos os eventos são públicos e verificáveis, com carimbo de tempo por ancoragem no registro. Um emissor isolado não eleva sozinho a confiança além de um limite, e o dano de uma chave comprometida fica restrito ao que ela atestou.
+
+O USI **não afirma, hoje, valor jurídico equivalente** ao da assinatura qualificada da ICP-Brasil, e **não substitui a fé pública dos cartórios** sem mudança de lei. A estratégia é coexistir (assinatura avançada por aceitação das partes), buscar reconhecimento e, onde a lei permitir, substituir funções técnicas. Ver [seção 22 do whitepaper](docs/whitepaper.pt-BR.md).
+
+### 5.5 Segurança por construção: falhas humanas não podem comprometer terceiros
+
+Reportagens recentes descrevem oito certificados de autoridades intermediárias cujas chaves privadas tinham valores triviais (como 4), apesar do uso de um algoritmo forte. A corrente é tão forte quanto o seu elo mais fraco, e todos os que confiavam na cadeia ficaram expostos. O USI propõe tornar esse tipo de falha **impossível por construção**, e não apenas proibida:
+
+- **O sistema gera e valida as chaves.** A pessoa nunca escolhe nem digita uma chave. Chaves fracas, repetidas ou conhecidas como comprometidas são rejeitadas pelo protocolo. O mesmo vale para frases-senha de backup, PINs e códigos de recuperação.
+- **Publicar antes de usar:** chaves sensíveis (de emissores e operadores) ficam publicadas em estado pendente e só são ativadas após verificação independente por monitores públicos.
+- **Monitoramento contínuo e prova de comprometimento:** qualquer pessoa que assine com a chave privada de outro USI aciona a revogação automática.
+- **Frescor e falha fechada:** verificadores exigem prova atualizada do estado do registro; sem ela, operações sensíveis não são aceitas.
+- **Sem hierarquia, com chaves de limiar e limite de poder** por emissor; **transparência obrigatória**; metas de resposta a incidentes; credenciamento revogável.
+
+Isso não torna o USI imune a falhas: nenhum teste prova aleatoriedade, e bugs e engenharia social continuam possíveis. O objetivo é que as falhas sejam mais difíceis, detectadas mais cedo e contidas. Ver [seção 23 do whitepaper](docs/whitepaper.pt-BR.md).
+
+### 5.6 Migração criptográfica e computação quântica
+
+O projeto troca de algoritmos **sem trocar de identidade**. Desde o início: identificadores de algoritmo em todo evento, assinaturas híbridas (clássica e pós-quântica) na transição, pré-rotação de chaves por *hash* (resistente a computadores quânticos), estágios públicos de depreciação com gatilhos definidos, procedimento de emergência e renovação de selos de assinaturas de longa duração. Já existem algoritmos pós-quânticos padronizados, mas com custos maiores e menos tempo de escrutínio, por isso o desenho prevê que até o algoritmo escolhido possa ser trocado. Uma análise identificou também um risco no próprio desenho: a técnica prevista para a unicidade de identificadores não resiste a computadores quânticos e deve ser reavaliada. Ver [seção 24 do whitepaper](docs/whitepaper.pt-BR.md).
 
 ## 6. Uma pessoa, um USI: o modelo de unicidade
 
@@ -372,6 +404,8 @@ Os detalhes estão na [seção 14.5 do whitepaper](docs/whitepaper.pt-BR.md). No
 | **Reguladores e autoridades de proteção de dados** (como a ANPD) | Fiscalizam a conformidade | Proteção dos cidadãos |
 | **Governos e órgãos públicos** (de qualquer país) | Apoio opcional: qualificar seus documentos, operar nós, ceder espaços, reconhecer o USI | Reduzir fraude e duplicidade, incluir pessoas sem documento. **Sem controle sobre o projeto** |
 | **Iniciativas e organizações similares** (prova de pessoa única, identidade descentralizada, organizações de padrões) | Parceiros: compartilham pesquisa, padrões e componentes abertos | Objetivo comum; evitar duplicação de esforços |
+| **Organizações** (empresas, associações, órgãos públicos) | Titulares de USI-O; agem por meio de representantes autorizados | Identidade, poderes e assinatura verificáveis, sem depender de um único responsável |
+| **Autoridades certificadoras, cartórios e seus órgãos reguladores** | Interlocutores: coexistência, interoperação e eventual reconhecimento | Segurança jurídica e da infraestrutura; o USI busca dialogar antes de confrontar |
 | **Financiadores** (fundações, programas de fomento, doadores) | Sustentam a fase inicial | Impacto social e infraestrutura aberta |
 | **Sociedade civil e defensores de direitos digitais** | Fiscalizam e propõem melhorias | Privacidade, inclusão, transparência |
 
@@ -386,13 +420,14 @@ Uma identidade só tem valor se for aceita, e só é aceita se as pessoas a tive
 5. **Verificação de idade:** provar maioridade sem expor dados pessoais.
 6. **Login sem senha:** acesso a serviços com o USI, sem depender de grandes plataformas.
 7. **Credenciais acadêmicas e profissionais:** diplomas e registros verificáveis e infalsificáveis.
+8. **Assinatura digital de documentos e autenticação em sistemas online,** para pessoas e organizações, com verificação por qualquer pessoa.
 
 ## 13. Como começar
 
 Ações propostas para tirar o projeto do papel, em ordem aproximada:
 
 ### Etapa 1 – Whitepaper
-- [x] Redigir a primeira versão do whitepaper ([v0.1.5](docs/whitepaper.pt-BR.md)), detalhando: modelo de ameaças, arquitetura das três camadas, modelo de unicidade e níveis de garantia, protocolo de recuperação, opções de registro público, modelo de sustentabilidade, plano de governança e plano de experimentos.
+- [x] Redigir a primeira versão do whitepaper ([v0.2.0](docs/whitepaper.pt-BR.md)), detalhando: modelo de ameaças, arquitetura das três camadas, modelo de unicidade e níveis de garantia, protocolo de recuperação, opções de registro público, modelo de sustentabilidade, plano de governança e plano de experimentos.
 - [x] Publicar o rascunho neste repositório para comentários abertos.
 - [ ] Aprofundar o levantamento da literatura e das experiências anteriores em identidade descentralizada e prova de pessoa única, com fontes primárias (a seção 5 do whitepaper é um resumo inicial e precisa ser verificada).
 - [ ] Incorporar as contribuições recebidas e publicar a versão 0.2.
@@ -419,11 +454,16 @@ Ações propostas para tirar o projeto do papel, em ordem aproximada:
 - [ ] Levantar tecnicamente os documentos brasileiros candidatos (verificação criptográfica offline e identificador estável) e elaborar o primeiro perfil de país (experimento E13).
 - [ ] Prototipar o vínculo de atributos (*slots* com compromisso, unicidade por OPRF de limiar, prova de vigência) e simular ataques de ocupação de identidade, conluio de emissores e identidade sintética (experimentos E14 e E15).
 - [ ] Prototipar e testar a revalidação assistida por emissores e os cenários de perda total e de má-fé (experimento E16).
+- [ ] Prototipar e testar a rejeição de chaves fracas, a ativação "publicar antes de usar" e a prova de comprometimento (experimento E17).
+- [ ] Prototipar a migração criptográfica: identificadores de algoritmo, modo híbrido e simulação da "morte" de um algoritmo (experimento E18).
+- [ ] Prototipar o USI-O com credenciais de representação e chave de limiar, em um piloto com uma associação ou cooperativa (experimento E19).
+- [ ] Prototipar a assinatura de documentos e a verificação por terceiros (experimento E20).
 
 ### Etapa 5 – Análise jurídica e institucional
 - [ ] Analisar conformidade com a LGPD e outras legislações relevantes.
 - [ ] Estudar a forma jurídica da futura fundação e a viabilidade de reconhecimento do USI por instituições.
 - [ ] Dialogar com a ANPD e, quando oportuno, com órgãos públicos brasileiros, pedindo apoio à qualificação dos documentos **sem contrapartida de controle**.
+- [ ] Obter parecer jurídico sobre o enquadramento das assinaturas do USI (Lei 14.063/2020 e MP 2.200-2/2001) e sobre a relação com a fé pública dos cartórios.
 - [ ] Definir o roteiro público de entrada de novos países (stakeholder local, perfil de país, análise jurídica, validadores, avaliação de riscos a direitos humanos).
 
 ### Etapa 6 – Financiamento e divulgação
@@ -464,10 +504,13 @@ Hipóteses e decisões que dependem de pesquisa e de testes:
 - Que critérios ativam a técnica criptográfica de unicidade de identificadores na rede madura, e existe alternativa melhor?
 - Como pessoas sem rede de apoio obtêm uma âncora de recuperação sem barreira excessiva, e como padronizar a revalidação assistida pelos emissores?
 - Construir infraestrutura própria ou contribuir com uma iniciativa existente que cumpra as mesmas características? Quais componentes reaproveitar?
+- Como o USI pode ser reconhecido juridicamente como assinatura sem perder as suas características essenciais, e como se relaciona com a fé pública dos cartórios?
+- Como detectar geração fraca e sutil de aleatoriedade, e como credenciar emissores sem criar novos pontos de controle?
+- Qual alternativa pós-quântica existe para a técnica de unicidade de identificadores e para as provas de conhecimento zero?
 
 ## 15. Como contribuir
 
-O projeto está no início e toda contribuição é bem-vinda, **a começar pela leitura crítica do [whitepaper v0.1.5](docs/whitepaper.pt-BR.md)**. Especialmente de pessoas com experiência em:
+O projeto está no início e toda contribuição é bem-vinda, **a começar pela leitura crítica do [whitepaper v0.2.0](docs/whitepaper.pt-BR.md)**. Especialmente de pessoas com experiência em:
 
 - criptografia e protocolos de segurança;
 - identidade digital e padrões W3C;
@@ -497,6 +540,11 @@ O repositório é **bilíngue**: cada documento existe em inglês (`nome.md`) e 
 - **Consenso BFT:** mecanismo de acordo entre nós de uma rede que tolera que parte deles falhe ou aja de má-fé.
 - **Cliente leve:** software que verifica o registro sem precisar armazená-lo por completo.
 - **Nível de garantia:** grau de confiança de que um USI corresponde a uma pessoa real e única.
+- **USI-P / USI-O:** as duas partes do projeto: identidade da pessoa humana (P) e de organizações (O), sobre um núcleo comum.
+- **Autoridade certificadora (AC):** entidade que emite certificados digitais ligando uma chave a uma identidade; opera em hierarquia (raiz, intermediárias).
+- **Criptografia pós-quântica:** algoritmos desenhados para resistir a computadores quânticos.
+- **Assinatura híbrida:** assinatura que combina um algoritmo clássico e um pós-quântico; só vale se ambos verificarem.
+- **Agilidade criptográfica:** capacidade de trocar os algoritmos sem trocar a identidade.
 
 ---
 

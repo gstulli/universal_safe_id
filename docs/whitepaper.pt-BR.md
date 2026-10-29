@@ -2,7 +2,7 @@
 
 🌐 [English](whitepaper.md) · **Português (Brasil)**
 
-**Versão 0.1.5 — rascunho aberto à colaboração** · Outubro de 2026
+**Versão 0.2.0 — rascunho aberto à colaboração** · Outubro de 2026
 Documento complementar ao [README](../README.pt-BR.md).
 
 > **Como ler este documento.** O USI está em fase de concepção. Este whitepaper reúne o que se sabe, propõe caminhos e declara o que ainda não se sabe. Cada seção indica o seu grau de maturidade:
@@ -37,8 +37,12 @@ Documento complementar ao [README](../README.pt-BR.md).
 18. [Questões em aberto](#18-questões-em-aberto)
 19. [Roteiro](#19-roteiro)
 20. [Como contribuir com este documento](#20-como-contribuir-com-este-documento)
-21. [Referências](#21-referências)
-22. [Histórico de versões](#22-histórico-de-versões)
+21. [USI-O: identidade de organizações](#21-usi-o-identidade-de-organizações)
+22. [Assinatura digital e autenticação: alternativa às hierarquias de autoridades certificadoras](#22-assinatura-digital-e-autenticação-alternativa-às-hierarquias-de-autoridades-certificadoras)
+23. [Lições de falhas reais e procedimentos à prova de falha humana](#23-lições-de-falhas-reais-e-procedimentos-à-prova-de-falha-humana)
+24. [Migração criptográfica e computação quântica](#24-migração-criptográfica-e-computação-quântica)
+25. [Referências](#25-referências)
+26. [Histórico de versões](#26-histórico-de-versões)
 
 ---
 
@@ -54,7 +58,7 @@ Nenhum componente técnico do USI é inédito. A contribuição proposta está n
 4. **Pseudônimos distintos por serviço**, que impedem que o identificador universal se torne instrumento de rastreamento.
 5. **Sustentação por quem se beneficia**, sem token e sem cobrança do cidadão, com governança que se descentraliza em fases mensuráveis.
 
-Este documento descreve o problema, o modelo de ameaças, a arquitetura proposta, as alternativas ainda em disputa, um plano de experimentos para decidir entre elas e os riscos do projeto.
+Este documento descreve o problema, o modelo de ameaças, a arquitetura proposta, as alternativas ainda em disputa, um plano de experimentos para decidir entre elas e os riscos do projeto. A Parte II (seções 21 a 24) estende a proposta a organizações, à assinatura digital e à autenticação, às lições de falhas reais de infraestrutura de chaves e à migração criptográfica.
 
 ## 2. Introdução e motivação
 
@@ -90,6 +94,9 @@ Um terceiro caminho: uma identidade que **não depende de uma única autoridade*
 | O9 | Descentralizar a governança de forma planejada, até que ninguém, incluindo o fundador, tenha poder unilateral. |
 | O10 | Garantir que cada USI tenha um único conjunto vigente de atributos-chave (nome oficial, identificadores) e que terceiros saibam o quanto confiar neles. |
 | O11 | Colaborar com iniciativas similares, reaproveitando padrões e componentes abertos, sem abrir mão das características essenciais: universal, colaborativo, seguro, sem fins lucrativos e sem dono (seção 5). |
+| O12 | Servir também a organizações (USI-O), com representação e poderes verificáveis, compartilhando o mesmo núcleo do USI-P (seção 21). |
+| O13 | Oferecer assinatura digital e autenticação verificáveis, como alternativa às hierarquias de autoridades certificadoras (seção 22). |
+| O14 | Tornar as falhas humanas de segurança impossíveis por construção e preparar a migração criptográfica, inclusive para a computação quântica (seções 23 e 24). |
 
 ### 3.2 Não objetivos 🟢
 
@@ -97,6 +104,7 @@ Um terceiro caminho: uma identidade que **não depende de uma única autoridade*
 - **Não substitui documentos oficiais.** Convive com eles e os usa como evidência quando existirem.
 - **Não garante unicidade absoluta.** Nenhum sistema garante; o objetivo é um custo de fraude muito superior ao benefício.
 - **Não garante a veracidade das informações**, apenas que são únicas e o quanto são confiáveis. Quem responde pela veracidade é quem as verifica (seção 9.7).
+- **Não afirma, hoje, valor jurídico** equivalente ao da assinatura qualificada da ICP-Brasil, nem substitui a fé pública notarial. O reconhecimento legal é um objetivo de longo prazo (seção 22.4).
 - **Não é um sistema de crédito social, reputação pública ou pontuação de cidadãos.** Reputação interna serve apenas para ponderar atestações.
 - **Não armazena dados pessoais** no registro público, em qualquer forma.
 - **Não é um mecanismo de vigilância**, nem de identificação compulsória.
@@ -293,7 +301,7 @@ Ao registrar a chave atual, o titular registra o *hash* da próxima. Se a chave 
 
 ### 7.5 Agilidade criptográfica e pós-quântica 🟡
 
-Os eventos devem identificar o algoritmo usado. A migração para algoritmos pós-quânticos padronizados (como ML-DSA, FIPS 204 [4]) deve ser possível sem trocar de USI. Como assinaturas e chaves pós-quânticas são significativamente maiores, o registro deve armazenar **compromissos (hashes)** de chaves, e revelar a chave completa somente quando necessário (no evento que a utiliza). Isso afeta o dimensionamento (seção 8.3).
+Os eventos devem identificar o algoritmo usado. A migração para algoritmos pós-quânticos padronizados (como ML-DSA, FIPS 204 [4]) deve ser possível sem trocar de USI. Como assinaturas e chaves pós-quânticas são significativamente maiores, o registro deve armazenar **compromissos (hashes)** de chaves, e revelar a chave completa somente quando necessário (no evento que a utiliza). Isso afeta o dimensionamento (seção 8.3). O plano completo de migração está na seção 24.
 
 ### 7.6 Múltiplos dispositivos 🟢
 
@@ -476,7 +484,7 @@ O **nome é chave no sentido de ser imutável e vinculado ao USI**, mas **não �
 
 **9.7.2 Como o vínculo é registrado**
 - Para cada USI e tipo de atributo existe um único **espaço (*slot*)**. O valor vigente fica na carteira do titular. O registro guarda apenas um **compromisso criptográfico** do valor e metadados mínimos (tipo, país, data, contador de trocas).
-- **Unicidade entre USIs.** Para impedir que o mesmo CPF seja vinculado a dois USIs, o registro guarda um *nullifier* do identificador. Atenção: CPFs e números de documento têm um espaço pequeno de valores possíveis, e um *hash* simples seria revertido por força bruta (ataque de dicionário). Hipótese: calcular o *nullifier* com uma **função pseudoaleatória oblívia (OPRF) cuja chave é dividida entre vários operadores** (criptografia de limiar), com limite de consultas, de modo que nenhum operador, sozinho, consiga testar CPFs. 🔴 Isso vale também para o *nullifier* documental (seção 9.2.2). A alternativa descartada e a implantação em fases, com a OPRF só na rede madura, estão na seção 9.7.10.
+- **Unicidade entre USIs.** Para impedir que o mesmo CPF seja vinculado a dois USIs, o registro guarda um *nullifier* do identificador. Atenção: CPFs e números de documento têm um espaço pequeno de valores possíveis, e um *hash* simples seria revertido por força bruta (ataque de dicionário). Hipótese: calcular o *nullifier* com uma **função pseudoaleatória oblívia (OPRF) cuja chave é dividida entre vários operadores** (criptografia de limiar), com limite de consultas, de modo que nenhum operador, sozinho, consiga testar CPFs. 🔴 Isso vale também para o *nullifier* documental (seção 9.2.2). A alternativa descartada e a implantação em fases, com a OPRF só na rede madura, estão na seção 9.7.10. Atenção: as OPRFs conhecidas usam curvas elípticas e não resistem a computadores quânticos (seção 24.2).
 - **Apresentação.** O titular revela o valor que quiser (por exemplo, o CPF) e prova, em conhecimento zero, que é o valor vigente no *slot* do seu USI, com confiança igual ou superior à exigida, sem revelar mais nada.
 
 **9.7.3 Confiança do atributo**
@@ -769,7 +777,7 @@ A maior parte das perdas de identidade digital decorre de falhas de usabilidade.
 
 ### 12.4 Migração criptográfica 🟡
 
-O protocolo prevê desativar algoritmos comprometidos por decisão de governança, com período de transição e rotação de chaves coordenada, sem alterar o USI.
+O protocolo prevê desativar algoritmos comprometidos por decisão de governança, com período de transição e rotação de chaves coordenada, sem alterar o USI. Os detalhes estão na seção 24.
 
 ## 13. Sustentabilidade
 
@@ -936,6 +944,10 @@ Para evitar decisões baseadas em palpites, o projeto propõe uma série de expe
 | E14 | **Vínculo de atributos (criptografia)** | É possível registrar *slots* com compromisso, unicidade por OPRF de limiar e prova de vigência em conhecimento zero, com custo viável | Protótipo do *slot*, do *nullifier* com OPRF dividida entre operadores e da apresentação; teste de ataque de dicionário e de privacidade das atestações | Nenhum vazamento de valores por força bruta nos cenários testados; provas em tempo aceitável em celular |
 | E15 | **Modelo de confiança do atributo** | Emissores independentes elevam a confiança de forma confiável e o modelo resiste a ocupação, conluio e identidade sintética | Simulação de emissores honestos e fraudulentos, ataques de ocupação, cartéis e identidades sintéticas; teste com casos de mudança legal de nome | Alta detecção com baixos falsos positivos; nenhum caminho de ocupação sem contestação possível |
 | E16 | **Recuperação sem preparo e abuso** | A revalidação assistida por emissores recupera pessoas de boa-fé com alta taxa de sucesso, e uma equipe de ataque (*red team*) não consegue sequestrar um USI nem obter um segundo USI de confiança alta | Piloto da revalidação assistida com instituições parceiras; simulação de perda total; ataque com engenharia social contra emissores; tentativa de obter dois USIs com emissores disjuntos | Alta taxa de recuperação legítima; nenhum sequestro nem segundo USI com C3 ou mais nos cenários definidos |
+| E17 | **Qualidade de chaves e ativação à prova de falhas** | Rejeição por construção, monitores e "publicar antes de usar" detectam chaves fracas e impedem a sua ativação | Injetar chaves fracas (escalares pequenos, pontos inválidos, repetidas) em ambiente de teste; medir tempo de detecção e bloqueio; testar a prova de comprometimento; ataque de equipe vermelha às cerimônias | Todas as chaves fracas conhecidas rejeitadas; detecção em minutos; nenhuma ativação sem verificação independente |
+| E18 | **Migração criptográfica** | A troca de algoritmos, as assinaturas híbridas e a rotação em massa funcionam sem trocar de USI e com custo viável | Protótipo de eventos com identificadores de algoritmo; modo híbrido clássico e pós-quântico; simulação da "morte" de um algoritmo; medir tamanhos, latência e custo; avaliar alternativas pós-quânticas para OPRF e provas de conhecimento zero | Migração completa simulada dentro da meta; custo e tamanho aceitáveis; plano para OPRF e provas |
+| E19 | **USI-O: representação e poderes** | Credenciais de representação, chave de limiar e sucessão funcionam em organizações reais | Piloto com uma associação ou cooperativa parceira; cenários de saída de representante, conluio e sucessão | Poderes aplicados corretamente; revogação imediata; recuperação por quórum |
+| E20 | **Assinatura de documentos e reconhecimento** | As assinaturas do USI são verificáveis por terceiros, aceitas por partes privadas e compatíveis com o enquadramento legal de assinatura avançada | Piloto de assinatura em fluxos reais; parecer jurídico sobre a Lei 14.063/2020 e a MP 2.200-2/2001; teste de verificação por terceiros | Verificação por terceiros sem nosso apoio; parecer favorável ao enquadramento como avançada; aceitação por ao menos uma instituição |
 
 Resultados e dados dos experimentos serão **publicados**, inclusive os negativos.
 
@@ -966,6 +978,12 @@ Resultados e dados dos experimentos serão **publicados**, inclusive os negativo
 | Recuperação fraudulenta para obter segunda identidade | Média | Médio | "Recomeçar não cria USI novo", detecção pelo emissor, contador de recuperações, proporcionalidade |
 | Duplicação de esforços ou disputa com iniciativas similares | Média | Médio | Postura de colaboração (seção 5.2); pesquisar e conversar antes de construir; interoperar |
 | Dependência de projeto de terceiros que muda de rumo, é adquirido ou encerrado | Média | Médio | Critérios de reaproveitamento (seção 5.5); dependências atrás de interfaces substituíveis |
+| Falha de geração de chaves (aleatoriedade fraca) em carteiras ou emissores | Média | Muito alto | Rejeição por construção, mistura de fontes, monitores, "publicar antes de usar" (seção 23) |
+| Comprometimento de um emissor credenciado | Média | Alto | Limite de poder por emissor, chaves de limiar, revogação automática, vários emissores independentes (seções 9.7.3 e 23) |
+| Barreira legal e política ao reconhecimento de assinaturas e à substituição de autoridades certificadoras e cartórios | Alta | Alto | Estratégia faseada, coexistência, diálogo com reguladores, parecer jurídico (seção 22) |
+| Ruptura criptográfica ou avanço quântico antes da migração | Baixa a média | Muito alto | Agilidade criptográfica, modo híbrido, pré-rotação por *hash*, procedimento de emergência, exercícios (seção 24) |
+| Organizações de fachada usando USI-O para fraude | Média | Alto | Confiança por emissores independentes, limites de poder, contestação (seção 21.8) |
+| Perda de controle de um USI-O por saída ou conluio de representantes | Média | Alto | Chave de limiar, quórum, veto, sucessão (seção 21.5) |
 
 ## 18. Questões em aberto
 
@@ -1000,6 +1018,15 @@ Resultados e dados dos experimentos serão **publicados**, inclusive os negativo
 29. Como distinguir, sem expor ninguém, o recomeço legítimo da tentativa de obter um segundo USI?
 30. Construir infraestrutura própria ou contribuir com uma iniciativa existente que cumpra as mesmas características? Quais componentes reaproveitar e com quais projetos firmar parceria? (seção 5)
 31. Como colaborar com iniciativas que têm token, empresa ou governança diferente sem comprometer a ausência de dono e de fins lucrativos?
+32. Como tratar ordens legais (judiciais e administrativas) sobre um USI ou USI-O sem criar um poder unilateral? (seções 14.4 e 21.5)
+33. Qual é o enquadramento jurídico possível das assinaturas do USI e o caminho para o reconhecimento sem perder as características essenciais? (E20)
+34. Como o USI se relaciona com a fé pública dos cartórios sem substituí-la indevidamente? (seção 22.4)
+35. Como credenciar emissores e guardiões institucionais sem criar novos pontos de controle? (seção 23.9)
+36. Como detectar uma geração fraca e sutil de aleatoriedade, que passa nos testes conhecidos? (E17)
+37. Como conciliar a revogação automática por prova de comprometimento com o não repúdio? (seção 23.6)
+38. Que alternativa pós-quântica existe para a OPRF de limiar e para as provas de conhecimento zero atuais? (E18)
+39. Como proteger sócios e beneficiários finais em um USI-O sem perder a transparência necessária? (seção 21.7)
+40. Qual o calendário e quais os gatilhos de depreciação de algoritmos? (seção 24.4)
 
 ## 19. Roteiro
 
@@ -1008,7 +1035,7 @@ Resultados e dados dos experimentos serão **publicados**, inclusive os negativo
 | **1. Whitepaper** | Versão 0.1 (este documento); revisão aberta; versão 0.2 com contribuições |
 | **2. Comunidade e revisão** | Revisão por especialistas; contato com projetos similares para colaboração (seção 5.2); apresentação a comunidades de identidade descentralizada; núcleo inicial de colaboradores |
 | **3. Organização do repositório** | Licenças, `CONTRIBUTING`, código de conduta, processo de USIPs, *issues* para cada questão em aberto |
-| **4. Provas de conceito** | Experimentos E1–E16 conforme prioridade |
+| **4. Provas de conceito** | Experimentos E1–E20 conforme prioridade |
 | **5. Análise jurídica e institucional** | Parecer sobre LGPD e outras normas; desenho da fundação |
 | **6. Financiamento e divulgação** | Submissão a editais; materiais de divulgação; busca de parceiros |
 | **7. Piloto (Brasil)** | Caso de uso inicial com comunidade parceira no Brasil; métricas; relatório público; roteiro de entrada de novos países |
@@ -1024,12 +1051,324 @@ Este é um rascunho aberto. Para contribuir:
 - **Referência a fontes:** a seção 5 e as afirmações técnicas precisam de fontes primárias; ajude a verificar e acrescentar.
 - **Panorama de iniciativas:** ajude a verificar e ampliar o levantamento da seção 5.1, inclusive projetos fora do universo de criptomoedas e em outros idiomas.
 - **Especialistas:** criptografia, sistemas distribuídos, identidade digital, direito de proteção de dados, design de experiência, antropologia/ciências sociais (para inclusão), ética.
-- **Experimentos:** assuma um dos experimentos E1–E16.
+- **Experimentos:** assuma um dos experimentos E1–E20.
 - **Tradução e revisão linguística:** mantenha as versões em português e em inglês sincronizadas.
 
-Todas as alterações significativas devem ser registradas no histórico de versões (seção 22).
+Todas as alterações significativas devem ser registradas no histórico de versões (seção 26).
 
-## 21. Referências
+## 21. USI-O: identidade de organizações
+
+> **Parte II.** As seções 21 a 24 estendem a proposta da Parte I (pessoas) a organizações, assinatura digital e autenticação, e tratam das lições de falhas reais de infraestrutura de chaves e da migração criptográfica. Esta parte é **mais preliminar** que as anteriores: quase tudo aqui é 🟡 ou 🔴. Se ela crescer, será separada em documento próprio.
+
+### 21.1 A família USI 🟢
+
+O projeto passa a ter duas partes que compartilham um mesmo núcleo:
+
+| Componente | Descrição | Onde está descrito |
+|---|---|---|
+| **Núcleo comum (USI Core)** | Registro público, eventos de chaves, recuperação, transparência, criptografia ágil e governança | Seções 6, 7, 8, 10, 12, 14 e 24 |
+| **USI-P (pessoa)** | Identidade da pessoa humana: unicidade, atributos e privacidade | Seções 9 e 11 |
+| **USI-O (organização)** | Identidade de pessoas jurídicas e outras organizações: atributos, representação e poderes | Esta seção |
+| **Serviços de confiança** | Assinatura de documentos, autenticação e carimbo de tempo, para pessoas e organizações | Seção 22 |
+
+A separação reconhece que pessoas e organizações têm problemas de unicidade, de privacidade e de controle diferentes. O núcleo, porém, é um só: um mesmo registro, as mesmas regras de chaves e de recuperação, e a mesma governança.
+
+### 21.2 O que é diferente em organizações 🟡
+
+| Aspecto | USI-P | USI-O |
+|---|---|---|
+| O que se garante único | Um ser humano, um USI | Uma entidade jurídica, um USI-O (por identificador nacional) |
+| Fonte primária | Documentos de identidade emitidos pelo Estado | Cadastros oficiais de pessoas jurídicas (por exemplo, a Receita Federal e as juntas comerciais, no Brasil) |
+| Ameaça principal | Contas falsas de humanos | Empresas de fachada, representantes sem poder, fraude de procuração |
+| Quem age | A própria pessoa | Pessoas autorizadas, dentro de poderes e limites |
+| Privacidade | Dado pessoal, protegido | Em geral, dados públicos; exceção para pessoas naturais ligadas à entidade (sócios, empresário individual), sujeitas à LGPD |
+| Chave | Da pessoa; recuperável por ela | Da organização, com política de controle e de sucessão |
+
+**Um USI-O nunca é prova de humanidade.** Uma pessoa pode controlar várias organizações legitimamente. Por isso, qualquer uso que dependa de "uma pessoa, um voto" (seção 12) aceita apenas USI-P.
+
+### 21.3 Identificador e atributos 🟡
+
+- O USI-O tem identificador permanente próprio (`did:usi`), com as mesmas regras de chaves, rotação e recuperação.
+- **Atributos-chave:** identificador nacional da entidade (o CNPJ, no Brasil), razão social, natureza jurídica, data de constituição e situação cadastral. Seguem o modelo de *slots* e de **confiança do atributo (C0 a C4)** da seção 9.7, com emissores independentes.
+- **Fonte primária:** onde um governo apoiar o projeto (seção 14.5), extratos e credenciais assinados pelos cadastros oficiais levam diretamente a níveis altos de confiança. Onde não houver, a confiança é construída por emissores secundários independentes.
+- **Unicidade:** como o identificador de uma entidade é, em regra, **público**, o registro único não precisa da técnica de proteção de identificadores de pessoas (OPRF, seção 9.7.2). **Exceção:** empresário individual e microempreendedor têm CNPJ ligado a uma pessoa natural, e devem ser tratados com as proteções do USI-P.
+- **Mudanças** (razão social, endereço, natureza jurídica) seguem o caminho de "alteração oficial" da seção 9.7.7, com evidência do cadastro.
+
+### 21.4 Representação e poderes: a relação entre e-CPF e e-CNPJ 🟡
+
+Hoje, na ICP-Brasil, o e-CPF e o e-CNPJ são certificados distintos, usados em aplicações governamentais e privadas [15]. No USI, a relação entre a pessoa e a organização é um dado explícito e verificável:
+
+- **Um ato em nome da organização** é uma assinatura da **pessoa** (USI-P) acompanhada de uma **credencial de representação** da **organização** (USI-O). O verificador confere as duas.
+- **A credencial de representação** informa: o papel (sócio-administrador, diretor, procurador, contador, usuário), o escopo (tipos de ato), os limites (valor, prazo), a exigência de assinatura conjunta (por exemplo, dois de três diretores), a possibilidade de subdelegação (com profundidade limitada), a validade e a forma de revogação.
+- **Quem emite a credencial:** o cadastro oficial (quando houver apoio), o ato societário registrado ou a própria organização, por decisão de quórum.
+- **Provas de conhecimento zero** permitem demonstrar, por exemplo, "estou autorizado a assinar contratos de até R$ X por esta organização", sem revelar os demais dados.
+- **O poder fica na política, não numa chave.** Quando um representante sai, a credencial é revogada. Não existe "a chave da empresa" que sai junto com a pessoa, problema comum quando um certificado está atrelado a um único responsável.
+
+### 21.5 Controle da organização e sucessão 🟡
+
+- A chave de controle do USI-O é uma **chave de limiar** entre representantes (por exemplo, 2 de 3), nunca uma chave única de uma pessoa.
+- Operações sensíveis (alterar a política de poderes, nomear ou destituir representantes) exigem quórum e **prazo de espera com notificação e veto**, como na seção 10.3.
+- **Recuperação:** por quórum dos representantes restantes e revalidação com o cadastro oficial ou emissores independentes (seção 10.8).
+- **Sucessão:** se não restar nenhum representante (por exemplo, falecimento do único sócio), a recuperação se dá por evidência de ato legal (inventário, nomeação judicial ou administrativa). 🔴 Em aberto: como tratar ordens legais sem criar um poder unilateral (seção 14.4).
+
+### 21.6 Ciclo de vida 🟡
+
+**Constituição → atestação dos atributos → operação → alterações → fusão, cisão ou incorporação (sucessão entre USI-O) → suspensão (por exemplo, inaptidão cadastral) → baixa.** Na baixa, o USI-O é encerrado, mas o histórico permanece, e as assinaturas feitas enquanto ele estava ativo continuam verificáveis.
+
+### 21.7 Privacidade e transparência 🟡
+
+- Os dados da entidade são públicos apenas no mínimo necessário. O quadro societário e os beneficiários finais são sensíveis e usam **divulgação seletiva** e provas ("há um sócio residente no país X", sem nomes), conforme a regulação aplicável.
+- As pessoas naturais ligadas à organização preservam sua privacidade: ao agir em nome dela, revelam apenas o que o ato exige.
+
+### 21.8 Riscos específicos 🟡
+
+| Risco | Resposta |
+|---|---|
+| Empresas de fachada e uso de "laranjas" | Confiança por emissores independentes e fonte primária; limites de poder; sinais de grafo entre organizações e pessoas; contestação |
+| Fraude de procuração ou de poderes | Credenciais com escopo, limite e prazo; assinatura conjunta; revogação imediata |
+| Organizações usadas para burlar "uma pessoa, um voto" | USI-O nunca vale como prova de humanidade |
+| Perda de controle por saída ou conluio de representantes | Chave de limiar, quórum, prazo de espera e veto |
+| Exposição de sócios e beneficiários finais | Divulgação seletiva e provas de conhecimento zero |
+
+### 21.9 Países e fontes oficiais 🟡
+
+Os **perfis de país** (seção 9.2.2) passam a incluir também os cadastros de pessoas jurídicas: formatos dos extratos assinados, listas de situação cadastral e regras locais. O apoio governamental continua sendo opcional e **sem controle** (seção 14.5).
+
+## 22. Assinatura digital e autenticação: alternativa às hierarquias de autoridades certificadoras
+
+### 22.1 Dois usos centrais 🟢
+
+1. **Assinatura de documentos:** comprovar autoria, integridade e momento.
+2. **Autenticação e autorização:** comprovar a legitimidade de quem acessa um sistema online, como pessoa ou como representante de uma organização, com o papel e os poderes que tiver.
+
+Os dois usos se apoiam no mesmo núcleo: as chaves do USI, o estado do registro e as credenciais. O documento nunca vai para o registro; apenas o seu *hash* é ancorado, quando há necessidade de comprovar o momento.
+
+### 22.2 Como uma assinatura USI é verificada 🟡
+
+1. O verificador recebe o documento (ou o seu *hash*), a assinatura, o identificador do signatário (ou um pseudônimo) e as credenciais necessárias (atributos, papel).
+2. Confere a assinatura com a chave **vigente do signatário no momento da assinatura**, usando o estado do registro e uma prova de inclusão (cliente leve).
+3. Confere que a chave não foi revogada nem declarada comprometida, e que a prova tem **frescor** suficiente (seção 23.7).
+4. Confere o **carimbo de tempo:** o *hash* foi ancorado em lote no registro, o que prova que ele existia naquele momento.
+5. Confere os níveis exigidos: confiança do atributo (C), nível de garantia da pessoa e, se for o caso, o papel e os poderes na organização.
+6. Aplica a política do verificador: algoritmos aceitos, validade, nível mínimo.
+
+### 22.3 Comparação com a hierarquia de autoridades certificadoras 🟡
+
+| Aspecto | Hierarquia de ACs (modelo atual) | Modelo USI (proposto) |
+|---|---|---|
+| Estrutura de confiança | Raiz, intermediárias e certificados finais; as raízes são aceitas por programas de confiança de navegadores, sistemas e governos | Sem hierarquia de emissão de chaves: o USI é auto-certificado; a confiança nos atributos vem de vários emissores independentes, em níveis |
+| Quem vincula a chave à pessoa | Uma AC, por validação própria ou de agentes de registro | Atestações de emissores independentes e evidências de unicidade, registradas e auditáveis |
+| Efeito de uma chave de emissão fraca ou comprometida | Pode falsificar identidades de qualquer titular da cadeia | Um emissor isolado não eleva sozinho a confiança acima de C1 ou C2; o dano se limita ao que ele atestou e é detectável |
+| Revogação | Listas e consultas distribuídas de forma heterogênea; repositórios de confiança desatualizados | Estado único e público do registro, com prova de frescor |
+| Transparência | Parcial (por exemplo, o registro público de certificados do TLS [6]) | Todos os eventos e atestações são públicos; sem inclusão no registro, não há validade |
+| Tempo | Autoridade de carimbo de tempo | Ancoragem em lote no registro |
+| Valor jurídico | Presunção legal para documentos assinados com certificados ICP-Brasil [13] | Por aceitação das partes, enquanto não houver reconhecimento (seção 22.4) |
+| Custo para o cidadão | Compra, validade e renovação do certificado | Gratuito |
+
+### 22.4 Valor jurídico e o papel dos cartórios 🔴
+
+Esta é a principal barreira à substituição, e precisa de parecer jurídico (a confirmar).
+
+- **ICP-Brasil.** Foi instituída pela Medida Provisória nº 2.200-2/2001 [13], que, segundo a leitura corrente, dá presunção de validade aos documentos assinados com certificados da ICP-Brasil e admite outros meios de comprovação de autoria e integridade, desde que aceitos pelas partes.
+- **Lei nº 14.063/2020 [14].** Define assinaturas eletrônicas simples, avançada e qualificada. Para a avançada, os requisitos incluem associação unívoca ao signatário, uso de dados de criação sob controle do signatário com elevado nível de confiança, e detecção de qualquer modificação posterior.
+- **Hipótese:** as assinaturas do USI poderiam se enquadrar como assinaturas eletrônicas **avançadas** (e simples), válidas por aceitação das partes. A equivalência à assinatura **qualificada** exigiria reconhecimento legal.
+- **Cartórios.** Além da tecnologia, desempenham uma função legal de **fé pública**, atribuída por lei a agentes delegados (autenticidade de atos, registros de imóveis, entre outros). O USI pode desmaterializar as partes técnicas (identificação, integridade, carimbo de tempo), mas **não substitui a fé pública sem mudança legal**.
+
+### 22.5 Estratégia faseada 🟡
+
+| Fase | Objetivo |
+|---|---|
+| **1. Coexistência** | O USI funciona como assinatura eletrônica avançada por aceitação das partes (contratos privados, associações, fluxos internos, comunidades). Certificados da ICP-Brasil são aceitos como evidência, e há interoperação. |
+| **2. Reconhecimento** | Diálogo com reguladores e órgãos competentes (por exemplo, o ITI, que administra a raiz da ICP-Brasil, e os que supervisionam os cartórios), pareceres jurídicos, normas setoriais e aceitação por instituições. |
+| **3. Substituição parcial** | Onde a lei permitir, o USI substitui funções técnicas hoje prestadas por autoridades certificadoras e por serviços notariais. |
+
+O USI se posiciona como **alternativa tecnicamente mais transparente** e, no longo prazo, **substituto de partes** do modelo atual. A postura de colaboração da seção 5.2 também vale aqui: buscar diálogo e interoperabilidade antes de confronto.
+
+### 22.6 Certificados de servidor (TLS) e de assinatura de código 🔴
+
+Os casos analisados na seção 23 envolvem certificados TLS e de assinatura de código. Substituir esse ecossistema exige que fornecedores de navegadores e de sistemas operacionais adotem outro modelo, o que **não é meta de curto prazo**. Caminhos a estudar: usar o USI-O como sinal adicional de identidade da organização dona do domínio (vínculo entre domínio e USI-O); registro transparente como camada extra de detecção de emissões indevidas; e participação em fóruns de padronização.
+
+### 22.7 Limites 🟡
+
+- O valor jurídico depende de lei e de aceitação, não da tecnologia.
+- Para aplicações em que o verificador exige um certificado ICP-Brasil ou equivalente, o USI sozinho não basta.
+- A assinatura prova o controle de uma chave por um USI, e o nível de confiança vem das atestações; ela não torna verdadeiro o que o documento afirma.
+
+## 23. Lições de falhas reais e procedimentos à prova de falha humana
+
+### 23.1 Casos analisados 🟡
+
+Esta seção parte de duas reportagens recentes sobre falhas em infraestrutura de chaves [15][16]. **Ressalvas:** os dados vêm das reportagens, que divergem em detalhes (por exemplo, uma fala em seis intermediárias para TLS e duas para assinatura de código, e outra em oito certificados TLS intermediários); a causa da geração fraca das chaves não foi esclarecida nelas; e apurações oficiais podem divergir.
+
+**Caso 1: chaves privadas triviais em autoridades intermediárias.** Segundo as reportagens, oito certificados de autoridades intermediárias da eMudhra (operadora da marca emSign), ligados a cadeias reconhecidas por grandes programas de confiança, tinham chaves privadas de valor minúsculo (4, 56, 66, 115, 155, 156, 230 e 237), embora usassem a curva NIST P-384, que deveria oferecer cerca de 192 bits de segurança. Com tão poucos valores possíveis, bastariam cerca de 255 tentativas para recuperar qualquer uma. Um pesquisador comunicou o problema e provou possuir as chaves assinando uma mensagem com elas. O risco descrito é a emissão de certificados fraudulentos para domínios que o atacante não controla, o que viabilizaria a interceptação de conexões. Segundo as reportagens, não há comprovação pública de exploração maliciosa.
+
+**Resposta.** A Mozilla bloqueou as intermediárias em menos de três horas e removeu a raiz do seu repositório; o Chrome e a Apple também agiram. Mas a resposta foi desigual: segundo uma das reportagens, no momento do relato original o Edge no Windows 10 continuava se conectando a 12 hosts vulneráveis, e aplicações com repositórios de confiança próprios ficam expostas. Segundo o Chrome Root Program, não havia certificados TLS das seis intermediárias de TLS nos registros públicos de certificados antes do bloqueio, o que reduziu o risco.
+
+**Caso 2: a ICP-Brasil e o repositório da Mozilla.** Segundo o artigo [15], a raiz da ICP-Brasil não está no repositório da Mozilla; um pedido de inclusão feito em 2020 apontou, segundo participantes da discussão pública, certificados fora dos requisitos da WebPKI, nomes de domínio inválidos e a extensa hierarquia de autoridades subordinadas. O autor ressalta que **não é possível concluir que a ICP-Brasil seja mais ou menos segura** a partir do incidente, e que ser reconhecido não equivale a operar com segurança.
+
+### 23.2 Lições e respostas do USI 🟡
+
+| # | O que as reportagens relatam | Falha de fundo | Resposta do USI |
+|---|---|---|---|
+| 1 | Chaves privadas de valor trivial com algoritmo forte (o tamanho anunciado não correspondia à segurança efetiva) | Geração de chave sem validação do resultado | Rejeição por construção de chaves fracas na carteira, no protocolo e nos monitores (23.4); ativação só após verificação independente (23.5) |
+| 2 | Descoberta por um terceiro, que provou a posse da chave assinando uma mensagem | Nem auditoria nem monitoramento do emissor detectaram; um teste simples não era feito | Monitoramento contínuo por qualquer pessoa; prova de comprometimento com revogação automática (23.6) |
+| 3 | Uma intermediária fraca permitiria falsificar certificados de domínios alheios | Poder de emissão concentrado em poucas chaves; dano muito amplo | Sem hierarquia de emissão de chaves; chaves de limiar; confiança exige vários emissores independentes (22.3, 23.5) |
+| 4 | Resposta rápida de alguns e lenta ou parcial de outros; repositórios próprios desatualizados | Confiança e revogação distribuídas de forma heterogênea | Estado único de verdade no registro; prova de frescor obrigatória; falhar fechado em operações sensíveis (23.7) |
+| 5 | A transparência dos registros de certificados reduziu o risco | A transparência funciona como rede de proteção | Transparência obrigatória para todo evento e atestação (22.3) |
+| 6 | Recuperação lenta, comparada à do Heartbleed: muitos sistemas difíceis de atualizar | Agilidade criptográfica e inventário tardios | Agilidade desde o projeto e exercícios periódicos (seção 24) |
+| 7 | Estar em um programa de confiança não garante operar com segurança; controle por auditoria e por notificações de terceiros | Conformidade de papel em vez de verificação técnica contínua | Verificação técnica automática, contínua e pública; credenciamento revogável (23.6, 23.9) |
+| 8 | Hierarquia extensa com questionamentos de conformidade (segundo participantes da discussão pública) | Hierarquias longas multiplicam pontos de falha e de não conformidade | Estrutura achatada e regras verificáveis por máquina em cada emissão (23.4). O USI não presume ser melhor; busca ser mais fácil de verificar |
+
+### 23.3 Princípios 🟢
+
+1. **A corrente é tão forte quanto o seu elo mais fraco.** O projeto deve garantir que nenhum elo possa ser fraco sem ser detectado e contido.
+2. **Tornar o erro impossível, e não apenas proibido.** A pessoa nunca escolhe nem digita chaves: o sistema as gera e as valida. Não existem atalhos manuais.
+3. **Automatizar o controle.** Verificações de máquina na criação de cada chave, e não auditoria periódica de papéis.
+4. **Verificação independente e pública.** Qualquer pessoa pode reproduzir os testes.
+5. **Transparência obrigatória.** O que não está no registro não vale.
+6. **Conter o dano.** Chaves de vida curta, escopo limitado, limiar e ausência de hierarquia.
+7. **Responder rápido e de forma auditável.**
+8. **Aprender com os incidentes,** com relatório público.
+
+### 23.4 Rejeição de segredos fracos 🟡
+
+| Segredo | Regra (indicativa) |
+|---|---|
+| **Chaves de assinatura** (curvas elípticas e pós-quânticas) | Geradas no dispositivo (em elemento seguro quando houver) por gerador aleatório aprovado; nunca importadas à mão. O protocolo rejeita: chaves cujo escalar privado possa ser pequeno (testando se a chave pública é um dos primeiros múltiplos do ponto-base), pontos de ordem pequena ou fora da curva, chaves em listas de chaves fracas ou comprometidas conhecidas e chaves repetidas entre USIs. Um teste simples como o dos primeiros múltiplos detectaria chaves do tipo relatado. |
+| **Entropia** | Mistura de fontes múltiplas (sistema, hardware, eventos do dispositivo); testes de saúde do gerador; atestação do dispositivo quando disponível |
+| **Algoritmos e parâmetros** | Lista fechada e versionada; tamanhos mínimos; nada fora da lista |
+| **Frases-senha de backup** (seção 10.8) | Geradas pelo sistema (lista de palavras com entropia mínima) ou, se escolhidas pelo usuário, aceitas só após verificação de entropia e de listas de senhas vazadas; derivação por função lenta e resistente a hardware (por exemplo, Argon2id) |
+| **PINs e códigos locais** | Limite de tentativas imposto por hardware seguro; bloqueio progressivo; PINs óbvios ou sequenciais rejeitados |
+| **Códigos de recuperação e sementes** | Gerados aleatoriamente e exibidos uma vez; nunca derivados de dados pessoais (data de nascimento, CPF) |
+| **Chaves de emissores e operadores** | Custódia em limiar entre vários custodiantes; geração em cerimônia gravada e verificável; ativação só após o período de publicação (seção 23.5) |
+
+### 23.5 Emissão e ativação de chaves sensíveis: publicar antes de usar 🟡
+
+1. A chave de um emissor ou operador é gerada em **cerimônia com custódia em limiar**: nenhuma pessoa a conhece inteira.
+2. Antes de ativar, a chave pública é publicada no registro em estado **pendente**.
+3. **Monitores independentes** executam as verificações da seção 23.4 e outras; qualquer pessoa pode contestar com prova.
+4. A chave só se torna ativa após um **período mínimo sem contestação** (por exemplo, 24 a 72 horas) e com um número mínimo de monitores independentes confirmando.
+5. Passos manuais exigem **dois ou mais responsáveis** (regra dos quatro olhos), com registro público da cerimônia quando aplicável.
+6. Não existem caminhos manuais de emissão fora desse fluxo.
+
+Em princípio, a verificação pública antes da ativação permitiria detectar chaves do tipo relatado.
+
+### 23.6 Monitoramento contínuo e prova de comprometimento 🟡
+
+- **Monitores públicos e reproduzíveis** varrem continuamente todas as chaves registradas: valores pequenos, pontos inválidos, repetições, listas de chaves comprometidas e anomalias estatísticas.
+- **Prova de comprometimento.** Qualquer pessoa que consiga assinar com a chave privada de outro USI (como o pesquisador do caso fez ao assinar uma mensagem) pode apresentar essa assinatura como prova. A verificação é automática e resulta em **congelamento e revogação imediatos**, rotação forçada e revalidação das atestações afetadas. Há programa de recompensa por divulgação responsável.
+- **Atenção ao não repúdio.** Um titular poderia vazar a própria chave de propósito para repudiar assinaturas. Assinaturas anteriores ao momento da revogação, comprovadas por carimbo de tempo, continuam válidas, e vazamentos repetidos são tratados como sinal de risco (seção 23.10).
+
+### 23.7 Revogação e verificação com frescor 🟡
+
+- Os verificadores usam o estado do registro com **prova de inclusão e de frescor**, com idade máxima por nível de risco (minutos para operações sensíveis, horas para as demais).
+- **Falhar fechado** nas operações de nível alto: sem prova fresca, sem aceitação. Nada de aceitar silenciosamente quando a checagem falha.
+- **Fonte única de confiança**, derivada do registro, em vez de repositórios locais divergentes. Aplicações que operam offline usam provas de curta validade e aceitam menos poder.
+- Propagação de revogações entre nós por protocolo de fofoca (*gossip*), para reduzir a dependência de um único canal.
+
+### 23.8 Resposta a incidentes 🟡
+
+Metas indicativas, a calibrar:
+
+| Etapa | Meta |
+|---|---|
+| Detecção e confirmação automáticas | Minutos |
+| Congelamento ou revogação automáticos de chave comprometida | Até 1 hora |
+| Suspensão automática do poder de atestar de um emissor comprometido e marcação das atestações afetadas para revalidação | Imediata |
+| Comunicação pública | Até 24 horas |
+| Relatório público pós-incidente | Até 30 dias |
+| Exercícios simulados (revogar um emissor fictício, rotação em massa) | Periódicos |
+
+### 23.9 Credenciamento e responsabilização de emissores 🟡
+
+- **Critérios públicos** de credenciamento, técnicos e de governança.
+- **Verificação técnica contínua** (23.6), e não apenas declaração de conformidade.
+- **Limite de poder:** um emissor isolado não eleva sozinho a confiança de um atributo além de C1 ou C2 (seção 9.7.3).
+- **Suspensão ou perda automática** de credenciamento por falha técnica comprovada, com histórico público.
+- **Responsabilidade legal e financeira** onde existir (por exemplo, instituições reguladas).
+- Quem credencia e com quais critérios é uma questão de governança (seção 14) e de USIP. 🔴 Em aberto.
+
+### 23.10 Limites 🔴
+
+- **Nenhum teste prova aleatoriedade;** só detecta padrões ruins conhecidos. Uma geração fraca sutil (gerador parcialmente previsível) pode passar. Mitigações: mistura de fontes, atestação de hardware, bibliotecas auditadas e recompensa por falhas.
+- **Bugs na carteira ou no protocolo,** e a cadeia de suprimentos de software.
+- **Engenharia social:** as pessoas continuam sendo alvo.
+- **Tensão com o não repúdio** (seção 23.6).
+- **O elo fraco pode estar fora do USI:** verificadores e sistemas legados que ignoram as regras.
+- **Custo e fricção** de procedimentos rígidos.
+- O USI **não está imune** a falhas como as relatadas; o objetivo é que elas sejam mais difíceis de ocorrer, detectadas mais cedo, contidas e corrigidas mais rápido.
+
+## 24. Migração criptográfica e computação quântica
+
+### 24.1 Princípio 🟢
+
+O projeto é desenhado, desde o início, para **trocar de algoritmos sem trocar de identidade**. A agilidade criptográfica é um requisito de projeto, e não um recurso a acrescentar depois.
+
+Um ajuste de premissa: já existem algoritmos pós-quânticos padronizados pelo NIST em 2024 (ML-KEM [11], ML-DSA [4] e SLH-DSA [12]). Mas eles têm chaves e assinaturas maiores, menos tempo de escrutínio, e candidatos chegaram a ser quebrados durante o processo de seleção (por exemplo, SIKE e Rainbow, em 2022). Por isso o plano combina **migração planejada** com **uso híbrido** (algoritmo clássico mais pós-quântico) e prevê que o próprio algoritmo escolhido possa ter de ser trocado.
+
+### 24.2 Inventário criptográfico e vulnerabilidade 🟡
+
+O projeto mantém um **inventário público de primitivas** (uma lista de materiais criptográficos), atualizado a cada versão.
+
+| Primitiva | Uso no USI | Ameaça quântica | Caminho |
+|---|---|---|---|
+| Assinaturas de curvas elípticas (por exemplo, Ed25519, P-256) | Eventos de chaves, assinaturas de documentos, credenciais | Quebráveis pelo algoritmo de Shor | Assinaturas pós-quânticas padronizadas (ML-DSA, SLH-DSA; FN-DSA em padronização), em modo híbrido na transição |
+| Troca de chaves e cifra de backups e canais | Backups cifrados, transporte | Troca clássica quebrável | ML-KEM em modo híbrido; cifra simétrica de 256 bits |
+| Funções de *hash* (SHA-256, SHA-3) | Compromissos, árvores de Merkle, pré-rotação | O algoritmo de Grover reduz a segurança pela metade; saídas de 256 bits mantêm margem | Manter saídas de pelo menos 256 bits. A pré-rotação por *hash* já é resistente |
+| Cifra simétrica (AES-256) | Proteção local | Margem mantida com 256 bits | Manter |
+| Provas de conhecimento zero baseadas em curvas ou emparelhamentos | Provas de nível, *nullifiers*, divulgação seletiva | Quebráveis | Sistemas baseados em *hash* (tipo STARK) ou em reticulados; pesquisa em andamento; custo maior |
+| Assinaturas BBS (divulgação seletiva) | Credenciais | Baseadas em emparelhamentos: quebráveis | Alternativas pós-quânticas ainda em pesquisa; SD-JWT com assinaturas pós-quânticas como opção |
+| **OPRF de limiar** (curvas elípticas) | Unicidade de identificadores (seção 9.7.2) | Quebrável. Se a chave pública do protocolo for pública, um adversário quântico poderia obter a chave secreta e testar identificadores contra os valores já gravados no registro (ataque "colete agora, decifre depois") | Não publicar a chave pública, ou OPRF pós-quântica (pesquisa); **reavaliar a fase B** da seção 9.7.10 |
+| Compromissos de atributos | *Slots* (seção 9.7.2) | Compromissos de Pedersen ocultam perfeitamente, mas a vinculação é quebrável; compromissos por *hash* resistem | Preferir compromissos por *hash* |
+
+**Risco identificado:** o registro público é permanente, e tudo o que nele estiver protegido só por hipóteses clássicas pode ser exposto no futuro. Por isso o registro deve conter apenas compromissos por *hash*, *hashes* e dados que não percam a proteção com computadores quânticos.
+
+### 24.3 Mecanismos de migração 🟡
+
+1. **Identificadores de algoritmo e versão de protocolo** em todo evento, assinatura e credencial.
+2. **Assinaturas híbridas** na transição: um evento só é válido se verificar tanto pelo algoritmo clássico quanto pelo pós-quântico.
+3. **Pré-rotação por *hash*** (seção 7.4): a próxima chave é comprometida por *hash*, que resiste a computadores quânticos. Na rotação, revela-se uma chave pós-quântica. Esse é o caminho natural de migração sem trocar de USI.
+4. **Atualização assinada em modo híbrido,** inclusive a da própria carteira.
+5. **Testes de agilidade:** cada versão é testada com a troca de algoritmos, e há exercícios periódicos de "morte" de um algoritmo.
+6. **Planejamento de capacidade** para rotações em massa (limite de taxa, lotes, prioridade por nível de risco).
+
+### 24.4 Fases de depreciação e gatilhos 🟡
+
+| Estágio | Significado |
+|---|---|
+| **Aceito** | Pode ser usado |
+| **Preferido** | Recomendado; o novo algoritmo passa a ser oferecido |
+| **Exigido (híbrido)** | Eventos novos precisam de assinatura clássica e pós-quântica |
+| **Obsoleto** | Só verificação de legado, para eventos anteriores a uma data |
+| **Proibido** | Não aceito |
+
+A mudança de estágio é decidida por USIP, com base em **gatilhos** públicos: orientações de organismos de padronização, resultados de criptoanálise, marcos da computação quântica e parecer de um grupo de trabalho aberto de criptografia, que publica uma avaliação de risco anual.
+
+### 24.5 Procedimento de emergência 🟡
+
+Se um algoritmo for declarado quebrado:
+1. Suspende-se o seu uso em eventos novos, **exceto a rotação**.
+2. As chaves **pré-rotacionadas por *hash*** (resistentes) assumem o controle.
+3. A rotação em massa segue a prioridade por nível de risco.
+4. Mantém-se a verificação de legado apenas para registros com carimbo de tempo anterior à data de quebra.
+5. Comunicação pública imediata e relatório posterior.
+
+### 24.6 Assinaturas de longa duração 🟡
+
+Documentos assinados hoje precisam continuar verificáveis por décadas. O *hash* do documento é ancorado no registro; antes que o algoritmo se enfraqueça, o selo é **renovado** por nova ancoragem com o algoritmo novo, formando uma cadeia de evidências. Uma assinatura antiga continua comprovável como "existia antes da data X" desde que tenha sido ancorada antes da quebra.
+
+### 24.7 Custos 🟡
+
+Os tamanhos pós-quânticos são maiores: uma assinatura ML-DSA tem da ordem de 2,4 kB e uma chave pública da ordem de 1,3 kB, e as assinaturas SLH-DSA podem ter de cerca de 8 a dezenas de kB, conforme os parâmetros (valores aproximados, a confirmar). Isso afeta o dimensionamento do registro (seção 8.3), a banda e a bateria dos dispositivos. Mitigações: registrar **compromissos por *hash*** em vez de chaves completas, ancorar em lote por raiz de Merkle e usar assinaturas agregadas quando possível.
+
+### 24.8 Questões em aberto 🔴
+
+- Provas de conhecimento zero e credenciais com divulgação seletiva resistentes a computadores quânticos, com custo viável em celulares.
+- Alternativa pós-quântica à OPRF de limiar, ou desenho que dispense a chave pública (seção 9.7.10).
+- Calendário de depreciação, em um contexto em que o tempo até o risco quântico é incerto.
+- Custo e usabilidade de assinaturas pós-quânticas em dispositivos modestos.
+
+## 25. Referências
 
 > Lista inicial; as referências devem ser conferidas e completadas com links e versões exatas em edições futuras.
 
@@ -1043,8 +1382,14 @@ Todas as alterações significativas devem ser registradas no histórico de vers
 8. A. Shamir. *How to Share a Secret*. Communications of the ACM, 1979.
 9. W3C. *Verifiable Credentials Data Model*. Recomendação do W3C.
 10. J. Douceur. *The Sybil Attack*. IPTPS, 2002.
+11. NIST. *FIPS 203: Module-Lattice-Based Key-Encapsulation Mechanism Standard (ML-KEM)*. 2024.
+12. NIST. *FIPS 205: Stateless Hash-Based Digital Signature Standard (SLH-DSA)*. 2024.
+13. Brasil. *Medida Provisória nº 2.200-2/2001* (institui a ICP-Brasil).
+14. Brasil. *Lei nº 14.063/2020* (assinaturas eletrônicas).
+15. TabNews (usuário augustresende). [A chave privada era literalmente 4: o Firefox confiava nela, a ICP-Brasil não confia](https://www.tabnews.com.br/augustresende/a-chave-privada-era-literalmente-4-o-firefox-confiava-nela-no-icp-brasil-nao-confia). Outubro de 2026.
+16. Hardware.com.br. [Oito certificados TLS comprometidos colocam a segurança da internet em alerta](https://www.hardware.com.br/noticias/oito-certificados-tls-comprometidos-colocam-a-seguranca-da-internet-em-alerta/). 21 de outubro de 2026.
 
-## 22. Histórico de versões
+## 26. Histórico de versões
 
 | Versão | Data | Descrição |
 |---|---|---|
@@ -1054,3 +1399,4 @@ Todas as alterações significativas devem ser registradas no histórico de vers
 | 0.1.3 | 2026-10-24 | Seção 9.7.10: alternativa descartada (chave aleatória individual) e implantação em fases da unicidade de identificadores (fase A sem *nullifier*, fase B com OPRF de limiar). |
 | 0.1.4 | 2026-10-24 | Seção 10.8: cenários extremos de recuperação (perda total sem preparo e tentativa de abuso), âncoras de recuperação, revalidação assistida por emissores, regra "recomeçar não cria USI novo" e proporcionalidade; experimento E16. |
 | 0.1.5 | 2026-10-27 | Seção 5: panorama de iniciativas relacionadas, postura de colaboração, características inegociáveis, formas de colaboração e critérios de reaproveitamento; objetivo O11. |
+| 0.2.0 | 2026-10-29 | Parte II (seções 21 a 24): USI-O (identidade de organizações), assinatura digital e autenticação como alternativa às hierarquias de autoridades certificadoras, lições de falhas reais e procedimentos à prova de falha humana, migração criptográfica e computação quântica; objetivos O12 a O14; experimentos E17 a E20. |
