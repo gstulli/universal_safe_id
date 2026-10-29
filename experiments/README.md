@@ -24,6 +24,7 @@ Keep experiments small (one to two weeks of work), disposable and behind simple 
 
 | ID | Experiment | Status | Folder |
 |---|---|---|---|
+| E13 | Country profile: Brazil (research, no code) | in progress | [docs/research/E13-brazilian-documents.md](../docs/research/E13-brazilian-documents.md) |
 | E17 | Key quality: weak-key checker | in progress | [E17-weak-key-linter](E17-weak-key-linter/README.md) |
 
 The full list, with hypotheses and success criteria, is in whitepaper section 16. Each experiment has an issue labelled `experiment`.

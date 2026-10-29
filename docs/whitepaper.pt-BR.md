@@ -909,7 +909,7 @@ Medir sempre: adesão, retenção, fraude detectada, taxa de recuperação bem-s
 ### 15.5 Piloto no Brasil e expansão internacional 🟡
 
 **Piloto no Brasil.**
-- Levantar os documentos brasileiros candidatos (por exemplo, a carteira de identidade nacional, o passaporte com chip e a habilitação digital) e verificar, para cada um, **se é possível a verificação criptográfica offline** e **qual é o identificador estável da pessoa**. Contas de serviços governamentais digitais podem ser avaliadas como evidência complementar. *Todos esses pontos precisam de confirmação técnica a partir das especificações oficiais.*
+- Levantar os documentos brasileiros candidatos (por exemplo, a carteira de identidade nacional, o passaporte com chip e a habilitação digital) e verificar, para cada um, **se é possível a verificação criptográfica offline** e **qual é o identificador estável da pessoa**. Contas de serviços governamentais digitais podem ser avaliadas como evidência complementar. *Todos esses pontos precisam de confirmação técnica a partir das especificações oficiais.* Um primeiro levantamento está em [docs/research/E13-brazilian-documents.pt-BR.md](research/E13-brazilian-documents.pt-BR.md).
 - Dialogar com a autoridade de proteção de dados (ANPD) e, quando oportuno, com órgãos públicos, pedindo apoio à qualificação do perfil de país **sem contrapartida de controle** (seção 14.5).
 - Formar a primeira rede de parceiros: universidades, bibliotecas, cooperativas, organizações da sociedade civil.
 

@@ -451,7 +451,7 @@ Ações propostas para tirar o projeto do papel, em ordem aproximada:
 - [ ] Testar a prova documental com conhecimento zero e *nullifiers*.
 - [ ] Simular ataques Sybil sobre o modelo de vínculo social para calibrar a análise de grafo.
 - [ ] Comparar experimentalmente as opções de registro público (A, B e C).
-- [ ] Levantar tecnicamente os documentos brasileiros candidatos (verificação criptográfica offline e identificador estável) e elaborar o primeiro perfil de país (experimento E13).
+- [ ] Levantar tecnicamente os documentos brasileiros candidatos (verificação criptográfica offline e identificador estável) e elaborar o primeiro perfil de país (experimento E13). Primeiro levantamento (v0.1, a verificar): [docs/research/E13-brazilian-documents.pt-BR.md](docs/research/E13-brazilian-documents.pt-BR.md).
 - [ ] Prototipar o vínculo de atributos (*slots* com compromisso, unicidade por OPRF de limiar, prova de vigência) e simular ataques de ocupação de identidade, conluio de emissores e identidade sintética (experimentos E14 e E15).
 - [ ] Prototipar e testar a revalidação assistida por emissores e os cenários de perda total e de má-fé (experimento E16).
 - [ ] Prototipar e testar a rejeição de chaves fracas, a ativação "publicar antes de usar" e a prova de comprometimento (experimento E17).

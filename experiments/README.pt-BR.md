@@ -24,6 +24,7 @@ Mantenha os experimentos pequenos (uma a duas semanas de trabalho), descartávei
 
 | ID | Experimento | Estado | Pasta |
 |---|---|---|---|
+| E13 | Perfil de país: Brasil (pesquisa, sem código) | em andamento | [docs/research/E13-brazilian-documents.pt-BR.md](../docs/research/E13-brazilian-documents.pt-BR.md) |
 | E17 | Qualidade de chaves: verificador de chaves fracas | em andamento | [E17-weak-key-linter](E17-weak-key-linter/README.pt-BR.md) |
 
 A lista completa, com hipóteses e critérios de sucesso, está na seção 16 do whitepaper. Cada experimento tem uma issue com o rótulo `experiment`.

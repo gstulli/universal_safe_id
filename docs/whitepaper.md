@@ -909,7 +909,7 @@ Always measure: sign-ups, retention, fraud detected, successful recovery rate, o
 ### 15.5 Pilot in Brazil and international expansion 🟡
 
 **Pilot in Brazil.**
-- Survey candidate Brazilian documents (for example, the national identity card, the chip passport and the digital driving licence) and check, for each, **whether offline cryptographic verification is possible** and **what the person's stable identifier is**. Accounts on digital government services may be assessed as complementary evidence. *All of these points need technical confirmation from the official specifications.*
+- Survey candidate Brazilian documents (for example, the national identity card, the chip passport and the digital driving licence) and check, for each, **whether offline cryptographic verification is possible** and **what the person's stable identifier is**. Accounts on digital government services may be assessed as complementary evidence. *All of these points need technical confirmation from the official specifications.* A first survey is in [docs/research/E13-brazilian-documents.md](research/E13-brazilian-documents.md).
 - Engage the data protection authority (ANPD) and, when appropriate, public bodies, asking for support in qualifying the country profile **with no control in return** (section 14.5).
 - Form the first network of partners: universities, libraries, cooperatives, civil society organizations.
 
