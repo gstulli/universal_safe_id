@@ -439,8 +439,8 @@ Proposed actions to get the project off the ground, in approximate order:
 - [ ] Form an initial core of collaborators with complementary profiles: cryptography, development, law, experience design, community management.
 
 ### Stage 3 – Repository organization
-- [ ] Define licences (suggestion: Apache-2.0 for code and CC BY 4.0 for documentation).
-- [ ] Create `CONTRIBUTING.md`, a code of conduct and the proposal process (USIPs).
+- [x] Define licences: Apache-2.0 for code and CC BY 4.0 for documentation (they can be revisited before the project accepts its first external contributions).
+- [x] Create `CONTRIBUTING.md`, a code of conduct, a security policy, the proposal process ([USIPs](docs/usips/README.md)), the [Start here](docs/start-here.md) page and the issue and pull request templates.
 - [ ] Open an *issue* for each open question (see [section 14](#14-open-questions)) and enable *Discussions* for debate.
 - [ ] Keep the `docs/` folder for the whitepaper, architecture decisions and minutes.
 
@@ -519,11 +519,17 @@ The project is at an early stage and every contribution is welcome, **starting w
 - experience design for diverse audiences;
 - community organizing and fundraising.
 
-To take part, open an *issue* with your suggestion, question or criticism. Well-founded criticism is as valuable as new ideas.
+To take part, open an *issue* with your suggestion, question or criticism. Well-founded criticism is as valuable as new ideas. See [Start here](docs/start-here.md), the [contributing guide](CONTRIBUTING.md), the [code of conduct](CODE_OF_CONDUCT.md) and the [security policy](SECURITY.md).
 
 ### Language policy
 
 The repository is **bilingual**: every document exists in English (`name.md`) and Brazilian Portuguese (`name.pt-BR.md`), with a link between the versions at the top. Changes should be made to both versions in the same commit whenever possible; if they temporarily diverge, the **English version is the reference** until both are synchronized. Contributions in other languages are welcome as additional translations (`name.<code>.md`).
+
+### Licences
+
+- **Code:** [Apache License 2.0](LICENSE).
+- **Documentation** (whitepaper, READMEs and other texts): [CC BY 4.0](LICENSE-docs).
+- There is no copyright assignment: authors keep their rights, and nobody owns the project ([NOTICE](NOTICE)).
 
 ## 16. Glossary
 

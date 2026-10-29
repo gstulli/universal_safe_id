@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Start here / Por onde começar
+    url: https://github.com/gstulli/universal_safe_id/blob/main/docs/start-here.md
+    about: How to find a useful way in. / Como achar uma forma útil de ajudar.
+  - name: Security / Segurança
+    url: https://github.com/gstulli/universal_safe_id/blob/main/SECURITY.md
+    about: Report a vulnerability privately. / Relate uma vulnerabilidade de forma privada.

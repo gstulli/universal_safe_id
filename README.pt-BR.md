@@ -439,8 +439,8 @@ Ações propostas para tirar o projeto do papel, em ordem aproximada:
 - [ ] Formar um núcleo inicial de colaboradores com perfis complementares: criptografia, desenvolvimento, direito, design de experiência, gestão de comunidade.
 
 ### Etapa 3 – Organização do repositório
-- [ ] Definir licenças (sugestão: Apache-2.0 para código e CC BY 4.0 para documentação).
-- [ ] Criar `CONTRIBUTING.md`, código de conduta e o processo de propostas (USIPs).
+- [x] Definir licenças: Apache-2.0 para código e CC BY 4.0 para documentação (podem ser revistas antes de o projeto aceitar as primeiras contribuições externas).
+- [x] Criar `CONTRIBUTING.md`, código de conduta, política de segurança, o processo de propostas ([USIPs](docs/usips/README.pt-BR.md)), a página [Por onde começar](docs/start-here.pt-BR.md) e os modelos de issue e de pull request.
 - [ ] Abrir uma *issue* para cada questão em aberto (ver [seção 14](#14-questões-em-aberto)) e habilitar *Discussions* para debates.
 - [ ] Manter a pasta `docs/` para o whitepaper, decisões de arquitetura e atas.
 
@@ -519,11 +519,17 @@ O projeto está no início e toda contribuição é bem-vinda, **a começar pela
 - design de experiência para públicos diversos;
 - organização de comunidades e captação de recursos.
 
-Para participar, abra uma *issue* com sua sugestão, dúvida ou crítica. Críticas fundamentadas são tão valiosas quanto ideias novas.
+Para participar, abra uma *issue* com sua sugestão, dúvida ou crítica. Críticas fundamentadas são tão valiosas quanto ideias novas. Veja [Por onde começar](docs/start-here.pt-BR.md), o [guia de contribuição](CONTRIBUTING.pt-BR.md), o [código de conduta](CODE_OF_CONDUCT.pt-BR.md) e a [política de segurança](SECURITY.pt-BR.md).
 
 ### Política de idiomas
 
 O repositório é **bilíngue**: cada documento existe em inglês (`nome.md`) e em português do Brasil (`nome.pt-BR.md`), com um link entre as versões no topo. Alterações devem ser feitas nas duas versões no mesmo commit sempre que possível; se houver divergência temporária, a versão em **inglês é a referência** até que as duas sejam sincronizadas. Contribuições em outros idiomas são bem-vindas como traduções adicionais (`nome.<código>.md`).
+
+### Licenças
+
+- **Código:** [Apache License 2.0](LICENSE).
+- **Documentação** (whitepaper, READMEs e demais textos): [CC BY 4.0](LICENSE-docs).
+- Não há cessão de direitos autorais: as pessoas autoras mantêm os seus direitos, e ninguém é dono do projeto ([NOTICE](NOTICE)).
 
 ## 16. Glossário
 

@@ -1,0 +1,46 @@
+name: Whitepaper feedback / Retorno sobre o whitepaper
+description: Point out an error, a gap or a risk in the whitepaper. / Aponte um erro, uma lacuna ou um risco no whitepaper.
+labels: ["whitepaper-feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. Well-founded criticism is as valuable as new ideas. You may write in English or Portuguese.
+        Obrigado. Críticas fundamentadas são tão valiosas quanto ideias novas. Você pode escrever em inglês ou português.
+  - type: input
+    id: section
+    attributes:
+      label: Section / Seção
+      description: Which section(s) of the whitepaper? / Qual(is) seção(ões) do whitepaper?
+      placeholder: "e.g. 9.7.3, 23.4"
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Type / Tipo
+      options:
+        - Error or wrong claim / Erro ou afirmação incorreta
+        - Missing consideration or risk / Consideração ou risco que falta
+        - Better alternative / Alternativa melhor
+        - Needs a source / Precisa de fonte
+        - Unclear wording / Texto confuso
+        - Other / Outro
+    validations:
+      required: true
+  - type: textarea
+    id: feedback
+    attributes:
+      label: What is wrong or missing? / O que está errado ou falta?
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources or references / Fontes ou referências
+      description: Links, papers, specifications. / Links, artigos, especificações.
+  - type: textarea
+    id: expertise
+    attributes:
+      label: Your background (optional) / Sua experiência (opcional)
+      description: Helps us weigh and route the feedback. / Ajuda a ponderar e encaminhar o retorno.

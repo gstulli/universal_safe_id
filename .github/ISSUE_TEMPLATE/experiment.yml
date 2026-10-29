@@ -1,0 +1,42 @@
+name: Experiment / Experimento
+description: Propose or take on an experiment (E1 to E20 or a new one). / Proponha ou assuma um experimento (E1 a E20 ou novo).
+labels: ["experiment"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Experiments are small, disposable and publish negative results too. See `experiments/README.md`.
+        Experimentos são pequenos, descartáveis e publicam também resultados negativos. Veja `experiments/README.pt-BR.md`.
+        **Never use real keys, documents or personal data. / Nunca use chaves, documentos ou dados pessoais reais.**
+  - type: input
+    id: id
+    attributes:
+      label: Experiment ID / ID do experimento
+      placeholder: "E2, or NEW"
+    validations:
+      required: true
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: Hypothesis / Hipótese
+    validations:
+      required: true
+  - type: textarea
+    id: method
+    attributes:
+      label: Method / Método
+    validations:
+      required: true
+  - type: textarea
+    id: criterion
+    attributes:
+      label: Success criterion (decided before running) / Critério de sucesso (definido antes de executar)
+    validations:
+      required: true
+  - type: dropdown
+    id: ownership
+    attributes:
+      label: Who will do it? / Quem fará?
+      options:
+        - I want to take it / Quero assumir
+        - I propose it, someone else could take it / Proponho, outra pessoa poderia assumir

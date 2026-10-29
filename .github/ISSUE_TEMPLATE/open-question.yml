@@ -1,0 +1,18 @@
+name: Open question / Questão em aberto
+description: Raise or discuss an open question of the design. / Levante ou discuta uma questão em aberto do desenho.
+labels: ["open-question"]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Question / Questão
+    validations:
+      required: true
+  - type: input
+    id: section
+    attributes:
+      label: Related whitepaper section(s) / Seção(ões) relacionada(s) do whitepaper
+  - type: textarea
+    id: ideas
+    attributes:
+      label: Ideas, references or objections / Ideias, referências ou objeções
