@@ -36,6 +36,7 @@ Each section is tagged 🟢 proposed, 🟡 hypothesis or 🔴 open. Treat 🟡 a
 ## How the work is organized
 
 - **Issues** are labelled by type (`experiment`, `open-question`, `needs-verification`, `question`), by area (`area:crypto`, `area:legal`, `area:ux`, `area:governance`, `area:research`, `area:docs`) and by difficulty (`good first issue`, `help wanted`).
+- **Numbering:** experiment E*n* is issue #*n* (E1 to E20 are issues #1 to #20); open question Q*n* of whitepaper section 18 is issue #*n*+20 (Q1 to Q40 are issues #21 to #60).
 - **Experiments** follow a convention: a hypothesis, a success criterion and a published result, including negative ones ([experiments/README.md](../experiments/README.md)).
 - **Design changes** go through a [USIP](usips/README.md).
 - **Decisions** are recorded publicly. See [CONTRIBUTING.md](../CONTRIBUTING.md).

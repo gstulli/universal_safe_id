@@ -454,7 +454,7 @@ Proposed actions to get the project off the ground, in approximate order:
 - [ ] Technically survey the candidate Brazilian documents (offline cryptographic verification and stable identifier) and write the first country profile (experiment E13). First survey (v0.1, to be verified): [docs/research/E13-brazilian-documents.md](docs/research/E13-brazilian-documents.md).
 - [ ] Prototype attribute binding (slots with commitment, threshold-OPRF uniqueness, proof of currency) and simulate identity squatting, issuer collusion and synthetic identity attacks (experiments E14 and E15).
 - [ ] Prototype and test issuer-assisted re-validation and the total-loss and bad-faith scenarios (experiment E16).
-- [ ] Prototype and test weak-key rejection, "publish before use" activation and proof of compromise (experiment E17).
+- [ ] Prototype and test weak-key rejection, "publish before use" activation and proof of compromise (experiment E17). **First part done:** the [weak-key checker](experiments/E17-weak-key-linter/README.md) (32 tests pass); "publish before use" and the proof of compromise are still missing.
 - [ ] Prototype cryptographic migration: algorithm identifiers, hybrid mode and simulation of an algorithm "dying" (experiment E18).
 - [ ] Prototype the USI-O with representation credentials and a threshold key, in a pilot with an association or cooperative (experiment E19).
 - [ ] Prototype document signing and third-party verification (experiment E20).

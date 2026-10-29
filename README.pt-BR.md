@@ -454,7 +454,7 @@ Ações propostas para tirar o projeto do papel, em ordem aproximada:
 - [ ] Levantar tecnicamente os documentos brasileiros candidatos (verificação criptográfica offline e identificador estável) e elaborar o primeiro perfil de país (experimento E13). Primeiro levantamento (v0.1, a verificar): [docs/research/E13-brazilian-documents.pt-BR.md](docs/research/E13-brazilian-documents.pt-BR.md).
 - [ ] Prototipar o vínculo de atributos (*slots* com compromisso, unicidade por OPRF de limiar, prova de vigência) e simular ataques de ocupação de identidade, conluio de emissores e identidade sintética (experimentos E14 e E15).
 - [ ] Prototipar e testar a revalidação assistida por emissores e os cenários de perda total e de má-fé (experimento E16).
-- [ ] Prototipar e testar a rejeição de chaves fracas, a ativação "publicar antes de usar" e a prova de comprometimento (experimento E17).
+- [ ] Prototipar e testar a rejeição de chaves fracas, a ativação "publicar antes de usar" e a prova de comprometimento (experimento E17). **Primeira parte pronta:** o [verificador de chaves fracas](experiments/E17-weak-key-linter/README.pt-BR.md) (32 testes passam); faltam "publicar antes de usar" e a prova de comprometimento.
 - [ ] Prototipar a migração criptográfica: identificadores de algoritmo, modo híbrido e simulação da "morte" de um algoritmo (experimento E18).
 - [ ] Prototipar o USI-O com credenciais de representação e chave de limiar, em um piloto com uma associação ou cooperativa (experimento E19).
 - [ ] Prototipar a assinatura de documentos e a verificação por terceiros (experimento E20).

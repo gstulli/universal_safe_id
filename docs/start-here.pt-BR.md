@@ -36,6 +36,7 @@ Cada seção é marcada como 🟢 proposta, 🟡 hipótese ou 🔴 em aberto. Tr
 ## Como o trabalho está organizado
 
 - As **issues** têm rótulos de tipo (`experiment`, `open-question`, `needs-verification`, `question`), de área (`area:crypto`, `area:legal`, `area:ux`, `area:governance`, `area:research`, `area:docs`) e de dificuldade (`good first issue`, `help wanted`).
+- **Numeração:** o experimento E*n* é a issue #*n* (E1 a E20 são as issues #1 a #20); a questão em aberto Q*n* da seção 18 do whitepaper é a issue #*n*+20 (Q1 a Q40 são as issues #21 a #60).
 - Os **experimentos** seguem uma convenção: uma hipótese, um critério de sucesso e um resultado publicado, inclusive os negativos ([experiments/README.pt-BR.md](../experiments/README.pt-BR.md)).
 - As **mudanças de desenho** passam por uma [USIP](usips/README.pt-BR.md).
 - As **decisões** são registradas publicamente. Ver [CONTRIBUTING.pt-BR.md](../CONTRIBUTING.pt-BR.md).
